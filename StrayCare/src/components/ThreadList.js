@@ -5,7 +5,8 @@ import { fetchThreads } from '../store/actions'
 import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 
-export default function ThreadList () {
+
+export default function ThreadList ({ navigation }) {
 
     const dispatch = useDispatch()
     const threads = useSelector(state => state.threads)
@@ -17,7 +18,7 @@ export default function ThreadList () {
     return (
         <ScrollView>
             {threads.map((thread) => (
-                <Thread thread={thread} key={thread.Id}/>
+                <Thread navigation={navigation} thread={thread} key={thread.Id}/>
             ))}
         </ScrollView>
     );

@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text, Card } from '@ui-kitten/components'
 
-export default function Comment () {
+export default function Comment ({ comment }) {
     return (
         <Card>
-            <Text>Comment Component</Text>
+            <Text>{comment.description}</Text>
         </Card>
     )
 }

@@ -1,19 +1,26 @@
 import React, {useState} from 'react'
 import { Text, Input, Button } from '@ui-kitten/components';
 import { ScrollView } from 'react-native-gesture-handler';
+import Comment from './Comment'
 
 
-export default function ThreadDetail () {
-
+export default function ThreadDetail (props) {
     const [ comment, setComment ] = useState('')
-
+    const { thread } = props.route.params
+    console.log(thread)
     const handleOnPress = (e) => {
-        console.log('test')
+        console.log(thread)
     }
 
     return (
         <ScrollView>
-            <Text>Thread Detail</Text>
+            <Text>{thread.title}</Text>
+            <Text>{thread.description}</Text>
+            {
+                thread.comments.map((comment) => (
+                    <Comment key={comment.id} comment={comment} />
+                ))
+            }
             <Input
                 placeholder='Write a comment...'
                 value={comment}
