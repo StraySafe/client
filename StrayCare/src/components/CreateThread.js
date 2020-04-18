@@ -52,7 +52,7 @@ export default function CreateThread () {
     const handleOnSubmit = () => {
         const payload = {
             id:'4'+Math.floor(Math.random() * 20),
-            userId: '1234'+Math.floor(Math.random() * 20), //JANGAN LUPA HAPUS!
+            UserId: '1234'+Math.floor(Math.random() * 20), //JANGAN LUPA HAPUS!
             comments: [                                    //INI JUGA!!
                 {
                     id: '1'+Math.floor(Math.random() * 20),
@@ -65,8 +65,9 @@ export default function CreateThread () {
             ],
             title: title,
             description: description,
-            latitude: currentRegLatitude,
-            longitude: currentRegLongitude
+            lat: currentRegLatitude,
+            long: currentRegLongitude,
+            status: 'unresolved'
         }
         console.log(payload, 'data to submit')
         dispatch(createThread(payload))

@@ -4,7 +4,7 @@ import { Text, Card } from '@ui-kitten/components'
 export default function Comment ({ comment }) {
     return (
         <Card>
-            <Text>{comment.description}</Text>
+            <Text>{comment.message}</Text>
         </Card>
     )
 }

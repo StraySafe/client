@@ -6,7 +6,7 @@ import {
 
 const initialState = {
     users: [],
-    threads: []
+    threads: [],
 }
 
 export const reducers = (state = initialState, action) => {

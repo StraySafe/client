@@ -1,49 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import { 
     Card,
-    Text, 
-    Button
+    Text,
 } from '@ui-kitten/components'
-import { View, StyleSheet, PermissionsAndroid } from 'react-native';
+import { View, StyleSheet, PermissionsAndroid, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps'
-import { ScrollView } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import ThreadDetail from './ThreadDetail'
-import Constants from 'expo-constants';
 import * as Location from 'expo-location';
-import { getDistance, getPreciseDistance } from 'geolib';
-
-
-const Header = ({thread}) => {
-    return (
-        <View>
-            <Text category='h6'>{thread.title}</Text>
-            <Text category='s1'>{thread.status}</Text>
-        </View>
-    )
-}
-
-const Footer = ({thread, navigation}) => {
-    
-    const handleAccept = (thread, navigation) => {
-        <ThreadDetail />
-        navigation.navigate('Thread Detail', {
-            thread
-        })
-    }
-
-    return (
-        <View style={styles.footerContainer} >
-            <Button
-                style={styles.footerControl}
-                size='small'
-                onPress={() => handleAccept(thread, navigation)}
-            >
-                Show
-            </Button>
-        </View>
-    )
-
-}
+import { getPreciseDistance } from 'geolib';
 
 export default function Thread ({ navigation, thread}) {
     const { lat, long } = thread
@@ -52,6 +17,7 @@ export default function Thread ({ navigation, thread}) {
     const [location, setLocation] = useState(null);
     const [ convLocation, setConvLocation ] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null);
+    const [ locButton, setLocButton ] = useState(false)
 
     const [ distance, setDistance ] = useState(0.0)
 
@@ -69,7 +35,7 @@ export default function Thread ({ navigation, thread}) {
             // setConvLocation(convertLocation) // contain address, street, postal, city name etc.
             setDistance(getPreciseDistance({latitude, longitude}, {latitude: Number(lat), longitude: Number(long)})) //distance 
         })();
-    }, );
+    }, []);
 
     let text = 'Waiting..';
     if (errorMsg) {
@@ -78,40 +44,71 @@ export default function Thread ({ navigation, thread}) {
         console.log(distance/1000, 'km away')
     }
 
+    const navToDetail = (thread, navigation) => {
+        <ThreadDetail />
+        navigation.navigate('Thread Detail', {
+            thread
+        })
+    }
+
+    const Header = (props) => (
+        <TouchableOpacity {...props} onPress={() => navToDetail(thread, navigation)}>
+            <View style={{flex:1, flexDirection: 'row'}}>
+                <View>
+                    <Text>Image</Text>
+                </View>
+                <View style={{flex:1, flexDirection: 'column', marginLeft: 10}}>
+                    <Text category='h6'>{thread.title.toUpperCase()}</Text>
+                    <Text category='s2'>created date by username</Text>
+                </View>
+            </View>
+        </TouchableOpacity>
+    )
+
+    const Footer = (props) => (
+        <View style={{marginHorizontal: 25}}>
+            <Text category='s2'>target : {(distance / 1000)} km away</Text>
+        </View>
+    )
+
+
     return (
         <React.Fragment>
-            <Card style={styles.card}>
-                <Header thread={thread} />
-                <View>
-                    <MapView 
-                        onMapReady={() => {
-                            PermissionsAndroid.request(
-                              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-                            ).then(granted => {
-                            //   alert(granted) // just to ensure that permissions were granted
-                            });
-                          }}
-                        style={styles.mapStyle}
-                        initialRegion={{
-                            latitude: Number(lat),
-                            longitude: Number(long),
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
-                        }}
-                        loadingEnabled
-                        loadingIndicatorColor="#666666"
-                        loadingBackgroundColor="#eeeeee"
-                        showsUserLocation={true}
-                        followsUserLocation={true}
+            <Card 
+                style={styles.card}
+                header={Header}
+                footer={Footer}
+                status={thread.status == 'unresolved' ? 'danger':'success'}
+            >
+                <MapView 
+                    onMapReady={() => {
+                        PermissionsAndroid.request(
+                            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+                        ).then(granted => {
+                            setLocButton(true)  
+                        //   alert(granted) // just to ensure that permissions were granted
+                        });
+
+                    }}
+                    style={styles.mapStyle}
+                    initialRegion={{
+                        latitude: Number(lat),
+                        longitude: Number(long),
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                    loadingEnabled
+                    loadingIndicatorColor="#666666"
+                    loadingBackgroundColor="#eeeeee"
+                    showsUserLocation={true}
+                    followsUserLocation={true}
+                    showsMyLocationButton={locButton}
+                >
+                    <Marker 
+                        coordinate={{latitude: Number(lat), longitude: Number(long)}}
                     >
-                        <Marker 
-                            coordinate={{latitude: Number(lat), longitude: Number(long)}}
-                        />
-                    </MapView>
-                    <Text>{(distance/1000)} km away</Text>
-                    <Text>{thread.description}</Text>
-                </View>
-                <Footer thread={thread} navigation={navigation} />
+                    </Marker>
+                </MapView>
             </Card>
         </React.Fragment>
     );
@@ -135,7 +132,7 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         width: window.innerWidth,
-        height: 200,
+        height: 100,
         justifyContent: 'center',
         flex: 1
     }

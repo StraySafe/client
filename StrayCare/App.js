@@ -20,9 +20,9 @@ function App() {
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name='Create Thread' component={CreateThread} />
             <Stack.Screen name='Thread List' component={ThreadList} />
             <Stack.Screen name='Thread Detail' component={ThreadDetail} />
+            <Stack.Screen name='Create Thread' component={CreateThread} />
             <Stack.Screen name='Home' component={Home} />
           </Stack.Navigator>
         </NavigationContainer>
