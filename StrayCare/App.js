@@ -10,7 +10,10 @@ import store from './src/store'
 import * as eva from '@eva-design/eva'
 import { ApplicationProvider } from '@ui-kitten/components'
 import ThreadDetail from './src/components/ThreadDetail';
-
+import MyCats from './src/components/MyCats';
+import Adopt from './src/components/Adopt';
+import AdoptDetail from './src/components/AdoptDetail';
+import OwnerContact from './src/components/OwnerContact';
 
 const Stack = createStackNavigator()
 
@@ -20,6 +23,10 @@ function App() {
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer>
           <Stack.Navigator>
+            <Stack.Screen name="Adopt" component={Adopt} />
+            <Stack.Screen name="My Cats" component={MyCats} />
+            <Stack.Screen name="Adopt Detail" component={AdoptDetail} />
+            <Stack.Screen name="Owner Contact" component={OwnerContact} />
             <Stack.Screen name='Thread List' component={ThreadList} />
             <Stack.Screen name='Thread Detail' component={ThreadDetail} />
             <Stack.Screen name='Create Thread' component={CreateThread} />
