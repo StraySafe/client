@@ -43,13 +43,15 @@ export const setThreads = (threads) => {
 }
 
 export const createThread = (thread) => {
+    console.log(thread)
     return (dispatch) => {
         axios
             .post('http://192.168.2.159:3000/thread', thread)
             .then(({ data }) => {
+                console.log(data)
                 dispatch(fetchThreads())
             }).catch((err) => {
-                console.log(err)
+                console.log(err, 'masuk error sini')
             });
     }
 }
