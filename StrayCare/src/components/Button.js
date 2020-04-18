@@ -32,7 +32,7 @@ export default function Button({ children, rounded, outlined, customStyle, ...re
 const height = 40
 const padding = 10
 const margin = 10
-const width = 250
+const minWidth = 150
 const backgroundColor = 'lightgrey'
 
 const styles = StyleSheet.create({
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     height,
     padding,
     margin,
-    width,
+    minWidth,
     backgroundColor
   },
   roundBorder: {

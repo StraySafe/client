@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchPets } from '../store/actions';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import Button from './Button';
 
 export default function Adopt() {
   const navigation = useNavigation();
@@ -29,6 +30,13 @@ export default function Adopt() {
           </View>
         </TouchableOpacity>
       )}
+      <Button
+        style={{ alignItems: 'center' }}
+        onPress={() => navigation.navigate('Add Pet')}
+        children={<Text style={{ color: '#FFF' }}>Add New Pet</Text>}
+        rounded
+        customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
+      />
     </ScrollView>
   )
 }

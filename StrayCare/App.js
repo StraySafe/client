@@ -14,6 +14,7 @@ import MyCats from './src/components/MyCats';
 import Adopt from './src/components/Adopt';
 import AdoptDetail from './src/components/AdoptDetail';
 import OwnerContact from './src/components/OwnerContact';
+import AddPet from './src/components/AddPet';
 
 const Stack = createStackNavigator()
 
@@ -24,6 +25,7 @@ function App() {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Adopt" component={Adopt} />
+            <Stack.Screen name="Add Pet" component={AddPet} />
             <Stack.Screen name="My Cats" component={MyCats} />
             <Stack.Screen name="Adopt Detail" component={AdoptDetail} />
             <Stack.Screen name="Owner Contact" component={OwnerContact} />
