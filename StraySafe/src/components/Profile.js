@@ -1,23 +1,110 @@
-import React, { useEffect, Profiler } from 'react';
-import { StyleSheet, View, Text, Alert } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Text, Alert, SafeAreaView, StatusBar, ImageBackground, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchOnePet, deletePet, fetchPets, fetchOneUser } from '../store/actions';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
+import Constants from 'expo-constants';
+import lib from './ColorLib';
 
 export default function Profile() {
   const dispatch = useDispatch();
   const oneUser = useSelector((state) => state.oneUser);
 
   useEffect(() => {
-    dispatch(fetchOneUser(3))
+    dispatch(fetchOneUser(2))
   }, [])
 
   return (
     <>
-      <Text>Profile here</Text>
-      <Text>{JSON.stringify(oneUser)}</Text>
+      <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
+      <SafeAreaView style={{ backgroundColor: lib.white }}>
+        <ScrollView>
+          <StatusBar
+            backgroundColor={lib.primary}
+            barStyle='light-content'
+          />
+          {/* header */}
+          <View style={{ height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: lib.white, fontWeight: '700', fontSize: 16 }}>Profile</Text>
+          </View>
+          <View style={{ padding: 15, height: 100, flexDirection: 'row' }}>
+            <Image source={require('../../assets/userplaceholder.jpg')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80/2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15}}>
+              <Text style={{fontSize: 16, fontWeight: '500'}}>{`${oneUser.first_name} ${oneUser.last_name}`}</Text>
+              <Text style={{fontSize: 12, color: lib.accent }}>{oneUser.kota}</Text>
+            </View>
+          </View>
+
+          <View style={{marginTop: 10, paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey'}}>
+            <Text style={{fontSize: 16, fontWeight: '500'}}>Your threads</Text>
+          </View>
+
+          <TouchableOpacity style={{paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row'}}>
+            <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50/2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15}}>
+              <Text style={{fontSize: 16, fontWeight: '500'}}>Thread 1</Text>
+              <Text style={{fontSize: 12, color: lib.accent }}>by You</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row'}}>
+            <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50/2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15}}>
+              <Text style={{fontSize: 16, fontWeight: '500'}}>Thread 2</Text>
+              <Text style={{fontSize: 12, color: lib.accent }}>by You</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row'}}>
+            <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50/2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15}}>
+              <Text style={{fontSize: 16, fontWeight: '500'}}>Thread 3</Text>
+              <Text style={{fontSize: 12, color: lib.accent }}>by You</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row'}}>
+            <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50/2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15}}>
+              <Text style={{fontSize: 16, fontWeight: '500'}}>Thread 4</Text>
+              <Text style={{fontSize: 12, color: lib.accent }}>by You</Text>
+            </View>
+          </TouchableOpacity>
+
+          {/* ============================= */}
+          <View style={{paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey'}}>
+            <Text style={{fontSize: 16, fontWeight: '500'}}>Threads you've requested to solve</Text>
+          </View>
+
+          <TouchableOpacity style={{paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row'}}>
+            <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50/2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15}}>
+              <Text style={{fontSize: 16, fontWeight: '500'}}>Request 1</Text>
+              <Text style={{fontSize: 12, color: lib.accent }}>by You</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row'}}>
+            <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50/2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15}}>
+              <Text style={{fontSize: 16, fontWeight: '500'}}>Request 2</Text>
+              <Text style={{fontSize: 12, color: lib.accent }}>by You</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row'}}>
+            <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50/2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15}}>
+              <Text style={{fontSize: 16, fontWeight: '500'}}>Request 3</Text>
+              <Text style={{fontSize: 12, color: lib.accent }}>by You</Text>
+            </View>
+          </TouchableOpacity>
+
+
+        </ScrollView>
+      </SafeAreaView>
     </>
   )
 }
