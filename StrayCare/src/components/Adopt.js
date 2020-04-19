@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, Alert } from 'react-native';
+import { StyleSheet, View, Text, Alert, Platform, SafeAreaView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPets } from '../store/actions';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import Button from './Button';
+import Constants from 'expo-constants';
 
 export default function Adopt() {
   const navigation = useNavigation();
@@ -15,29 +16,31 @@ export default function Adopt() {
     dispatch(fetchPets());
   }, [])
   return (
-    <ScrollView>
-      {pets.map(pet =>
-        <TouchableOpacity key={pet.id} style={styles.petCard} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id })}>
-          <View style={styles.catPhotoContainer}>
-            <View style={styles.catPhoto}>
+    <SafeAreaView>
+      <ScrollView style={{ paddingTop: Constants.statusBarHeight, backgroundColor: '#FFF' }}>
+        {pets.map(pet =>
+          <TouchableOpacity key={pet.id} style={styles.petCard} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id } )}>
+            <View style={styles.catPhotoContainer}>
+              <View style={styles.catPhoto}>
+              </View>
             </View>
-          </View>
-          <View style={styles.details}>
-            <Text style={styles.petName}>{pet.name}</Text>
-            <Text style={styles.petSpecies}>{`${pet.species} | ${pet.birth_date}`}</Text>
-            <Text style={styles.petDesc}>{pet.description}</Text>
-            <Text style={styles.petOwner}>{`Owned by ${pet.Owner.first_name}`}</Text>
-          </View>
-        </TouchableOpacity>
-      )}
-      <Button
-        style={{ alignItems: 'center' }}
-        onPress={() => navigation.navigate('Add Pet')}
-        children={<Text style={{ color: '#FFF' }}>Add New Pet</Text>}
-        rounded
-        customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
-      />
-    </ScrollView>
+            <View style={styles.details}>
+              <Text style={styles.petName}>{pet.name}</Text>
+              <Text style={styles.petSpecies}>{`${pet.species} | ${pet.birth_date}`}</Text>
+              <Text style={styles.petDesc}>{pet.description}</Text>
+              <Text style={styles.petOwner}>{`Owned by ${pet.Owner.first_name}`}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        <Button
+          style={{ alignItems: 'center' }}
+          onPress={() => navigation.navigate('Add Pet')}
+          children={<Text style={{ color: '#FFF' }}>Add New Pet</Text>}
+          rounded
+          customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
+        />
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

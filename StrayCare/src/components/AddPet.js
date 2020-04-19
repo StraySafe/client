@@ -3,13 +3,34 @@ import { Input, Text , Datepicker} from '@ui-kitten/components';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, Image, Alert } from 'react-native';
 import Button from './Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPet } from '../store/actions';
 
 export default function AddPet() {
   const [name, setName] = useState('');
   const [species, setSpecies] = useState('');
   const [description, setDescription] = useState('');
   const [birth_date, setBirthDate] = useState(new Date());
-  
+  const pets = useSelector((state) => state.pets);
+  const dispatch = useDispatch();
+
+  function handleOnPress() {
+    dispatch(addPet({
+      id: pets.length + 1,
+      name,
+      species,
+      description,
+      birth_date,
+      status: 'available',
+      requestUserId: '',
+      userId: 3
+    }))
+    setName('');
+    setSpecies('');
+    setDescription('');
+    setBirthDate(new Date());
+  }
+
   return (
     <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 15 }}>
       <Text>Name</Text>
@@ -42,10 +63,7 @@ export default function AddPet() {
       />
       <Button
         style={{ alignItems: 'center' }}
-        onPress={() => Alert.alert(
-          'Adoption',
-          'Are you sure you are ready to adopt this cat?'
-        )}
+        onPress={handleOnPress}
         children={<Text style={{ color: '#FFF' }}>Add New Pet</Text>}
         rounded
         customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}

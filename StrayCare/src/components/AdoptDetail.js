@@ -7,6 +7,8 @@ import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 
 export default function AdoptDetail({ route }) {
+  console.log(route);
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { petId } = route.params;
@@ -18,7 +20,7 @@ export default function AdoptDetail({ route }) {
   }, [])
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: '#FFF'}}>
 
       <View style={styles.details}>
         <Text style={styles.petName}>{onePet.name}</Text>
@@ -34,7 +36,7 @@ export default function AdoptDetail({ route }) {
           [
             {
               text: "Yes",
-              onPress: () => navigation.navigate('Owner Contact', { userId: onePet.Owner.Id})
+              onPress: () => navigation.navigate('Owner Contact', { userId: onePet.Owner.Id })
             },
             {
               text: "Cancel",

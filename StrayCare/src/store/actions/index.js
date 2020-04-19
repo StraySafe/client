@@ -118,3 +118,18 @@ export const fetchOneUser = (userId) => {
             })
     }
 }
+
+export const addPet = (newPet) => {
+    console.log(newPet, '<<<<<');
+    
+    return (dispatch) => {
+        axios
+            .post(`${baseURL}/pet`, newPet)
+            .then(({ data }) => {
+                console.log(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+}
