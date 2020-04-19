@@ -6,7 +6,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 
-export default function AdoptDetail({ route }) {
+export default function PetDetail({ route }) {
   console.log(route);
 
   const dispatch = useDispatch();

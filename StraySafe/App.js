@@ -13,7 +13,7 @@ import { ApplicationProvider } from '@ui-kitten/components'
 import ThreadDetail from './src/components/ThreadDetail';
 import MyCats from './src/components/MyCats';
 import Adopt from './src/components/Adopt';
-import AdoptDetail from './src/components/AdoptDetail';
+import PetDetail from './src/components/PetDetail';
 import OwnerContact from './src/components/OwnerContact';
 import AddPet from './src/components/AddPet';
 import lib from './src/components/ColorLib';
@@ -25,7 +25,7 @@ export function AdoptStack() {
   return (
     <StackAdopt.Navigator initialRouteName="Adopt">
       <StackAdopt.Screen name="Adopt" component={Adopt} options={{ headerShown: false }} />
-      <StackAdopt.Screen name="Adopt Detail" component={AdoptDetail} />
+      <StackAdopt.Screen name="Adopt Detail" component={PetDetail} />
       <StackAdopt.Screen name="Owner Contact" component={OwnerContact} />
     </StackAdopt.Navigator>
   )
@@ -37,7 +37,7 @@ export function MyCatsStack() {
   return (
     <StackMyCats.Navigator initialRouteName="My Cats">
       <StackMyCats.Screen name="My Cats" component={MyCats} />
-      <StackMyCats.Screen name="Details" component={AdoptDetail} />
+      <StackMyCats.Screen name="Pet Detail" component={PetDetail} />
     </StackMyCats.Navigator>
   )
 }

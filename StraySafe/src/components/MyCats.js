@@ -23,7 +23,7 @@ export default function MyCats() {
     );
 
     const renderMyCats = ({ item, index }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Details', { petId: item.id, origin: 'fromMyCats' })}>
+        <TouchableOpacity onPress={() => navigation.navigate('Pet Detail', { petId: item.id, origin: 'fromMyCats' })}>
             <ListItem
                 title={<Text style={{ fontSize: 16 }}>{item.name}</Text>}
                 description={`${item.description}`}

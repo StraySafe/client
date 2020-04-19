@@ -29,7 +29,7 @@ export default function Adopt() {
               <Text style={styles.petName}>{pet.name}</Text>
               <Text style={styles.petSpecies}>{`${pet.species} | ${pet.ageYear} Year ${pet.ageMonth} Month`}</Text>
               <Text style={styles.petDesc}>{pet.description}</Text>
-              <Text style={styles.petOwner}>{`Owned by ${pet.Owner.first_name}`}</Text>
+              <Text style={styles.petOwner}>{`Owned by ${pet.Owner}`}</Text>
             </View>
           </TouchableOpacity>
         )}
