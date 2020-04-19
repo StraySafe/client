@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Profiler } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Home from './src/components/Home'
 import ThreadList from './src/components/ThreadList'
@@ -16,6 +16,7 @@ import Adopt from './src/components/Adopt';
 import PetDetail from './src/components/PetDetail';
 import OwnerContact from './src/components/OwnerContact';
 import AddPet from './src/components/AddPet';
+import Profile from './src/components/Profile';
 import lib from './src/components/ColorLib';
 
 const Drawer = createDrawerNavigator();
@@ -62,6 +63,7 @@ function App() {
             drawerStyle={{ backgroundColor: '#0A2239' }}
             drawerContentOptions={{ inactiveTintColor: '#FFFFFF', activeTintColor: lib.primary, activeBackgroundColor: '#1D84B5' }}
           >
+            <Drawer.Screen name="Profile" component={Profile} />
             <Drawer.Screen name="Adopt" component={AdoptStack} />
             <Drawer.Screen name="My Cats" component={MyCatsStack} options={{ drawerLabel: 'My Cats' }} />
             <Drawer.Screen name="Add Pet" component={AddPet} options={{ drawerLabel: 'Add Pet' }} />
