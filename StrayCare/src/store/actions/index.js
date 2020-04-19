@@ -47,9 +47,24 @@ export const createThread = (thread) => {
         axios
             .post('http://192.168.2.159:3000/thread', thread)
             .then(({ data }) => {
+                console.log(data)
                 dispatch(fetchThreads())
             }).catch((err) => {
-                console.log(err)
+                console.log(err, 'masuk error sini')
+            });
+    }
+}
+
+export const createComment = (comment) => {
+    console.log(comment)
+    return (dispatch) => {
+        axios
+            .post('http://192.168.2.159:3000/comment', comment)
+            .then(({ data }) => {
+                console.log('berhasil')
+                dispatch(fetchThreads())
+            }).catch((err) => {
+                console.log(err, 'masuk sini')
             });
     }
 }

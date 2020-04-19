@@ -2,10 +2,12 @@ import React, { useEffect } from 'react'
 import Thread from './Thread'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchThreads } from '../store/actions'
-import { View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import { View, Text } from 'react-native'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import { Button } from '@ui-kitten/components'
 
-export default function ThreadList () {
+
+export default function ThreadList ({ navigation }) {
 
     const dispatch = useDispatch()
     const threads = useSelector(state => state.threads)
@@ -17,7 +19,7 @@ export default function ThreadList () {
     return (
         <ScrollView>
             {threads.map((thread) => (
-                <Thread thread={thread} key={thread.Id}/>
+                <Thread navigation={navigation} thread={thread} key={thread.id}/>
             ))}
         </ScrollView>
     );
