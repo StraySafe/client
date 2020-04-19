@@ -11,8 +11,8 @@ export default function MyCats() {
     const dispatch = useDispatch();
     const pets = useSelector((state) => state.pets);
 
-    const myCatsOnly = pets.filter(cat => cat.userId === '2');
-    const myAdoptRequests = pets.filter(request => request.requestUserId === '2')
+    const myCatsOnly = pets.filter(cat => cat.userId == '3');
+    const myAdoptRequests = pets.filter(request => request.requestUserId == '3')
 
     useEffect(() => {
         dispatch(fetchPets());
@@ -23,16 +23,18 @@ export default function MyCats() {
     );
 
     const renderMyCats = ({ item, index }) => (
-        <ListItem
-            title={`${item.name}`}
-            description={`${item.description}`}
-            accessoryLeft={renderItemIcon}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate('Details', { petId: item.id, origin: 'fromMyCats' })}>
+            <ListItem
+                title={<Text style={{ fontSize: 16 }}>{item.name}</Text>}
+                description={`${item.description}`}
+                accessoryLeft={renderItemIcon}
+            />
+        </TouchableOpacity>
     );
 
     const renderMyAdoptRequest = ({ item, index }) => (
         <ListItem
-            title={`${item.name}`}
+            title={<Text style={{ fontSize: 16 }}>{item.name}</Text>}
             description={`Owned by ${item.Owner.first_name}`}
             accessoryLeft={renderItemIcon}
             onPress={() => navigation.navigate('Owner Contact', { userId: item.Owner.Id })}
@@ -42,28 +44,30 @@ export default function MyCats() {
     return (
         <>
             <SafeAreaView>
-                <View style={styles.bigDivider}>
-                    <Text style={{ color: '#000000' }}>Your cats</Text>
-                </View>
-                <View>
-                    <List
-                        style={styles.container}
-                        data={myCatsOnly}
-                        renderItem={renderMyCats}
-                        ItemSeparatorComponent={Divider}
-                    />
-                </View>
-                <View style={styles.bigDivider}>
-                    <Text style={{ color: '#000000' }}>Your adopt requests</Text>
-                </View>
-                <View>
-                    <List
-                        style={styles.container}
-                        data={myAdoptRequests}
-                        renderItem={renderMyAdoptRequest}
-                        ItemSeparatorComponent={Divider}
-                    />
-                </View>
+                <ScrollView>
+                    <View style={styles.bigDivider}>
+                        <Text style={{ color: '#000000' }}>Your cats</Text>
+                    </View>
+                    <View>
+                        <List
+                            style={styles.container}
+                            data={myCatsOnly}
+                            renderItem={renderMyCats}
+                            ItemSeparatorComponent={Divider}
+                        />
+                    </View>
+                    <View style={styles.bigDivider}>
+                        <Text style={{ color: '#000000' }}>Your adopt requests</Text>
+                    </View>
+                    <View>
+                        <List
+                            style={styles.container}
+                            data={myAdoptRequests}
+                            renderItem={renderMyAdoptRequest}
+                            ItemSeparatorComponent={Divider}
+                        />
+                    </View>
+                </ScrollView>
             </SafeAreaView>
         </>
     )
@@ -78,10 +82,11 @@ const styles = StyleSheet.create({
         // maxHeight: 192,
     },
     catPhoto: {
-        height: 30,
-        width: 30,
-        borderRadius: 30 / 2,
-        backgroundColor: "#233563"
+        height: 35,
+        width: 35,
+        borderRadius: 35 / 2,
+        backgroundColor: "#233563",
+        marginLeft: 5
     },
     bigDivider: {
         justifyContent: 'center',

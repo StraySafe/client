@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchOnePet } from '../store/actions';
+import { fetchOnePet, deletePet, fetchPets } from '../store/actions';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
@@ -11,44 +11,77 @@ export default function AdoptDetail({ route }) {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { petId } = route.params;
+  const { petId, origin } = route.params;
 
   const onePet = useSelector((state) => state.onePet);
 
   useEffect(() => {
     dispatch(fetchOnePet(petId))
   }, [])
+  
+  function handleDelete() {
+    dispatch(deletePet(petId));
+    dispatch(fetchPets());
+    navigation.goBack();
+  }
 
   return (
-    <ScrollView style={{ backgroundColor: '#FFF'}}>
+    <ScrollView style={{ backgroundColor: '#FFF' }}>
 
       <View style={styles.details}>
         <Text style={styles.petName}>{onePet.name}</Text>
-        <Text style={styles.petSpecies}>{`${onePet.species} | ${onePet.birth_date}`}</Text>
+        <Text style={styles.petSpecies}>{`${onePet.species} | ${onePet.ageYear} Year ${onePet.ageMonth} Month`}</Text>
         <Text style={styles.petDesc}>{onePet.description}</Text>
         <Text style={styles.petOwner}>{`Owned by ${onePet.Owner} ${onePet.Owner}`}</Text>
       </View>
-      <Button
-        style={{ alignItems: 'center' }}
-        onPress={() => Alert.alert(
-          'Adoption',
-          'Are you sure you are ready to adopt this cat?',
-          [
-            {
-              text: "Yes",
-              onPress: () => navigation.navigate('Owner Contact', { userId: onePet.Owner.Id })
-            },
-            {
-              text: "Cancel",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "destructive"
-            }
-          ]
-        )}
-        children={<Text style={{ color: '#FFF' }}>Adopt</Text>}
-        rounded
-        customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center', width: 150 }}
-      />
+      {origin === 'fromAdopt'
+        ?
+        <Button
+          style={{ alignItems: 'center' }}
+          onPress={() => Alert.alert(
+            'Adoption',
+            'Are you sure you are ready to adopt this cat?',
+            [
+              {
+                text: "Yes",
+                onPress: () => navigation.navigate('Owner Contact', { userId: onePet.Owner.Id })
+              },
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "destructive"
+              }
+            ]
+          )}
+          children={<Text style={{ color: '#FFF' }}>Adopt</Text>}
+          rounded
+          customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center', width: 150 }}
+        />
+        :
+        <Button
+          style={{ alignItems: 'center' }}
+          onPress={() => Alert.alert(
+            'Delete',
+            'Are you sure you want to remove this pet?',
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel"),
+                style: "cancel"
+              },
+              {
+                text: "Delete",
+                onPress: handleDelete,
+                style: "destructive"
+              }
+            ]
+          )}
+          children={<Text style={{ color: '#FFF' }}>Delete</Text>}
+          rounded
+          customStyle={{ backgroundColor: 'maroon', alignItems: 'center', width: 150 }}
+        />
+      }
+
 
     </ScrollView>
   )

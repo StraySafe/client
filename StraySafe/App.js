@@ -16,14 +16,15 @@ import Adopt from './src/components/Adopt';
 import AdoptDetail from './src/components/AdoptDetail';
 import OwnerContact from './src/components/OwnerContact';
 import AddPet from './src/components/AddPet';
+import lib from './src/components/ColorLib';
 
 const Drawer = createDrawerNavigator();
 const StackAdopt = createStackNavigator();
 
 export function AdoptStack() {
   return (
-    <StackAdopt.Navigator>
-      <StackAdopt.Screen name="Adopt" component={Adopt} />
+    <StackAdopt.Navigator initialRouteName="Adopt">
+      <StackAdopt.Screen name="Adopt" component={Adopt} options={{ headerShown: false }} />
       <StackAdopt.Screen name="Adopt Detail" component={AdoptDetail} />
       <StackAdopt.Screen name="Owner Contact" component={OwnerContact} />
     </StackAdopt.Navigator>
@@ -34,8 +35,9 @@ const StackMyCats = createStackNavigator();
 
 export function MyCatsStack() {
   return (
-    <StackMyCats.Navigator>
+    <StackMyCats.Navigator initialRouteName="My Cats">
       <StackMyCats.Screen name="My Cats" component={MyCats} />
+      <StackMyCats.Screen name="Details" component={AdoptDetail} />
     </StackMyCats.Navigator>
   )
 }
@@ -58,24 +60,13 @@ function App() {
           <Drawer.Navigator
             initialRouteName="Adopt"
             drawerStyle={{ backgroundColor: '#0A2239' }}
-            drawerContentOptions={{ inactiveTintColor: '#FFFFFF' }}
+            drawerContentOptions={{ inactiveTintColor: '#FFFFFF', activeTintColor: lib.primary, activeBackgroundColor: '#1D84B5' }}
           >
             <Drawer.Screen name="Adopt" component={AdoptStack} />
             <Drawer.Screen name="My Cats" component={MyCatsStack} options={{ drawerLabel: 'My Cats' }} />
             <Drawer.Screen name="Add Pet" component={AddPet} options={{ drawerLabel: 'Add Pet' }} />
             <Drawer.Screen name="Thread List" component={ThreadStack} options={{ drawerLabel: 'Thread List' }} />
           </Drawer.Navigator>
-          {/* <Stack.Navigator> */}
-          {/* <Stack.Screen name="Adopt" component={Adopt} /> */}
-          {/* <Stack.Screen name="Add Pet" component={AddPet} /> */}
-          {/* <Stack.Screen name="My Cats" component={MyCats} /> */}
-          {/* <Stack.Screen name="Adopt Detail" component={AdoptDetail} /> */}
-          {/* <Stack.Screen name="Owner Contact" component={OwnerContact} /> */}
-          {/* <Stack.Screen name='Thread List' component={ThreadList} />
-            <Stack.Screen name='Thread Detail' component={ThreadDetail} />
-            <Stack.Screen name='Create Thread' component={CreateThread} />
-            <Stack.Screen name='Home' component={Home} /> */}
-          {/* </Stack.Navigator> */}
         </NavigationContainer>
       </ApplicationProvider>
     </Provider>

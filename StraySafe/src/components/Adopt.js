@@ -6,6 +6,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import Button from './Button';
 import Constants from 'expo-constants';
+import lib from './ColorLib';
 
 export default function Adopt() {
   const navigation = useNavigation();
@@ -16,17 +17,17 @@ export default function Adopt() {
     dispatch(fetchPets());
   }, [])
   return (
-    <SafeAreaView>
-      <ScrollView style={{ paddingTop: Constants.statusBarHeight, backgroundColor: '#FFF' }}>
+    <>
+      <ScrollView>
         {pets.map(pet =>
-          <TouchableOpacity key={pet.id} style={styles.petCard} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id } )}>
+          <TouchableOpacity key={pet.id} style={styles.petCard} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id, origin: 'fromAdopt' })}>
             <View style={styles.catPhotoContainer}>
               <View style={styles.catPhoto}>
               </View>
             </View>
             <View style={styles.details}>
               <Text style={styles.petName}>{pet.name}</Text>
-              <Text style={styles.petSpecies}>{`${pet.species} | ${pet.birth_date}`}</Text>
+              <Text style={styles.petSpecies}>{`${pet.species} | ${pet.ageYear} Year ${pet.ageMonth} Month`}</Text>
               <Text style={styles.petDesc}>{pet.description}</Text>
               <Text style={styles.petOwner}>{`Owned by ${pet.Owner.first_name}`}</Text>
             </View>
@@ -40,9 +41,14 @@ export default function Adopt() {
           customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
         />
       </ScrollView>
-    </SafeAreaView>
+    </>
   )
 }
+
+const primary = '#0A2239';
+const accent = '#1D84B5';
+const white = '#FFF';
+const light = '#E6ECF0';
 
 const styles = StyleSheet.create({
   petCard: {
@@ -56,7 +62,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     borderRadius: 50 / 2,
-    backgroundColor: "#233563"
+    backgroundColor: lib.primary
   },
   catPhotoContainer: {
     paddingHorizontal: 10,
@@ -72,7 +78,7 @@ const styles = StyleSheet.create({
   },
   petSpecies: {
     fontWeight: '100',
-    color: '#216EB5',
+    color: accent,
     marginBottom: 7
   },
   petDesc: {
@@ -82,7 +88,7 @@ const styles = StyleSheet.create({
   },
   petOwner: {
     fontWeight: '100',
-    color: '#216EB5',
+    color: accent,
     // marginBottom: 10
   }
 })
