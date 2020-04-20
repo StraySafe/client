@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Profiler } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Home from './src/components/Home'
 import { NavigationContainer } from '@react-navigation/native'
@@ -14,34 +14,34 @@ import ThreadList from './src/components/ThreadList'
 import CreateThread from './src/components/CreateThread'
 import MyCats from './src/components/MyCats';
 import Adopt from './src/components/Adopt';
-import AdoptDetail from './src/components/AdoptDetail';
+import PetDetail from './src/components/PetDetail';
 import OwnerContact from './src/components/OwnerContact';
 import AddPet from './src/components/AddPet';
 import RegisterForm from './src/components/RegisterForm'
 
-
-import lib from './src/components/ColorLib'
+import Profile from './src/components/Profile';
+import lib from './src/components/ColorLib';
 
 const Drawer = createDrawerNavigator();
 const StackAdopt = createStackNavigator();
 const Stack = createStackNavigator()
 
 
+const Header = (navigation, title) => {
+  return {
+    headerLeft: () =>  <Button onPress={() => navigation.openDrawer()}>Menu</Button>,
+    headerTitle: () => <Text style={{ flex: 3, color: lib.white, fontWeight: '700', fontSize: 16 }} >{title}</Text>,
+    headerBackground: () => <View style={{ flexDirection: "row", height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }} />
+  }
+}
+
+
 export function AdoptStack({ navigation }) {
   return (
-    <StackAdopt.Navigator>
-      <StackAdopt.Screen name="Adopt" component={Adopt} options={{
-        headerLeft: () => (
-          <Button
-            style={styles.drawerButton}
-            onPress={() => navigation.openDrawer()}
-            title="Info"
-            color="#fff"
-          />
-        ),
-      }}/>
-      <StackAdopt.Screen name="Adopt Detail" component={AdoptDetail} />
-      <StackAdopt.Screen name="Owner Contact" component={OwnerContact} />
+    <StackAdopt.Navigator initialRouteName="Adopt">
+      <StackAdopt.Screen name="Adopt" component={Adopt} options={{ headerShown: false }} options={Header(navigation, "Adopt")} />
+      <StackAdopt.Screen name="Adopt Detail" component={PetDetail} options={{ headerShown: false }} />
+      <StackAdopt.Screen name="Owner Contact" component={OwnerContact} options={{ headerShown: false }} />
     </StackAdopt.Navigator>
   )
 }
@@ -50,17 +50,9 @@ const StackMyCats = createStackNavigator();
 
 export function MyCatsStack({ navigation }) {
   return (
-    <StackMyCats.Navigator>
-      <StackMyCats.Screen name="My Cats" component={MyCats} options={{
-        headerLeft: () => (
-          <Button
-            style={styles.drawerButton}
-            onPress={() => navigation.openDrawer()}
-            title="Info"
-            color="#fff"
-          />
-        ),
-      }}/>
+    <StackMyCats.Navigator initialRouteName="My Cats">
+      <StackMyCats.Screen name="My Cats" component={MyCats} options={Header(navigation, 'My Cats')}/>
+      <StackMyCats.Screen name="Pet Detail" component={PetDetail} options={{ headerShown: false }} />
     </StackMyCats.Navigator>
   )
 }
@@ -70,17 +62,25 @@ const StackThread = createStackNavigator();
 export function CreateThreadStack({ navigation }) {
   return (
     <StackThread.Navigator>
-      <StackThread.Screen name='Create Thread' component={CreateThread} options={{
-        headerLeft: () => (
-          <Button
-            style={styles.drawerButton}
-            onPress={() => navigation.openDrawer()}
-            title="Info"
-            color="#fff"
-          />
-        ),
-      }} />
+      <StackThread.Screen name='Create Thread' component={CreateThread} options={Header(navigation, 'Create Thread')} />
     </StackThread.Navigator>
+  )
+}
+
+
+export function AddNewPet ({ navigation }) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Add Pet' component={AddPet} options={Header(navigation, 'Add Pet')} />
+    </Stack.Navigator>
+  )
+}
+
+export function MyProfile ({ navigation }) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Profile" component={Profile} options={Header(navigation, 'Profile')} />
+    </Stack.Navigator>
   )
 }
 
@@ -89,32 +89,25 @@ const StackHome = createStackNavigator();
 export function ThreadStack({ navigation }) {
   return (
     <StackThread.Navigator>
-      <StackThread.Screen name='Thread list' component={ThreadList} options={{
-        headerLeft: () => (
-          <Button
-            style={styles.drawerButton}
-            onPress={() => navigation.openDrawer()}
-            title="Info"
-            color="#fff"
-          />
-        ),
-      }}/>
+      <StackThread.Screen name='Thread list' component={ThreadList} options={Header(navigation, 'Thread List')}/>
       <StackThread.Screen name='Thread Detail' component={ThreadDetail} />
     </StackThread.Navigator>
   )
 }
+
 
 export function DrawerNavigators() {
   return (
     <Drawer.Navigator
       initialRouteName="Thread List"
       drawerStyle={{ backgroundColor: '#0A2239' }}
-      drawerContentOptions={{ inactiveTintColor: '#FFFFFF' }}
+      drawerContentOptions={{ inactiveTintColor: '#FFFFFF', activeTintColor: lib.primary, activeBackgroundColor: '#1D84B5' }}
     >
-    <Drawer.Screen name="Thread List" component={ThreadStack} options={{ drawerLabel: 'Thread List' }} />
+      <Drawer.Screen name="Profile" component={MyProfile} />
+      <Drawer.Screen name="Thread List" component={ThreadStack} options={{ drawerLabel: 'Thread List' }} />
       <Drawer.Screen name="Adopt" component={AdoptStack} />
       <Drawer.Screen name="My Cats" component={MyCatsStack} options={{ drawerLabel: 'My Cats' }} />
-      <Drawer.Screen name="Add Pet" component={AddPet} options={{ drawerLabel: 'Add Pet' }} />
+      <Drawer.Screen name="Add Pet" component={AddNewPet} options={{ drawerLabel: 'Add Pet' }} />
       <Drawer.Screen name="Create Thread" component={CreateThreadStack} options={{ drawerLabel: 'Create Thread' }} />
     </Drawer.Navigator>
   )

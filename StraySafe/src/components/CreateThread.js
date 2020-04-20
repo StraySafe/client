@@ -5,7 +5,7 @@ import {
     Button,
 } from '@ui-kitten/components'
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, Image, PermissionsAndroid, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Image, PermissionsAndroid, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useDispatch } from 'react-redux'
@@ -106,7 +106,7 @@ export default function CreateThread () {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollView}>
+        <KeyboardAvoidingView contentContainerStyle={styles.scrollView}>
             <View elevation={5} style={styles.createThreadFormStyle}>
                 <View>
                     <Input
@@ -184,7 +184,7 @@ export default function CreateThread () {
 
                 > Submit </Button>
             </View>
-        </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
