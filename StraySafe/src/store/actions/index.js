@@ -10,6 +10,7 @@ export const SET_REGISTER_STATUS = 'SET_REGISTER_STATUS'
 
 // const baseURL = 'http://192.168.2.159:3000'
 const baseURL = 'http://192.168.43.5:3000'
+// const baseURL = 'http://127.0.0.1:3000'
 
 export const loginUser = (user) => {
     return (dispatch) => {
@@ -131,7 +132,7 @@ export const fetchPets = () => {
         axios
             .get(`${baseURL}/pet`)
             .then(({ data }) => {
-                dispatch(setPets(data))
+                dispatch(setPets(data.data))
             }).catch((err) => {
                 console.log(err)
             });
@@ -168,7 +169,7 @@ export const setOneUser = (user) => {
 export const fetchOneUser = (userId) => {
     return (dispatch) => {
         axios
-            .get(`${baseURL}/user/${userId}`)
+            .get(`${baseURL}/users/${userId}`)
             .then(({ data }) => {
                 dispatch(setOneUser(data))
             })

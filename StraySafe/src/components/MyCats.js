@@ -7,41 +7,19 @@ import { fetchPets } from '../store/actions';
 import { useNavigation } from '@react-navigation/native';
 import lib from './ColorLib';
 import AppHeader from './AppHeader';
+import moment from 'moment';
 
 export default function MyCats() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const pets = useSelector((state) => state.pets);
 
-    const myCatsOnly = pets.filter(cat => cat.userId == '3');
-    const myAdoptRequests = pets.filter(request => request.requestUserId == '3')
+    const myCatsOnly = pets.filter(cat => cat.UserId == '2');
+    const myAdoptRequests = pets.filter(request => request.requestUserId == '2')
 
     useEffect(() => {
         dispatch(fetchPets());
     }, [])
-
-    const renderItemIcon = (props) => (
-        <View style={styles.catPhoto}></View>
-    );
-
-    const renderMyCats = ({ item, index }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Pet Detail', { petId: item.id, origin: 'fromMyCats' })}>
-            <ListItem
-                title={<Text style={{ fontSize: 16 }}>{item.name}</Text>}
-                description={`${item.description}`}
-                accessoryLeft={renderItemIcon}
-            />
-        </TouchableOpacity>
-    );
-
-    const renderMyAdoptRequest = ({ item, index }) => (
-        <ListItem
-            title={<Text style={{ fontSize: 16 }}>{item.name}</Text>}
-            description={`Owned by ${item.Owner.first_name}`}
-            accessoryLeft={renderItemIcon}
-            onPress={() => navigation.navigate('Owner Contact', { userId: item.Owner.Id })}
-        />
-    );
 
     return (
         <>
@@ -62,7 +40,7 @@ export default function MyCats() {
                             {console.log(pet, '< < < < < <')}
                             <View style={{ justifyContent: 'center', paddingLeft: 15, paddingRight: 50 }}>
                                 <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{pet.name}</Text>
-                                <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${pet.ageYear}y ${pet.ageMonth}mo`}</Text>
+                                <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${moment(pet.birth_date).fromNow(true)}`}</Text>
                                 <Text style={{ fontSize: 12, marginBottom: 5 }}>{pet.description}</Text>
                             </View>
                         </TouchableOpacity>
