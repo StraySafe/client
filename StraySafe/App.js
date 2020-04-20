@@ -1,10 +1,10 @@
-import React, { Profiler } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 import Home from './src/components/Home'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Provider } from 'react-redux'
+import { Provider, useSelector, useDispatch } from 'react-redux'
 import { store, persistor } from './src/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import * as eva from '@eva-design/eva'
@@ -18,16 +18,20 @@ import PetDetail from './src/components/PetDetail';
 import OwnerContact from './src/components/OwnerContact';
 import AddPet from './src/components/AddPet';
 import RegisterForm from './src/components/RegisterForm'
-
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Profile from './src/components/Profile';
 import lib from './src/components/ColorLib';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-
-const Drawer = createDrawerNavigator();
-const StackAdopt = createStackNavigator();
-const Stack = createStackNavigator()
+import { fetchOneUser } from './src/store/actions';
+// import CustomDrawer from './src/components/CustomDrawer';
 
 function CustomDrawer({ navigation }) {
+  // const user = useSelector((state) => state.oneUser);
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(fetchOneUser(2))
+  // }, [])
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: lib.primary }}>
       <ScrollView style={{ marginTop: 15 }}>
@@ -35,7 +39,7 @@ function CustomDrawer({ navigation }) {
           <View style={{ padding: 15, flexDirection: 'row' }}>
             <Image source={require('./assets/userplaceholder.jpg')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
             <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
-              <Text style={{ fontSize: 20, color: lib.white, fontWeight: '500' }}>First Last</Text>
+              <Text style={{ fontSize: 20, color: lib.white, fontWeight: '500' }}>Hahaahh</Text>
               <Text style={{ fontSize: 14, color: lib.accent }}>City</Text>
             </View>
           </View>
@@ -59,6 +63,10 @@ function CustomDrawer({ navigation }) {
     </SafeAreaView>
   )
 }
+
+const Drawer = createDrawerNavigator();
+const StackAdopt = createStackNavigator();
+const Stack = createStackNavigator()
 
 export function AdoptStack() {
   return (

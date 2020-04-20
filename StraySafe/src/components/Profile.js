@@ -30,10 +30,10 @@ export default function Profile({ navigation }) {
             barStyle='light-content'
           />
           <View style={{ padding: 15, height: 100, flexDirection: 'row' }}>
-            <Image source={require('../../assets/userplaceholder.jpg')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
-            <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
+            <Image source={{ uri: oneUser.img_url}} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15, width: '80%' }}>
               <Text style={{ fontSize: 16, fontWeight: '500' }}>{`${oneUser.first_name} ${oneUser.last_name}`}</Text>
-              <Text style={{ fontSize: 12, color: lib.accent }}>{oneUser.kota}</Text>
+              <Text style={{ fontSize: 12, color: lib.accent }}>{oneUser.bio}</Text>
             </View>
           </View>
 

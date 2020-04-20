@@ -168,6 +168,8 @@ export const setOneUser = (user) => {
 
 export const fetchOneUser = (userId) => {
     return (dispatch) => {
+        console.log('? ? ? ? ? ? ? ! ! ! ! ! ! ');
+        
         axios
             .get(`${baseURL}/users/${userId}`)
             .then(({ data }) => {
