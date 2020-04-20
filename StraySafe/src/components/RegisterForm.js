@@ -7,7 +7,7 @@ import { View, StyleSheet, KeyboardAvoidingView, Alert } from 'react-native'
 import { Input } from '@ui-kitten/components'
 import lib from './ColorLib'
 
-export default function RegisterForm() {
+export default function RegisterForm({ navigation }) {
 
     const dispatch = useDispatch()
 
@@ -36,7 +36,9 @@ export default function RegisterForm() {
                         email: emailAddress,
                         password: password,
                         bio: description,
-                        phone_number: phoneNumber
+                        phone_number: phoneNumber,
+                        city: 'jakarta',
+                        img_url: ''
                     }))
                     setFirstName('')
                     setLastName('')
@@ -52,7 +54,7 @@ export default function RegisterForm() {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.formStyle}>
+        <KeyboardAvoidingView style={styles.formStyle} behavior="height">
             <View elevation={5} style={styles.registerFormStyle}>
                 <Input
                     style={styles.inputStyle}
@@ -101,12 +103,12 @@ export default function RegisterForm() {
                     textAlignVertical='top'    
                 />
                 <Button
-                    onPress={handleOnSubmit}
+                    onPress={() => handleOnSubmit(navigation)}
                 >
                     SIGN UP
                 </Button>
             </View>
-        </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
 

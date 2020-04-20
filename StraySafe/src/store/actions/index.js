@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export const SET_USERS = 'SET_USERS'
 export const SET_THREADS = 'SET_THREADS'
+export const SET_ONE_THREAD = 'SET_ONE_THREAD'
 export const SET_PETS = 'SET_PETS'
 export const SET_ONEPET = 'SET_ONEPET'
 export const SET_ONEUSER = 'SET_ONEUSER'
@@ -17,7 +18,9 @@ export const loginUser = (user) => {
         axios
             .post(`${baseURL}/login`, user)
             .then(({ data }) => {
-                console.log(data, 'data hasil login')
+                const { token, first_name, email, img_url } = data
+                dispatch(setAccessToken(token))
+                console.log('success login')
             }).catch((err) => {
                console.log(err, 'error') 
             });
@@ -35,8 +38,9 @@ export const setAccessToken = (access_token) => {
 export const registerUser = (newUser) => {
     return (dispatch) => {
         axios
-            .post(`${baseUrl}/register`, newUser)
+            .post(`${baseURL}/register`, newUser)
             .then(({ data }) => {
+                console.log('success register')
                 dispatch(setRegister('success'))
             }).catch((err) => {
                 console.log(err)
@@ -50,7 +54,6 @@ export const setRegister = (status) => {
         payload: status
     }
 }
-
 
 
 export const fetchUsers = () => {
@@ -76,9 +79,10 @@ export const setUsers = (users) => {
 export const fetchThreads = () => {
     return (dispatch) => {
         axios
-            .get(`${baseURL}/thread`)
+            .get(`${baseURL}/threads`)
             .then(({ data }) => {
-                dispatch(setThreads(data))
+                const threads = data.data
+                dispatch(setThreads(threads))
             }).catch((err) => {
                 console.log(err)
             });
@@ -92,30 +96,64 @@ export const setThreads = (threads) => {
     }
 }
 
-export const createThread = (thread) => {
+export const fetchOneThread = (id) => {
     return (dispatch) => {
         axios
-            .post(`${baseURL}/thread`, thread)
-            .then(({ data }) => {
-                console.log(data)
-                dispatch(fetchThreads())
+            .get(`${baseURL}/threads/${id}`)
+            .then(({data}) => {
+                const thread = data.data
+                dispatch(setOneThread(thread))
             }).catch((err) => {
-                console.log(err, 'masuk error sini')
+                console.log(err)
             });
     }
 }
 
-export const createComment = (comment) => {
+
+export const setOneThread = (thread) => {
+    return {
+        type : SET_ONE_THREAD,
+        payload: thread
+    }
+}
+
+
+export const createThread = (thread, token) => {
+    return (dispatch) => {
+        axios({
+            method: 'POST',
+            url: `${baseURL}/threads`,
+            headers: {
+                token
+            },
+            data: thread
+
+        }) .then(({data}) => {
+            dispatch(fetchThreads())
+        }).catch((err) => {
+            console.log(err)
+        });
+    }
+}
+
+export const createComment = (comment, token) => {
     console.log(comment)
     return (dispatch) => {
-        axios
-            .post(`${baseURL}/comment`, comment)
-            .then(({ data }) => {
-                console.log('berhasil')
-                dispatch(fetchThreads())
-            }).catch((err) => {
-                console.log(err, 'masuk sini')
-            });
+        axios({
+            method: 'POST',
+            url: `${baseURL}/threads/${comment.ThreadId}`,
+            headers: {
+                token
+            },
+            data: {
+                message: comment.message
+            }
+
+        }) .then(({data}) => {
+            dispatch(fetchOneThread(comment.ThreadId))
+        }).catch((err) => {
+            console.log(err)
+        });
     }
 }
 

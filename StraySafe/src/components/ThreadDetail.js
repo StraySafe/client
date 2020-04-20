@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Text, Input, Button, List, Card, Toggle } from '@ui-kitten/components';
 import { ScrollView } from 'react-native-gesture-handler';
 import Comment from './Comment'
-import { createComment } from '../store/actions'
-import { useDispatch } from 'react-redux'
+import { createComment, fetchOneThread } from '../store/actions'
+import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, View, PermissionsAndroid } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import CustomMapStyle from './MapStyle';
@@ -13,17 +13,23 @@ export default function ThreadDetail (props) {
     const { thread } = props.route.params
 
     const [checked, setChecked] = useState(false);
+    const token = useSelector(state => state.access_token)
+    const threadFetched = useSelector(state => state.thread)
 
     const dispatch = useDispatch()
 
-    const handleOnPress = (e) => {
+    useEffect(() => {
+        dispatch(fetchOneThread(thread.id))
+    }, [])
+
+    console.log(threadFetched, 'hasil fetch nich')
+
+    const handleOnPress = (e, thread) => {
         const payload = {
-            id: '12'+Math.floor(Math.random()*18),
             message: comment,
-            UserId: '1',
-            ThreadId: '2'
+            ThreadId: thread.id
         }
-        dispatch(createComment(payload))
+        dispatch(createComment(payload, token))
         setComment('')
         setChecked(false)
     }
@@ -36,9 +42,14 @@ export default function ThreadDetail (props) {
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
-                    <Text category='h6'>{thread.title.toUpperCase()}</Text>
-                    <Text category='s2'>{thread.createdAt} by {thread.User.username}</Text>
-                    <Text category='c1' status={thread.status == 'unresolved' ? 'warning' : 'success'}>{thread.status}</Text>
+                    <Text category='h6'>{threadFetched.title.toUpperCase()}</Text>
+                    <Text category='s2'>{threadFetched.createdAt} by {threadFetched.User.first_name}</Text>
+                    <Text category='c1' status={threadFetched.status == '1' ? 'warning' : 'success'}>
+                    {
+                        threadFetched.status == '1' ? 'unresolved' :
+                        threadFetched.status == '2' ? 'requested' : 'solved'
+                    }
+                    </Text>
                 </View>
             </View>
         </View>
@@ -46,7 +57,7 @@ export default function ThreadDetail (props) {
 
     const Footer = (props) => (
         <View {...props}>
-            <Text>{thread.description}</Text>
+            <Text>{threadFetched.description}</Text>
         </View>
     )
 
@@ -61,7 +72,7 @@ export default function ThreadDetail (props) {
                 style={styles.card} 
                 header={Header} 
                 footer={Footer}
-                status={thread.status == 'unresolved' ? 'danger':'success'}
+                status={threadFetched.status == 'unresolved' ? 'danger':'success'}
             
             >  
                     <MapView 
@@ -74,8 +85,8 @@ export default function ThreadDetail (props) {
                           }}
                         style={styles.mapStyle}
                         initialRegion={{
-                            latitude: Number(thread.lat),
-                            longitude: Number(thread.long),
+                            latitude: Number(threadFetched.lat),
+                            longitude: Number(threadFetched.long),
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421,
                         }}
@@ -88,12 +99,12 @@ export default function ThreadDetail (props) {
                         customMapStyle={CustomMapStyle}
                     >
                         <Marker 
-                            coordinate={{latitude: Number(thread.lat), longitude: Number(thread.long)}}
+                            coordinate={{latitude: Number(threadFetched.lat), longitude: Number(threadFetched.long)}}
                         />
                     </MapView>
             </Card>
             {
-                thread.comments.map((comment) => (
+                threadFetched.Comments.map((comment) => (
                     <Comment key={comment.id} comment={comment} />
                 ))
             }
@@ -118,7 +129,7 @@ export default function ThreadDetail (props) {
             </Toggle>
 
             <Button
-                onPress={(e) => handleOnPress(e)}
+                onPress={(e) => handleOnPress(e, threadFetched)}
             >
                 Comment
             </Button>

@@ -61,8 +61,8 @@ export default function Thread ({ navigation, thread}) {
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
-                    <Text category='h6'>{thread.title.toUpperCase()}</Text>
-                    <Text category='s2'>{thread.createdAt} by {thread.User.username}</Text>
+                    <Text category='h6'>{thread.title}</Text>
+                    <Text category='s2'>{thread.createdAt} by {thread.User.first_name}</Text>
                     <Text category='s2'>{(distance / 1000)} km away</Text>
                 </View>
             </View>
