@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Button from './Button';
 import lib from './ColorLib';
 import { FontAwesome5 } from '@expo/vector-icons';
+import AppHeader from './AppHeader';
 
 export default function Adopt() {
   const navigation = useNavigation();
@@ -25,6 +26,8 @@ export default function Adopt() {
             backgroundColor={lib.primary}
             barStyle='light-content'
           />
+
+          <AppHeader title='Adopt' navigation={navigation}/>
 
           {pets.map(pet =>
             <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id, origin: 'fromAdopt' })}>

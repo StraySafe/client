@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, StatusBar } from 'react-native';
 import { Button, Icon, List, ListItem, Divider } from '@ui-kitten/components';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPets } from '../store/actions';
 import { useNavigation } from '@react-navigation/native';
 import lib from './ColorLib';
+import AppHeader from './AppHeader';
 
 export default function MyCats() {
     const navigation = useNavigation();
@@ -46,7 +47,12 @@ export default function MyCats() {
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
             <SafeAreaView style={{ backgroundColor: lib.white }}>
-                
+                <StatusBar
+                    backgroundColor={lib.primary}
+                    barStyle='light-content'
+                />
+
+                <AppHeader title='My Cats' navigation={navigation} />
                 <ScrollView>
                     <View style={styles.bigDivider}>
                         <Text style={{ color: '#000000' }}>Your cats</Text>

@@ -5,42 +5,43 @@ import {
     Button,
 } from '@ui-kitten/components'
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, Image, PermissionsAndroid, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Image, PermissionsAndroid, View, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, StatusBar } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useDispatch } from 'react-redux'
 import { createThread } from '../store/actions'
 import lib from './ColorLib';
 import CustomMapStyle from './MapStyle';
+import AppHeader from './AppHeader';
 
-export default function CreateThread () {
+export default function CreateThread({ navigation }) {
 
-    const [ location, setLocation ] = useState(null);
-    const [ currentRegLatitude, setCurrentRegLatitude ] = useState(-5.001)
-    const [ currentRegLongitude, setCurrentRegLongitude ] = useState(107.215)
-    const [ errorMsg, setErrorMsg] = useState(null);
-    const [ title, setTitle ] = useState('')
-    const [ description, setDescription ] = useState('')
-    const [ address, setAddress ] = useState('')
-    const [ popupText, setPopupText ] = useState('')
+    const [location, setLocation] = useState(null);
+    const [currentRegLatitude, setCurrentRegLatitude] = useState(-5.001)
+    const [currentRegLongitude, setCurrentRegLongitude] = useState(107.215)
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [address, setAddress] = useState('')
+    const [popupText, setPopupText] = useState('')
 
     const dispatch = useDispatch()
 
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestPermissionsAsync();
-            if(status !== 'granted') {
+            if (status !== 'granted') {
                 setErrorMsg('Permission to access location denied')
             }
 
-            let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true})
+            let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true })
             const { latitude, longitude } = location.coords
             setCurrentRegLatitude(latitude)
             setCurrentRegLongitude(longitude)
             setLocation(location)
         })();
     }, []);
-    
+
     const handleOnDrag = (e) => {
         const { latitude, longitude } = e.nativeEvent.coordinate
         setCurrentRegLatitude(latitude)
@@ -50,7 +51,7 @@ export default function CreateThread () {
     const handleOnPress = (e) => {
         const { latitude, longitude } = e.nativeEvent.coordinate
         console.log(latitude, longitude, 'on pressed')
-        Location.reverseGeocodeAsync({latitude, longitude})
+        Location.reverseGeocodeAsync({ latitude, longitude })
             .then((result) => {
                 const { street, region, postalCode } = result[0]
                 const addressConv = `${street}, ${region}, ${postalCode}`
@@ -58,19 +59,19 @@ export default function CreateThread () {
             }).catch((err) => {
                 console.log(err, 'error nich')
             });
-        
+
     }
 
     const handleOnSubmit = () => {
         const payload = {
-            id:'4'+Math.floor(Math.random() * 20),
+            id: '4' + Math.floor(Math.random() * 20),
             User: {
                 id: 1,
                 username: 'testing'
             }, //JANGAN LUPA HAPUS!
             comments: [                                    //INI JUGA!!
                 {
-                    id: '1'+Math.floor(Math.random() * 20),
+                    id: '1' + Math.floor(Math.random() * 20),
                     User: {
                         id: '1',
                         username: 'Alucard'
@@ -78,7 +79,7 @@ export default function CreateThread () {
                     message: 'comment lagi'
                 },
                 {
-                    id: '13'+Math.floor(Math.random() * 20),
+                    id: '13' + Math.floor(Math.random() * 20),
                     User: {
                         id: '1',
                         username: 'Valir'
@@ -106,45 +107,54 @@ export default function CreateThread () {
     }
 
     return (
-        <KeyboardAvoidingView contentContainerStyle={styles.scrollView}>
-            <View elevation={5} style={styles.createThreadFormStyle}>
-                <View>
-                    <Input
-                        style={styles.titleStyle} 
-                        value={title} 
-                        label='Thread Title'
-                        onChangeText={text => setTitle(text)}
-                        placeholder="thread title..."
-                    />
-                </View>
-                <View>
-                    <Input 
-                        style={[styles.descriptionStyle]}
-                        multiline={true}
-                        numberOfLines={5}
-                        value={description}
-                        label='Thread Description'
-                        textAlignVertical="top"
-                        placeholder="thread description..."
-                        onChangeText={text => setDescription(text)}
-                    />
-                </View>
+        <>
+        <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
+        <SafeAreaView style={{ backgroundColor: lib.white }}>
+            <StatusBar
+                backgroundColor={lib.primary}
+                barStyle='light-content'
+            />
+
+            <AppHeader title='Create Thread' navigation={navigation} />
+            <KeyboardAvoidingView contentContainerStyle={styles.scrollView}>
+                <View elevation={5} style={styles.createThreadFormStyle}>
+                    <View>
+                        <Input
+                            style={styles.titleStyle}
+                            value={title}
+                            label='Thread Title'
+                            onChangeText={text => setTitle(text)}
+                            placeholder="thread title..."
+                        />
+                    </View>
+                    <View>
+                        <Input
+                            style={[styles.descriptionStyle]}
+                            multiline={true}
+                            numberOfLines={5}
+                            value={description}
+                            label='Thread Description'
+                            textAlignVertical="top"
+                            placeholder="thread description..."
+                            onChangeText={text => setDescription(text)}
+                        />
+                    </View>
                     <View>
                         <MapView
                             onMapReady={() => {
                                 PermissionsAndroid.request(
-                                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+                                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
                                 ).then(granted => {
                                 });
                             }}
                             onRegionChange={(region) => {
                                 // initialRegion={region}
                             }}
-                            ref = {(mapView) => { _mapView = mapView; }}
-                            style={styles.mapStyle} 
+                            ref={(mapView) => { _mapView = mapView; }}
+                            style={styles.mapStyle}
                             initialRegion={{
-                                latitude:currentRegLatitude,
-                                longitude:currentRegLongitude,
+                                latitude: currentRegLatitude,
+                                longitude: currentRegLongitude,
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421,
                             }}
@@ -155,36 +165,38 @@ export default function CreateThread () {
                             followsUserLocation={true}
                             customMapStyle={CustomMapStyle}
                         >
-                            <Marker 
-                                coordinate={{latitude: currentRegLatitude, longitude: currentRegLongitude}} 
+                            <Marker
+                                coordinate={{ latitude: currentRegLatitude, longitude: currentRegLongitude }}
                                 draggable
                                 title='Tap marker to use this location'
                                 description={address}
                                 onDragEnd={(e) => handleOnDrag(e)}
                                 onPress={(e) => handleOnPress(e)}
                             >
-                        </Marker>
+                            </Marker>
                         </MapView>
                     </View>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={styles.locationUpdate}
-                        onPress = {() => _mapView.animateToRegion({
+                        onPress={() => _mapView.animateToRegion({
                             latitude: currentRegLatitude,
                             longitude: currentRegLongitude,
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421,
                         }, 2000)}>
-                        
+
                         <Text>Target</Text>
                     </TouchableOpacity>
-                <Button 
-                    title="Submit" 
-                    style={styles.submitButtonStyle}
-                    onPress={() => handleOnSubmit()}
+                    <Button
+                        title="Submit"
+                        style={styles.submitButtonStyle}
+                        onPress={() => handleOnSubmit()}
 
-                > Submit </Button>
-            </View>
-        </KeyboardAvoidingView>
+                    > Submit </Button>
+                </View>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
+        </>
     );
 }
 
@@ -232,7 +244,7 @@ const styles = StyleSheet.create({
         padding: 10,
         elevation: 5
     },
-    createThreadFormStyle:{
+    createThreadFormStyle: {
         backgroundColor: lib.light,
         width: 350,
         padding: 15,
