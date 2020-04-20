@@ -138,10 +138,33 @@ export const addPet = (newPet) => {
     console.log(newPet, '<<<<<');
     
     return (dispatch) => {
-        axios
-            .post(`${baseURL}/pet`, newPet)
+        axios({
+            method: 'POST',
+            url: `${baseURL}/pet`,
+            headers:{
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            }
+        })
             .then(({ data }) => {
+                console.log('YESSSS');
                 console.log(data);
+            })
+            .catch(err => {
+                console.log('NOOOOOOOOO >>>>');
+                console.log(err);
+            })
+    }
+}
+
+export const deletePet = (petId) => {
+    console.log('>>>>>???', petId);
+    
+    return (dispatch) => {
+        axios
+            .delete(`${baseURL}/pet/${petId}`)
+            .then(({ data }) => {
+                console.log('deleted successfully', data);
             })
             .catch(err => {
                 console.log(err);
