@@ -21,13 +21,13 @@ export default function Adopt() {
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
       <SafeAreaView style={{ backgroundColor: lib.white }}>
-        <ScrollView>
-          <StatusBar
-            backgroundColor={lib.primary}
-            barStyle='light-content'
-          />
+        <StatusBar
+          backgroundColor={lib.primary}
+          barStyle='light-content'
+        />
 
-          <AppHeader title='Adopt' navigation={navigation}/>
+        <AppHeader title='Adopt' navigation={navigation} />
+        <ScrollView>
 
           {pets.map(pet =>
             <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id, origin: 'fromAdopt' })}>

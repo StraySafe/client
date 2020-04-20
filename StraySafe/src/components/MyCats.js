@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, SafeAreaView, StatusBar } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, StatusBar, Image } from 'react-native';
 import { Button, Icon, List, ListItem, Divider } from '@ui-kitten/components';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
@@ -51,30 +51,36 @@ export default function MyCats() {
                     backgroundColor={lib.primary}
                     barStyle='light-content'
                 />
-
                 <AppHeader title='My Cats' navigation={navigation} />
                 <ScrollView>
                     <View style={styles.bigDivider}>
                         <Text style={{ color: '#000000' }}>Your cats</Text>
                     </View>
-                    <View>
-                        <List
-                            style={styles.container}
-                            data={myCatsOnly}
-                            renderItem={renderMyCats}
-                            ItemSeparatorComponent={Divider}
-                        />
-                    </View>
+                    {myCatsOnly.map(pet =>
+                        <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Pet Detail', { petId: pet.id, origin: 'fromMyCats' })}>
+                            <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
+                            {console.log(pet, '< < < < < <')}
+                            <View style={{ justifyContent: 'center', paddingLeft: 15, paddingRight: 50 }}>
+                                <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{pet.name}</Text>
+                                <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${pet.ageYear}y ${pet.ageMonth}mo`}</Text>
+                                <Text style={{ fontSize: 12, marginBottom: 5 }}>{pet.description}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
                     <View style={styles.bigDivider}>
                         <Text style={{ color: '#000000' }}>Your adopt requests</Text>
                     </View>
                     <View>
-                        <List
-                            style={styles.container}
-                            data={myAdoptRequests}
-                            renderItem={renderMyAdoptRequest}
-                            ItemSeparatorComponent={Divider}
-                        />
+                        {myAdoptRequests.map(pet =>
+                            <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Owner Contact', { userId: pet.Owner.Id })}>
+                                <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
+                                {console.log(pet, '< < < < < <')}
+                                <View style={{ justifyContent: 'center', paddingLeft: 15, paddingRight: 50 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{pet.name}</Text>
+                                    <Text style={{ fontSize: 12, marginBottom: 5 }}>{pet.Owner.first_name}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        )}
                     </View>
                 </ScrollView>
             </SafeAreaView>

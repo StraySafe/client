@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, Alert, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, View, Text, Alert, SafeAreaView, Image, StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchOnePet, deletePet, fetchPets } from '../store/actions';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -7,6 +7,7 @@ import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 import lib from './ColorLib';
 import { FontAwesome5 } from '@expo/vector-icons';
+import AppHeader from './AppHeader';
 
 export default function PetDetail({ route }) {
   console.log(route);
@@ -31,14 +32,14 @@ export default function PetDetail({ route }) {
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
       <SafeAreaView style={{ backgroundColor: lib.white }}>
+        <StatusBar
+          backgroundColor={lib.primary}
+          barStyle='light-content'
+        />
+        <View style={{ height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ color: lib.white, fontWeight: '700', fontSize: 16 }}>Detail</Text>
+        </View>
         <ScrollView style={{ backgroundColor: '#FFF' }}>
-
-          {/* header */}
-          <View style={{ height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: lib.white, fontWeight: '700', fontSize: 16 }}>{route.name}</Text>
-          </View>
-          {/* header */}
-
           <View style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey' }}>
             <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{onePet.name}</Text>
             <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${onePet.species} | ${onePet.ageYear}y ${onePet.ageMonth}mo`}</Text>

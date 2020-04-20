@@ -1,5 +1,5 @@
 import React, { Profiler } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 import Home from './src/components/Home'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -21,20 +21,44 @@ import RegisterForm from './src/components/RegisterForm'
 
 import Profile from './src/components/Profile';
 import lib from './src/components/ColorLib';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
 const StackAdopt = createStackNavigator();
 const Stack = createStackNavigator()
 
-
-const Header = (navigation, title) => {
-  return {
-    headerLeft: () => <Button onPress={() => navigation.openDrawer()}>Menu</Button>,
-    headerTitle: () => <View style={{ flexDirection: "row", height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }}><Text style={{ flex: 3, color: lib.white, fontWeight: '700', fontSize: 16 }} >{title}</Text></View>,
-    headerBackground: () => <View style={{ flexDirection: "row", height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }} />
-  }
+function CustomDrawer({ navigation }) {
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: lib.primary }}>
+      <ScrollView style={{ marginTop: 15 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <View style={{ padding: 15, flexDirection: 'row' }}>
+            <Image source={require('./assets/userplaceholder.jpg')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
+              <Text style={{ fontSize: 20, color: lib.white, fontWeight: '500' }}>First Last</Text>
+              <Text style={{ fontSize: 14, color: lib.accent }}>City</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('My Cats')}>
+          <Text style={{ color: lib.white }}>My Cats</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('Thread List')}>
+          <Text style={{ color: lib.white }}>Threads</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('Adopt')}>
+          <Text style={{ color: lib.white }}>Adopt</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('Create Thread')}>
+          <Text style={{ color: lib.white }}>Create Thread</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('Add Pet')}>
+          <Text style={{ color: lib.white }}>Add Pet</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
+  )
 }
-
 
 export function AdoptStack() {
   return (
@@ -53,6 +77,7 @@ export function MyCatsStack() {
     <StackMyCats.Navigator initialRouteName="My Cats">
       <StackMyCats.Screen name="My Cats" component={MyCats} options={{ headerShown: false }} />
       <StackMyCats.Screen name="Pet Detail" component={PetDetail} options={{ headerShown: false }} />
+      <StackAdopt.Screen name="Owner Contact" component={OwnerContact} options={{ headerShown: false }} />
     </StackMyCats.Navigator>
   )
 }
@@ -62,7 +87,7 @@ const StackThread = createStackNavigator();
 export function CreateThreadStack() {
   return (
     <StackThread.Navigator>
-      <StackThread.Screen name='Create Thread' component={CreateThread} options={{ headerShown: false }}  />
+      <StackThread.Screen name='Create Thread' component={CreateThread} options={{ headerShown: false }} />
     </StackThread.Navigator>
   )
 }
@@ -102,6 +127,7 @@ export function DrawerNavigators() {
       initialRouteName="Thread List"
       drawerStyle={{ backgroundColor: '#0A2239' }}
       drawerContentOptions={{ inactiveTintColor: '#FFFFFF', activeTintColor: lib.primary, activeBackgroundColor: '#1D84B5' }}
+      drawerContent={props => CustomDrawer(props)}
     >
       <Drawer.Screen name="Profile" component={MyProfile} />
       <Drawer.Screen name="Thread List" component={ThreadStack} options={{ drawerLabel: 'Thread List' }} />
