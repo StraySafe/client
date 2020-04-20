@@ -26,8 +26,8 @@ export function AdoptStack() {
   return (
     <StackAdopt.Navigator initialRouteName="Adopt">
       <StackAdopt.Screen name="Adopt" component={Adopt} options={{ headerShown: false }} />
-      <StackAdopt.Screen name="Adopt Detail" component={PetDetail} />
-      <StackAdopt.Screen name="Owner Contact" component={OwnerContact} />
+      <StackAdopt.Screen name="Adopt Detail" component={PetDetail} options={{ headerShown: false }} />
+      <StackAdopt.Screen name="Owner Contact" component={OwnerContact} options={{ headerShown: false }} />
     </StackAdopt.Navigator>
   )
 }
@@ -37,8 +37,8 @@ const StackMyCats = createStackNavigator();
 export function MyCatsStack() {
   return (
     <StackMyCats.Navigator initialRouteName="My Cats">
-      <StackMyCats.Screen name="My Cats" component={MyCats} />
-      <StackMyCats.Screen name="Pet Detail" component={PetDetail} />
+      <StackMyCats.Screen name="My Cats" component={MyCats} options={{ headerShown: false }} />
+      <StackMyCats.Screen name="Pet Detail" component={PetDetail} options={{ headerShown: false }} />
     </StackMyCats.Navigator>
   )
 }

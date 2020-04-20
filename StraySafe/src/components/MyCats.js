@@ -5,6 +5,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPets } from '../store/actions';
 import { useNavigation } from '@react-navigation/native';
+import lib from './ColorLib';
 
 export default function MyCats() {
     const navigation = useNavigation();
@@ -43,7 +44,13 @@ export default function MyCats() {
 
     return (
         <>
-            <SafeAreaView>
+            <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
+            <SafeAreaView style={{ backgroundColor: lib.white }}>
+                {/* header */}
+                <View style={{ height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ color: lib.white, fontWeight: '700', fontSize: 16 }}>My Cats</Text>
+                </View>
+                {/* header */}
                 <ScrollView>
                     <View style={styles.bigDivider}>
                         <Text style={{ color: '#000000' }}>Your cats</Text>
