@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Button from './Button';
 import lib from './ColorLib';
 import { FontAwesome5 } from '@expo/vector-icons';
+import AppHeader from './AppHeader';
 
 export default function Adopt() {
   const navigation = useNavigation();
@@ -20,11 +21,13 @@ export default function Adopt() {
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
       <SafeAreaView style={{ backgroundColor: lib.white }}>
+        <StatusBar
+          backgroundColor={lib.primary}
+          barStyle='light-content'
+        />
+
+        <AppHeader title='Adopt' navigation={navigation} />
         <ScrollView>
-          <StatusBar
-            backgroundColor={lib.primary}
-            barStyle='light-content'
-          />
 
           {pets.map(pet =>
             <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id, origin: 'fromAdopt' })}>
