@@ -25,11 +25,6 @@ export default function Adopt() {
             backgroundColor={lib.primary}
             barStyle='light-content'
           />
-          {/* header */}
-          <View style={{ height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: lib.white, fontWeight: '700', fontSize: 16 }}>Adopt</Text>
-          </View>
-          {/* header */}
 
           {pets.map(pet =>
             <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id, origin: 'fromAdopt' })}>

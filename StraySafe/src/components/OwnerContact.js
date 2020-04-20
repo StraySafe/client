@@ -15,7 +15,7 @@ export default function OwnerContact({ route }) {
   }, [])
 
   return (
-    <>
+    <React.Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
       <SafeAreaView style={{ backgroundColor: lib.white }}>
         {/* header */}
@@ -33,7 +33,7 @@ export default function OwnerContact({ route }) {
           <Text>{`${oneUser.phone_number}`}</Text>
         </View>
       </SafeAreaView>
-    </>
+    </React.Fragment>
   )
 }
 

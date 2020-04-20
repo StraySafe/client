@@ -23,9 +23,6 @@ export default function Profile() {
             barStyle='light-content'
           />
           {/* header */}
-          <View style={{ height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: lib.white, fontWeight: '700', fontSize: 16 }}>Profile</Text>
-          </View>
           <View style={{ padding: 15, height: 100, flexDirection: 'row' }}>
             <Image source={require('../../assets/userplaceholder.jpg')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80/2 }} />
             <View style={{ justifyContent: 'center', paddingHorizontal: 15}}>

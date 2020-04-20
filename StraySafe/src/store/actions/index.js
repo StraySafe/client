@@ -5,14 +5,58 @@ export const SET_THREADS = 'SET_THREADS'
 export const SET_PETS = 'SET_PETS'
 export const SET_ONEPET = 'SET_ONEPET'
 export const SET_ONEUSER = 'SET_ONEUSER'
+export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN'
+export const SET_REGISTER_STATUS = 'SET_REGISTER_STATUS'
 
-// const baseURL = 'http://192.168.2.159:3000'
-const baseURL = 'http://192.168.43.5:3000'
+const baseURL = 'http://192.168.2.159:3000'
+// const baseURL = 'http://192.168.43.5:3000'
+
+export const loginUser = (user) => {
+    return (dispatch) => {
+        console.log(user, 'dari action')
+        axios
+            .post(`${baseURL}/login`, user)
+            .then(({ data }) => {
+                console.log(data, 'data hasil login')
+            }).catch((err) => {
+               console.log(err, 'error') 
+            });
+    }
+}
+
+export const setAccessToken = (access_token) => {
+    return {
+        type: SET_ACCESS_TOKEN,
+        payload: access_token
+    }
+}
+
+
+export const registerUser = (newUser) => {
+    return (dispatch) => {
+        axios
+            .post(`${baseUrl}/register`, newUser)
+            .then(({ data }) => {
+                dispatch(setRegister('success'))
+            }).catch((err) => {
+                console.log(err)
+            });
+    }
+}
+
+export const setRegister = (status) => {
+    return {
+        type: SET_REGISTER_STATUS,
+        payload: status
+    }
+}
+
+
 
 export const fetchUsers = () => {
     return (dispatch) => {
         axios
-            .get(`${baseURL}/user`)
+            .get(`${baseURL}/users`)
             .then(({ data }) => {
                 console.log(data)
                 dispatch(setUsers(data))

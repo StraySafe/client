@@ -9,13 +9,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import ThreadDetail from './ThreadDetail'
 import * as Location from 'expo-location';
 import { getPreciseDistance } from 'geolib';
-
+import lib from './ColorLib'
+import CustomMapStyle from './MapStyle';
+ 
 export default function Thread ({ navigation, thread}) {
     const { lat, long } = thread
 
 
     const [location, setLocation] = useState(null);
-    const [ convLocation, setConvLocation ] = useState(null)
+    // const [ convLocation, setConvLocation ] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null);
     const [ locButton, setLocButton ] = useState(false)
 
@@ -42,10 +44,10 @@ export default function Thread ({ navigation, thread}) {
         text = errorMsg;
     } else if (location) {
         console.log(distance/1000, 'km away')
+        console.log(thread)
     }
 
     const navToDetail = (thread, navigation) => {
-        <ThreadDetail />
         navigation.navigate('Thread Detail', {
             thread
         })
@@ -54,22 +56,24 @@ export default function Thread ({ navigation, thread}) {
     const Header = (props) => (
         <TouchableOpacity {...props} onPress={() => navToDetail(thread, navigation)}>
             <View style={{flex:1, flexDirection: 'row'}}>
-                <View>
-                    <Text>Image</Text>
+                <View style={styles.userPhotoContainer}>
+                    <View style={styles.userPhoto}>
+                    </View>
                 </View>
-                <View style={{flex:1, flexDirection: 'column', marginLeft: 10}}>
+                <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
                     <Text category='h6'>{thread.title.toUpperCase()}</Text>
-                    <Text category='s2'>created date by username</Text>
+                    <Text category='s2'>{thread.createdAt} by {thread.User.username}</Text>
+                    <Text category='s2'>{(distance / 1000)} km away</Text>
                 </View>
             </View>
         </TouchableOpacity>
     )
 
-    const Footer = (props) => (
-        <View style={{marginHorizontal: 25}}>
-            <Text category='s2'>target : {(distance / 1000)} km away</Text>
-        </View>
-    )
+    // const Footer = (props) => (
+    //     <View style={{marginHorizontal: 25}}>
+    //         <Text category='s2'>location : {(distance / 1000)} km away</Text>
+    //     </View>
+    // )
 
 
     return (
@@ -77,15 +81,14 @@ export default function Thread ({ navigation, thread}) {
             <Card 
                 style={styles.card}
                 header={Header}
-                footer={Footer}
-                status={thread.status == 'unresolved' ? 'danger':'success'}
+                status={thread.status == 'unresolved' ? 'primary':'success'}
             >
                 <MapView 
                     onMapReady={() => {
                         PermissionsAndroid.request(
                             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
                         ).then(granted => {
-                            setLocButton(true)  
+                            // setLocButton(true)  
                         //   alert(granted) // just to ensure that permissions were granted
                         });
 
@@ -103,6 +106,7 @@ export default function Thread ({ navigation, thread}) {
                     showsUserLocation={true}
                     followsUserLocation={true}
                     showsMyLocationButton={locButton}
+                    customMapStyle={CustomMapStyle}
                 >
                     <Marker 
                         coordinate={{latitude: Number(lat), longitude: Number(long)}}
@@ -121,7 +125,11 @@ const styles = StyleSheet.create({
     },
     card: {
       flex: 1,
-      margin: 2,
+      margin: 5,
+      borderRadius: 10,
+      borderColor: lib.accent,
+      backgroundColor: lib.white,
+      elevation: 15
     },
     footerContainer: {
       flexDirection: 'row',
@@ -134,6 +142,18 @@ const styles = StyleSheet.create({
         width: window.innerWidth,
         height: 100,
         justifyContent: 'center',
-        flex: 1
-    }
+        flex: 1,
+        paddingHorizontal: 0
+
+    },
+    userPhoto: {
+      height: 70,
+      width: 70,
+      borderRadius: 70 / 2,
+      backgroundColor: "#233563"
+    },
+    userPhotoContainer: {
+      paddingHorizontal: 5,
+      // paddingTop: 2.5
+    },
   });

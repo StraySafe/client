@@ -53,11 +53,6 @@ export default function AddPet() {
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
       <SafeAreaView style={{ backgroundColor: lib.white }}>
-        {/* header */}
-        <View style={{ height: 60, backgroundColor: lib.primary, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: lib.white, fontWeight: '700', fontSize: 16 }}>Add Pet</Text>
-        </View>
-        {/* header */}
         <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: lib.white }}>
           <Text style={{ marginBottom: 5 }}>Name</Text>
           <Input
