@@ -10,7 +10,6 @@ import CustomMapStyle from './MapStyle';
 
 export default function ThreadDetail (props) {
     const [ comment, setComment ] = useState('')
-    const [ requestCheck, setRequestCheck ] = useState(false)
     const { thread } = props.route.params
 
     const [checked, setChecked] = useState(false);
@@ -25,6 +24,8 @@ export default function ThreadDetail (props) {
             ThreadId: '2'
         }
         dispatch(createComment(payload))
+        setComment('')
+        setChecked(false)
     }
 
     const Header = (props) => (

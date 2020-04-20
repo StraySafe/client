@@ -24,6 +24,7 @@ import lib from './src/components/ColorLib'
 
 const Drawer = createDrawerNavigator();
 const StackAdopt = createStackNavigator();
+const Stack = createStackNavigator()
 
 
 export function AdoptStack({ navigation }) {
@@ -103,12 +104,19 @@ export function ThreadStack({ navigation }) {
   )
 }
 
-export function StackHomeNavigate({ navigation }) {
+export function DrawerNavigators() {
   return (
-    <StackHome.Navigator>
-      <StackHome.Screen name='Home' component={Home} />
-      <StackHome.Screen name='Register Form' component={RegisterForm} />
-    </StackHome.Navigator>
+    <Drawer.Navigator
+      initialRouteName="Thread List"
+      drawerStyle={{ backgroundColor: '#0A2239' }}
+      drawerContentOptions={{ inactiveTintColor: '#FFFFFF' }}
+    >
+    <Drawer.Screen name="Thread List" component={ThreadStack} options={{ drawerLabel: 'Thread List' }} />
+      <Drawer.Screen name="Adopt" component={AdoptStack} />
+      <Drawer.Screen name="My Cats" component={MyCatsStack} options={{ drawerLabel: 'My Cats' }} />
+      <Drawer.Screen name="Add Pet" component={AddPet} options={{ drawerLabel: 'Add Pet' }} />
+      <Drawer.Screen name="Create Thread" component={CreateThreadStack} options={{ drawerLabel: 'Create Thread' }} />
+    </Drawer.Navigator>
   )
 }
 
@@ -118,29 +126,11 @@ function App() {
       <PersistGate loading={null} persistor={persistor} >
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer>
-          <Drawer.Navigator
-            initialRouteName="Adopt"
-            drawerStyle={{ backgroundColor: '#0A2239' }}
-            drawerContentOptions={{ inactiveTintColor: '#FFFFFF' }}
-          >
-            <Drawer.Screen name="Adopt" component={AdoptStack} />
-            <Drawer.Screen name="My Cats" component={MyCatsStack} options={{ drawerLabel: 'My Cats' }} />
-            <Drawer.Screen name="Add Pet" component={AddPet} options={{ drawerLabel: 'Add Pet' }} />
-            <Drawer.Screen name="Thread List" component={ThreadStack} options={{ drawerLabel: 'Thread List' }} />
-            <Drawer.Screen name="Create Thread" component={CreateThreadStack} options={{ drawerLabel: 'Create Thread' }} />
-            <Drawer.Screen name="Home" component={StackHomeNavigate} options={{drawerLabel: "Home"}} />
-          </Drawer.Navigator>
-          {/* <Stack.Navigator> */}
-          {/* <Stack.Screen name="Adopt" component={Adopt} /> */}
-          {/* <Stack.Screen name="Add Pet" component={AddPet} /> */}
-          {/* <Stack.Screen name="My Cats" component={MyCats} /> */}
-          {/* <Stack.Screen name="Adopt Detail" component={AdoptDetail} /> */}
-          {/* <Stack.Screen name="Owner Contact" component={OwnerContact} /> */}
-          {/* <Stack.Screen name='Thread List' component={ThreadList} />
-            <Stack.Screen name='Thread Detail' component={ThreadDetail} />
-            <Stack.Screen name='Create Thread' component={CreateThread} />
-            <Stack.Screen name='Home' component={Home} /> */}
-          {/* </Stack.Navigator> */}
+          <Stack.Navigator>
+            <Stack.Screen name='Home' component={Home} options={{headerShown: false}}/>
+            <Stack.Screen name='Register Form' component={RegisterForm} />
+            <Stack.Screen name='Content' component={DrawerNavigators} options={{headerShown: false}}/>
+          </Stack.Navigator>
         </NavigationContainer>
       </ApplicationProvider>
       </PersistGate>

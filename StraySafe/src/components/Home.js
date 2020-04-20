@@ -13,9 +13,10 @@ export default function Home ({ navigation }) {
     
     const dispatch = useDispatch()
     
-    const navToThreadList = () => {
+    const navToContent = (navigation) => {
         console.log(email, password)
-        dispatch(loginUser({email, password}))
+        navigation.push('Content')
+        // dispatch(loginUser({email, password}))
     }
 
     const navToRegisterForm = (navigation) => {
@@ -26,7 +27,7 @@ export default function Home ({ navigation }) {
     return (
         <View style={styles.homeStyle}>
             <View elevation={5} style={styles.loginFormStyle}>
-                <Text category='h4'>STRAYSAFE</Text>
+                <Text category='h4' style={styles.titleStyle}>STRAYSAFE</Text>
                 <Input
                     value={email}
                     label="Email Address"
@@ -45,7 +46,7 @@ export default function Home ({ navigation }) {
                 />
                 <Button
                     style={styles.submitButtonStyle}
-                    onPress={() => navToThreadList()}
+                    onPress={() => navToContent(navigation)}
                 >
                     Login
                 </Button>
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         padding: 0,
         height: 50,
-        width: 200,
+        width: 250,
         fontSize: 20,
         textAlign: "center"
     },
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         padding: 0,
         height: 50,
-        width: 200,
+        width: 250,
         fontSize: 20,
         textAlign: "center"
     },
@@ -104,5 +105,9 @@ const styles = StyleSheet.create({
     },
     signUpText: {
         color: lib.accent
+    },
+    titleStyle: {
+        marginBottom: 50,
+        marginTop: 25
     }
 })

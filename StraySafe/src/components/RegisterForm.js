@@ -3,7 +3,7 @@ import { TextInput, ScrollView } from 'react-native-gesture-handler'
 import { Button } from '@ui-kitten/components'
 import { useDispatch } from 'react-redux'
 import { registerUser } from '../store/actions'
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet, KeyboardAvoidingView, Alert } from 'react-native'
 import { Input } from '@ui-kitten/components'
 import lib from './ColorLib'
 
@@ -19,14 +19,36 @@ export default function RegisterForm() {
     const [ phoneNumber, setPhoneNumber ] = useState('')
 
     const handleOnSubmit = () => {
-        dispatch(registerUser({
-            first_name: firstName,
-            last_name: lastName,
-            email: emailAddress,
-            password: password,
-            bio: description,
-            phone_number: phoneNumber
-        }))
+        Alert.alert(
+            "Confirmation",
+            "By confirming this action, you are accept to follow our rules?",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              {
+                text: "Confirm", onPress: () => {
+                    dispatch(registerUser({
+                        first_name: firstName,
+                        last_name: lastName,
+                        email: emailAddress,
+                        password: password,
+                        bio: description,
+                        phone_number: phoneNumber
+                    }))
+                    setFirstName('')
+                    setLastName('')
+                    setEmailAddress('')
+                    setPassword('')
+                    setDescription('')
+                    setPhoneNumber('')
+                }
+              }
+            ]
+          );
+       
     }
 
     return (
@@ -105,6 +127,7 @@ const styles = StyleSheet.create({
     registerFormStyle:{
         backgroundColor: lib.light,
         width: 350,
-        padding: 20
+        padding: 20,
+        borderRadius: 10
     }
 })

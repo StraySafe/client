@@ -58,6 +58,7 @@ export default function CreateThread () {
             }).catch((err) => {
                 console.log(err, 'error nich')
             });
+        
     }
 
     const handleOnSubmit = () => {
@@ -93,6 +94,8 @@ export default function CreateThread () {
         }
         console.log(payload, 'data to submit')
         dispatch(createThread(payload))
+        setTitle('')
+        setDescription('')
     }
 
     let text = 'Waiting..';
