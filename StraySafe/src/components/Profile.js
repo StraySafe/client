@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, Alert, SafeAreaView, StatusBar, ImageBackground, Image } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchOnePet, deletePet, fetchPets, fetchOneUser } from '../store/actions';
+import { fetchOneUser } from '../store/actions';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import Button from './Button';
-import { useNavigation } from '@react-navigation/native';
-import Constants from 'expo-constants';
 import lib from './ColorLib';
 
 export default function Profile() {
