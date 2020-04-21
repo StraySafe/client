@@ -8,14 +8,16 @@ import Button from './Button';
 import lib from './ColorLib';
 import { FontAwesome5 } from '@expo/vector-icons';
 import AppHeader from './AppHeader';
+import moment from 'moment';
 
 export default function Adopt() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const pets = useSelector((state) => state.pets);
+  const token = useSelector(state => state.access_token)
 
   useEffect(() => {
-    dispatch(fetchPets());
+    dispatch(fetchPets(token));
   }, [])
   return (
     <>
@@ -30,13 +32,13 @@ export default function Adopt() {
         <ScrollView>
 
           {pets.map(pet =>
-            <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id, origin: 'fromAdopt' })}>
+            <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Adopt Detail', { petId: pet.id, origin: 'fromAdopt', pet })}>
               <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
               <View style={{ justifyContent: 'center', paddingLeft: 15, paddingRight: 50 }}>
                 <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{pet.name}</Text>
-                <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${pet.ageYear}y ${pet.ageMonth}mo`}</Text>
+                <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${moment(pet.birth_date).fromNow(true)}`}</Text>
                 <Text style={{ fontSize: 12, marginBottom: 5 }}>{pet.description}</Text>
-                <Text style={{ fontSize: 12, fontWeight: '600', color: lib.accent, marginBottom: 5 }}><FontAwesome5 name="user-circle" solid /> {`${pet.Owner.first_name} ${pet.Owner.last_name}`}</Text>
+                <Text style={{ fontSize: 12, fontWeight: '600', color: lib.accent, marginBottom: 5 }}><FontAwesome5 name="user-circle" solid /> {`${pet.User.first_name} ${pet.User.last_name}`}</Text>
               </View>
             </TouchableOpacity>
           )}

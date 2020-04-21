@@ -6,7 +6,8 @@ import {
     SET_ONEUSER,
     SET_ACCESS_TOKEN,
     SET_REGISTER_STATUS,
-    SET_ONE_THREAD
+    SET_ONE_THREAD,
+    SET_CURRENT_USER_DATA
 } from '../actions'
 
 
@@ -19,6 +20,7 @@ const initialState = {
     thread: {},
     access_token: '',
     register_status: '',
+    currentUserData: {}
 }
 
 export const reducers = (state = initialState, action) => {
@@ -63,6 +65,11 @@ export const reducers = (state = initialState, action) => {
             return {
                 ...state,
                 thread: payload
+            }
+        case SET_CURRENT_USER_DATA:
+            return {
+                ...state,
+                currentUserData: payload
             }
         default:
             return state;

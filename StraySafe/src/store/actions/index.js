@@ -9,6 +9,7 @@ export const SET_ONEPET = 'SET_ONEPET'
 export const SET_ONEUSER = 'SET_ONEUSER'
 export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN'
 export const SET_REGISTER_STATUS = 'SET_REGISTER_STATUS'
+export const SET_CURRENT_USER_DATA = 'SET_CURRENT_USER_DATA'
 
 // const baseURL = 'http://192.168.2.159:3000'
 const baseURL = 'http://192.168.43.5:3000'
@@ -21,8 +22,9 @@ export const loginUser = (user) => {
             .then(({ data }) => {
                 const { token, first_name, email, img_url } = data
                 dispatch(setAccessToken(token))
+                dispatch(setCurrentUserData(data))
                 AsyncStorage.setItem('token', token)
-                console.log('success login')
+                console.log('success login', data)
             }).catch((err) => {
                console.log(err, 'error') 
             });
@@ -33,6 +35,13 @@ export const setAccessToken = (access_token) => {
     return {
         type: SET_ACCESS_TOKEN,
         payload: access_token
+    }
+}
+
+export const setCurrentUserData = (payload) => {
+    return {
+        type: SET_CURRENT_USER_DATA,
+        payload: payload
     }
 }
 
@@ -166,15 +175,22 @@ export const setPets = (pets) => {
     }
 }
 
-export const fetchPets = () => {
+export const fetchPets = (token) => {
     return (dispatch) => {
-        axios
-            .get(`${baseURL}/pet`)
-            .then(({ data }) => {
-                dispatch(setPets(data))
-            }).catch((err) => {
-                console.log(err)
-            });
+        console.log(token, '< < < token');
+        axios({
+            method: 'GET',
+            url: `${baseURL}/pet`,
+            headers: {
+                token
+            }
+        })
+        .then(({ data }) => {
+            dispatch(setPets(data.data))
+        })
+        .catch((err) => {
+            console.log(err)
+        });
     }
 }
 
@@ -185,16 +201,22 @@ export const setOnePet = (pet) => {
     }
 }
 
-export const fetchOnePet = (petId) => {
+export const fetchOnePet = (petId, token) => {
     return (dispatch) => {
-        axios
-            .get(`${baseURL}/pet/${petId}`)
-            .then(({ data }) => {
-                dispatch(setOnePet(data))
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        console.log('sinih');
+        axios({
+            method: 'GET',
+            url: `${baseURL}/pet/${petId}`,
+            headers: {
+                token
+            }
+        })
+        .then(({ data }) => {
+            dispatch(setOnePet(data))
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 }
 
@@ -218,24 +240,20 @@ export const fetchOneUser = (userId) => {
     }
 }
 
-export const addPet = (newPet) => {
-    console.log(newPet, '<<<<<');
-    
+export const addPet = (newPet, token) => {
     return (dispatch) => {
         axios({
             method: 'POST',
             url: `${baseURL}/pet`,
             headers:{
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json'
-            }
+                token
+            },
+            data: newPet
         })
             .then(({ data }) => {
-                console.log('YESSSS');
                 console.log(data);
             })
             .catch(err => {
-                console.log('NOOOOOOOOO >>>>');
                 console.log(err);
             })
     }

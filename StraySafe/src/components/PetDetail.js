@@ -7,24 +7,20 @@ import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 import lib from './ColorLib';
 import { FontAwesome5 } from '@expo/vector-icons';
-import AppHeader from './AppHeader';
+import moment from 'moment';
 
 export default function PetDetail({ route }) {
   console.log(route);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { petId, origin } = route.params;
-
-  const onePet = useSelector((state) => state.onePet);
-
-  useEffect(() => {
-    dispatch(fetchOnePet(petId))
-  }, [])
+  const { petId, origin, pet } = route.params;
+  const token = useSelector(state => state.access_token)
+  const currentUserData = useSelector(state => state.currentUserData)
 
   function handleDelete() {
     dispatch(deletePet(petId));
-    dispatch(fetchPets());
+    dispatch(fetchPets(token));
     navigation.goBack();
   }
 
@@ -41,37 +37,14 @@ export default function PetDetail({ route }) {
         </View>
         <ScrollView style={{ backgroundColor: '#FFF' }}>
           <View style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey' }}>
-            <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{onePet.name}</Text>
-            <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${onePet.species} | ${onePet.ageYear}y ${onePet.ageMonth}mo`}</Text>
-            <Text style={{ fontSize: 12, marginBottom: 5 }}>{onePet.description}</Text>
-            <Text style={{ fontSize: 12, fontWeight: '600', color: lib.accent, marginBottom: 10 }}><FontAwesome5 name="user-circle" solid /> {`${onePet.Owner} ${onePet.Owner}`}</Text>
+            <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{pet.name}</Text>
+            <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${moment(pet.birth_date).fromNow(true)}`}</Text>
+            <Text style={{ fontSize: 12, marginBottom: 5 }}>{pet.description}</Text>
+            <Text style={{ fontSize: 12, fontWeight: '600', color: lib.accent, marginBottom: 10 }}><FontAwesome5 name="user-circle" solid /> {`${pet.User.first_name} ${pet.User.last_name}`}</Text>
             <Image source={require('../../assets/catheadplaceholder.png')} style={{ width: '100%', height: 200, resizeMode: 'cover' }} />
           </View>
-
-          {origin === 'fromAdopt'
+          {pet.UserId == currentUserData.id
             ?
-            <Button
-              style={{ alignItems: 'center' }}
-              onPress={() => Alert.alert(
-                'Adoption',
-                'Are you sure you are ready to adopt this cat?',
-                [
-                  {
-                    text: "Yes",
-                    onPress: () => navigation.navigate('Owner Contact', { userId: onePet.Owner.Id })
-                  },
-                  {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "destructive"
-                  }
-                ]
-              )}
-              children={<Text style={{ color: '#FFF' }}>Adopt</Text>}
-              rounded
-              customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center', width: 150 }}
-            />
-            :
             <Button
               style={{ alignItems: 'center' }}
               onPress={() => Alert.alert(
@@ -94,7 +67,56 @@ export default function PetDetail({ route }) {
               rounded
               customStyle={{ backgroundColor: 'maroon', alignItems: 'center', width: 150 }}
             />
+            :
+            (origin === 'fromAdopt'
+              ?
+              <Button
+                style={{ alignItems: 'center' }}
+                onPress={() => Alert.alert(
+                  'Adoption',
+                  'Are you sure you are ready to adopt this cat?',
+                  [
+                    {
+                      text: "Yes",
+                      onPress: () => navigation.navigate('Owner Contact', { userId: pet.User.id })
+                    },
+                    {
+                      text: "Cancel",
+                      onPress: () => console.log("Cancel Pressed"),
+                      style: "destructive"
+                    }
+                  ]
+                )}
+                children={<Text style={{ color: '#FFF' }}>Adopt</Text>}
+                rounded
+                customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center', width: 150 }}
+              />
+              :
+              <Button
+                style={{ alignItems: 'center' }}
+                onPress={() => Alert.alert(
+                  'Delete',
+                  'Are you sure you want to remove this pet?',
+                  [
+                    {
+                      text: "Cancel",
+                      onPress: () => console.log("Cancel"),
+                      style: "cancel"
+                    },
+                    {
+                      text: "Delete",
+                      onPress: handleDelete,
+                      style: "destructive"
+                    }
+                  ]
+                )}
+                children={<Text style={{ color: '#FFF' }}>Delete</Text>}
+                rounded
+                customStyle={{ backgroundColor: 'maroon', alignItems: 'center', width: 150 }}
+              />
+            )
           }
+
 
 
         </ScrollView>
