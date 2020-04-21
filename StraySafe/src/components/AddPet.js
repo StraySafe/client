@@ -18,35 +18,22 @@ export default function AddPet() {
   const pets = useSelector((state) => state.pets);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const token = useSelector(state => state.access_token)
 
   function handleOnPress() {
     dispatch(addPet({
-      id: pets.length + 1,
       name,
       species,
       description,
       ageYear,
-      ageMonth,
-      status: 'available',
-      requestUserId: '',
-      userId: 3,
-      Owner: {
-        Id: "3",
-        email: "eva@mail.com",
-        password: "123123",
-        first_name: "Eva",
-        last_name: "Celia",
-        phone_number: "085608560856",
-        bio: "My love for cats is bigger than for my husband",
-        kota: "Menteng"
-      }
-    }))
+      ageMonth
+    }, token))
     setName('');
     setSpecies('');
     setDescription('');
     setAgeYear('');
     setAgeMonth('');
-    dispatch(fetchPets());
+    dispatch(fetchPets(token));
     navigation.navigate('Adopt');
   }
 
