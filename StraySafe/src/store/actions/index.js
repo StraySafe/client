@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { AsyncStorage } from 'react-native';
 
 export const SET_USERS = 'SET_USERS'
 export const SET_THREADS = 'SET_THREADS'
@@ -20,6 +21,7 @@ export const loginUser = (user) => {
             .then(({ data }) => {
                 const { token, first_name, email, img_url } = data
                 dispatch(setAccessToken(token))
+                AsyncStorage.setItem('token', token)
                 console.log('success login')
             }).catch((err) => {
                console.log(err, 'error') 
