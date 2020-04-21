@@ -1,37 +1,41 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
 import { Text, Input, Button, List, Card, Toggle } from '@ui-kitten/components';
 import { ScrollView } from 'react-native-gesture-handler';
-import Comment from './Comment'
+import Comment from './Comment';
 import { createComment, fetchOneThread, reqStatusUp } from '../store/actions'
-import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet, View, PermissionsAndroid, SafeAreaView, StatusBar } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux';
+import { StyleSheet, View, PermissionsAndroid, SafeAreaView, StatusBar, ActivityIndicator, ProgressBarAndroid } from 'react-native';
 import AppHeader from './AppHeader';
-import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps';
 import CustomMapStyle from './MapStyle';
-import lib from './ColorLib'
+import lib from './ColorLib';
 
 export default function ThreadDetail (props) {
     const [ comment, setComment ] = useState('')
     const { navigation } = props
     const { thread } = props.route.params
     const [ checked, setChecked ] = useState(false);
-    const [ threadDetail, setThreadDetail ] = useState({...thread})
     const token = useSelector(state => state.access_token)
     const threadFetched = useSelector(state => state.thread)
+    const isLoading = useSelector(state => state.isLoading)
+    const currentUser = useSelector(state => state.currentUserData)
 
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(fetchOneThread(thread.id))
-        setThreadDetail({...threadDetail, threadFetched})
-    }, [])
+    // useEffect(() => {
+    //     dispatch(fetchOneThread(thread.id))
+    //     setThreadDetail({...threadDetail, threadFetched})
+    // }, [])
+    console.log('data fetched dengan include', threadFetched, 'Data fetched')
 
     const handleOnPress = (e, thread) => {
+        // onRefresh()
         const payload = {
             message: comment,
-            ThreadId: thread.id
+            ThreadId: thread.id,
         }
         dispatch(createComment(payload, token))
+        // dispatch(fetchOneThread(thread.id))
         if(checked) {
             dispatch(reqStatusUp(thread.id))
             setChecked(false)
@@ -47,12 +51,12 @@ export default function ThreadDetail (props) {
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
-                    <Text category='h6'>{threadDetail.title.toUpperCase()}</Text>
-                    <Text category='s2'>{threadDetail.createdAt} by {threadDetail.User.first_name}</Text>
-                    <Text category='c1' status={threadDetail.status == '1' ? 'warning' : 'success'}>
+                    <Text category='h6'>{threadFetched.title.toUpperCase()}</Text>
+                    <Text category='s2'>{threadFetched.createdAt} by {threadFetched.User.first_name}</Text>
+                    <Text category='c1' status={threadFetched.status == '1' ? 'warning' : 'success'}>
                     {
-                        threadDetail.status == '1' ? 'unresolved' :
-                        threadDetail.status == '2' ? 'requested' : 'solved'
+                        threadFetched.status == '1' ? 'unresolved' :
+                        threadFetched.status == '2' ? 'requested' : 'solved'
                     }
                     </Text>
                 </View>
@@ -62,13 +66,21 @@ export default function ThreadDetail (props) {
 
     const Footer = (props) => (
         <View {...props}>
-            <Text>{threadDetail.description}</Text>
+            <Text>{threadFetched.description}</Text>
         </View>
     )
 
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
     };
+
+
+
+    if(isLoading) return (
+        <View style={{flex: 1, justifyContent: "center", padding: 10}}>
+            <ProgressBarAndroid styleAttr="Horizontal" indeterminate={true} progress={0.5}/>
+        </View>
+    )
 
     return (
         <React.Fragment>
@@ -84,7 +96,7 @@ export default function ThreadDetail (props) {
                     style={styles.card} 
                     header={Header} 
                     footer={Footer}
-                    status={threadDetail.status == 'unresolved' ? 'danger':'success'}
+                    status={threadFetched.status == 'unresolved' ? 'danger':'success'}
                 
                 >  
                         <MapView 
@@ -94,11 +106,11 @@ export default function ThreadDetail (props) {
                                 ).then(granted => {
                                 //   alert(granted) // just to ensure that permissions were granted
                                 });
-                                }}
+                            }}
                             style={styles.mapStyle}
                             initialRegion={{
-                                latitude: Number(threadDetail.lat),
-                                longitude: Number(threadDetail.long),
+                                latitude: Number(threadFetched.lat),
+                                longitude: Number(threadFetched.long),
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421,
                             }}
@@ -111,12 +123,12 @@ export default function ThreadDetail (props) {
                             customMapStyle={CustomMapStyle}
                         >
                             <Marker 
-                                coordinate={{latitude: Number(threadDetail.lat), longitude: Number(threadDetail.long)}}
+                                coordinate={{latitude: Number(threadFetched.lat), longitude: Number(threadFetched.long)}}
                             />
                         </MapView>
                 </Card>
                 {
-                    threadDetail.Comments.map((comment) => (
+                    threadFetched.Comments.map((comment) => (
                         <Comment key={comment.id} comment={comment} />
                     ))
                 }
@@ -141,7 +153,7 @@ export default function ThreadDetail (props) {
                 </Toggle>
 
                 <Button
-                    onPress={(e) => handleOnPress(e, threadDetail)}
+                    onPress={(e) => handleOnPress(e, threadFetched, navigation)}
                 >
                     Comment
                 </Button>

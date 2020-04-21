@@ -11,6 +11,7 @@ export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN'
 export const SET_REGISTER_STATUS = 'SET_REGISTER_STATUS'
 export const SET_CURRENT_USER_DATA = 'SET_CURRENT_USER_DATA'
 export const SET_USER_THREADS = 'SET_USER_THREAD'
+export const SET_LOADING = 'SET_LOADING'
 
 // const baseURL = 'http://192.168.2.159:3000'
 // const baseURL = 'http://192.168.43.5:3000'
@@ -18,9 +19,15 @@ export const SET_USER_THREADS = 'SET_USER_THREAD'
 // const baseURL = 'http://192.168.43.5:3000'
 const baseURL = 'http://192.168.1.14:3000'
 
+export const setLoading = (loadStatus) => {
+    return {
+        type: SET_LOADING,
+        payload: loadStatus
+    }
+}
+
 export const loginUser = (user) => {
     return (dispatch) => {
-        console.log(user, 'dari action')
         axios
             .post(`${baseURL}/login`, user)
             .then(({ data }) => {
@@ -28,7 +35,7 @@ export const loginUser = (user) => {
                 dispatch(setAccessToken(token))
                 dispatch(setCurrentUserData(data))
                 AsyncStorage.setItem('token', token)
-                console.log('success login', Threads, '<<<<<<<')
+                // console.log('success login', Threads, '<<<<<<<')
                 dispatch(setOneUser(data))
                 dispatch(setUserThreads(Threads))
             }).catch((err) => {
@@ -64,7 +71,7 @@ export const registerUser = (newUser) => {
         axios
             .post(`${baseURL}/register`, newUser)
             .then(({ data }) => {
-                console.log('success register')
+                // console.log('success register')
                 dispatch(setRegister('success'))
             }).catch((err) => {
                 console.log(err)
@@ -85,7 +92,7 @@ export const fetchUser = (id) => {
         axios
             .get(`${baseURL}/users/${id}`)
             .then(({ data }) => {
-                console.log(data)
+                // console.log(data)
                 dispatch(setUser(data))
             }).catch((err) => {
                 console.log(err)
@@ -121,16 +128,17 @@ export const setThreads = (threads) => {
 }
 
 export const fetchOneThread = (id) => {
+    
     return (dispatch) => {
+        dispatch(setLoading(true))
         axios
             .get(`${baseURL}/threads/${id}`)
             .then(({ data }) => {
                 const thread = data.data
                 dispatch(setOneThread(thread))
-                console.log(data, 'thread')
             }).catch((err) => {
                 console.log(err)
-            });
+            }).finally(_ => dispatch(setLoading(false)))
     }
 }
 
@@ -162,7 +170,7 @@ export const createThread = (thread, token) => {
 }
 
 export const createComment = (comment, token) => {
-    console.log(comment)
+    // console.log(comment)
     return (dispatch) => {
         axios({
             method: 'POST',
@@ -191,7 +199,7 @@ export const setPets = (pets) => {
 
 export const fetchPets = (token) => {
     return (dispatch) => {
-        console.log(token, '< < < token');
+        // console.log(token, '< < < token');
         axios({
             method: 'GET',
             url: `${baseURL}/pet`,
@@ -243,12 +251,12 @@ export const setOneUser = (user) => {
 
 export const fetchOneUser = (userId) => {
     return (dispatch) => {
-        console.log('USER ID FETCH ONE USER => ', userId);
-        console.log('halo????');
+        // console.log('USER ID FETCH ONE USER => ', userId);
+        // console.log('halo????');
         axios
             .get(`${baseURL}/users/${userId}`)
             .then(({ data }) => {
-                console.log('AAAAAAAA ****');
+                // console.log('AAAAAAAA ****');
                 dispatch(setOneUser(data))
             })
             .catch(err => {
@@ -322,7 +330,7 @@ export const reqStatusUp = (threadId) => {
         axios
             .put(`${baseURL}/threads/statusRequested/${threadId}`)
             .then(({ data }) => {
-                console.log('status requested')
+                // console.log('status requested')
                 dispatch(fetchThreads())
             }).catch((err) => {
                 console.log(err)
