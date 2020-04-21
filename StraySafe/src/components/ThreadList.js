@@ -7,16 +7,18 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { Button } from '@ui-kitten/components'
 import lib from './ColorLib';
 import AppHeader from './AppHeader';
+import compareValues from './sort'
 
 export default function ThreadList({ navigation }) {
 
     const dispatch = useDispatch()
     const threads = useSelector(state => state.threads)
-
+    
     useEffect(() => {
         dispatch(fetchThreads())
     }, [])
-
+    
+    const sortedActivities = threads.slice(0).sort(compareValues('createdAt', 'desc'))
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
@@ -27,7 +29,7 @@ export default function ThreadList({ navigation }) {
                     barStyle='light-content'
                 />
                 <ScrollView>
-                    {threads.map((thread) => (
+                    {sortedActivities.map((thread) => (
                         <Thread navigation={navigation} thread={thread} key={thread.id} />
                     ))}
                 </ScrollView>

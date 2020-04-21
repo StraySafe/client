@@ -60,20 +60,20 @@ export default function CreateThread({ navigation }) {
             }).catch((err) => {
                 console.log(err, 'error nich')
             });
-
     }
 
-    const handleOnSubmit = () => {
+    const handleOnSubmit = (navigation) => {
         const payload = {
             title: title,
             description: description,
             lat: currentRegLatitude.toString(),
             long: currentRegLongitude.toString(),
         }
-        console.log(payload, 'data to submit')
+        // console.log(payload, 'data to submit')
         dispatch(createThread(payload, token))
         setTitle('')
         setDescription('')
+        navigation.navigate('Thread List')
     }
 
     let text = 'Waiting..';
@@ -165,7 +165,7 @@ export default function CreateThread({ navigation }) {
                         <Button 
                             title="Submit" 
                             style={styles.submitButtonStyle}
-                            onPress={() => handleOnSubmit()}
+                            onPress={() => handleOnSubmit(navigation)}
 
                         > Submit </Button>
                     </View>

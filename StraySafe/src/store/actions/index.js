@@ -124,7 +124,6 @@ export const fetchOneThread = (id) => {
             .then(({ data }) => {
                 const thread = data.data
                 dispatch(setOneThread(thread))
-                console.log(data, 'thread')
             }).catch((err) => {
                 console.log(err)
             });

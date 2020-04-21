@@ -14,6 +14,7 @@ import CustomMapStyle from './MapStyle';
 export default function Thread ({ navigation, thread}) {
     const { lat, long } = thread
 
+    const date = new Date(thread.createdAt)
 
     const [location, setLocation] = useState(null);
     // const [ convLocation, setConvLocation ] = useState(null)
@@ -61,8 +62,8 @@ export default function Thread ({ navigation, thread}) {
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
                     <Text category='p1'>{thread.title.toUpperCase()}</Text>
-                    <Text category='s2'>{thread.createdAt} by {thread.User.first_name}</Text>
-                    <Text category='s2'>{(distance / 1000)} km away</Text>
+                    <Text category='s2'>{date.toLocaleDateString()} by {thread.User.first_name}</Text>
+                    <Text category='s2'>{(distance / 1000).toFixed(2)} km away</Text>
                 </View>
             </View>
         </TouchableOpacity>

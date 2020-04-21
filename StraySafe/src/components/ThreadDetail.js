@@ -26,17 +26,22 @@ export default function ThreadDetail (props) {
         setThreadDetail({...threadDetail, threadFetched})
     }, [])
 
-    const handleOnPress = (e, thread) => {
+    const handleOnPress = (e, thread, navigation) => {
         const payload = {
             message: comment,
             ThreadId: thread.id
         }
         dispatch(createComment(payload, token))
+        dispatch(fetchOneThread(thread.id))
+        setThreadDetail({...threadDetail, threadFetched})
         if(checked) {
             dispatch(reqStatusUp(thread.id))
             setChecked(false)
         }
         setComment('')
+        navigation.navigate('Thread Detail', {
+            thread
+        })
     }
 
     const Header = (props) => (
@@ -94,7 +99,7 @@ export default function ThreadDetail (props) {
                                 ).then(granted => {
                                 //   alert(granted) // just to ensure that permissions were granted
                                 });
-                                }}
+                            }}
                             style={styles.mapStyle}
                             initialRegion={{
                                 latitude: Number(threadDetail.lat),
@@ -141,7 +146,7 @@ export default function ThreadDetail (props) {
                 </Toggle>
 
                 <Button
-                    onPress={(e) => handleOnPress(e, threadDetail)}
+                    onPress={(e) => handleOnPress(e, threadDetail, navigation)}
                 >
                     Comment
                 </Button>
