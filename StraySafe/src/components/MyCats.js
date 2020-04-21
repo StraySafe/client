@@ -7,41 +7,22 @@ import { fetchPets } from '../store/actions';
 import { useNavigation } from '@react-navigation/native';
 import lib from './ColorLib';
 import AppHeader from './AppHeader';
+import moment from 'moment';
 
 export default function MyCats() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const pets = useSelector((state) => state.pets);
+    const currentUserData = useSelector((state) => state.currentUserData);
+    const token = useSelector(state => state.access_token)
 
-    const myCatsOnly = pets.filter(cat => cat.userId == '3');
-    const myAdoptRequests = pets.filter(request => request.requestUserId == '3')
-
+    const myCatsOnly = pets.filter(cat => cat.UserId == currentUserData.id);
+    const myAdoptRequests = pets.filter(request => request.request_user_id == currentUserData.id)
+    console.log('mycats => > > >', myCatsOnly);
+    
     useEffect(() => {
-        dispatch(fetchPets());
+        dispatch(fetchPets(token));
     }, [])
-
-    const renderItemIcon = (props) => (
-        <View style={styles.catPhoto}></View>
-    );
-
-    const renderMyCats = ({ item, index }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Pet Detail', { petId: item.id, origin: 'fromMyCats' })}>
-            <ListItem
-                title={<Text style={{ fontSize: 16 }}>{item.name}</Text>}
-                description={`${item.description}`}
-                accessoryLeft={renderItemIcon}
-            />
-        </TouchableOpacity>
-    );
-
-    const renderMyAdoptRequest = ({ item, index }) => (
-        <ListItem
-            title={<Text style={{ fontSize: 16 }}>{item.name}</Text>}
-            description={`Owned by ${item.Owner.first_name}`}
-            accessoryLeft={renderItemIcon}
-            onPress={() => navigation.navigate('Owner Contact', { userId: item.Owner.Id })}
-        />
-    );
 
     return (
         <>
@@ -57,12 +38,12 @@ export default function MyCats() {
                         <Text style={{ color: '#000000' }}>Your cats</Text>
                     </View>
                     {myCatsOnly.map(pet =>
-                        <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Pet Detail', { petId: pet.id, origin: 'fromMyCats' })}>
+                        <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Pet Detail', { petId: pet.id, origin: 'fromMyCats', pet })}>
                             <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
                             {console.log(pet, '< < < < < <')}
                             <View style={{ justifyContent: 'center', paddingLeft: 15, paddingRight: 50 }}>
                                 <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{pet.name}</Text>
-                                <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${pet.ageYear}y ${pet.ageMonth}mo`}</Text>
+                                <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${moment(pet.birth_date).fromNow(true)}`}</Text>
                                 <Text style={{ fontSize: 12, marginBottom: 5 }}>{pet.description}</Text>
                             </View>
                         </TouchableOpacity>
@@ -72,12 +53,12 @@ export default function MyCats() {
                     </View>
                     <View>
                         {myAdoptRequests.map(pet =>
-                            <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Owner Contact', { userId: pet.Owner.Id })}>
+                            <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Owner Contact', { userId: pet.UserId })}>
                                 <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
                                 {console.log(pet, '< < < < < <')}
                                 <View style={{ justifyContent: 'center', paddingLeft: 15, paddingRight: 50 }}>
                                     <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{pet.name}</Text>
-                                    <Text style={{ fontSize: 12, marginBottom: 5 }}>{pet.Owner.first_name}</Text>
+                                    <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`by ${pet.User.first_name}`}</Text>
                                 </View>
                             </TouchableOpacity>
                         )}

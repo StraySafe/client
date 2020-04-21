@@ -9,6 +9,7 @@ export const SET_ONEPET = 'SET_ONEPET'
 export const SET_ONEUSER = 'SET_ONEUSER'
 export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN'
 export const SET_REGISTER_STATUS = 'SET_REGISTER_STATUS'
+export const SET_CURRENT_USER_DATA = 'SET_CURRENT_USER_DATA'
 export const SET_USER_THREADS = 'SET_USER_THREAD'
 
 // const baseURL = 'http://192.168.2.159:3000' 
@@ -23,12 +24,13 @@ export const loginUser = (user) => {
             .then(({ data }) => {
                 const { token, first_name, email, img_url, id, Threads } = data
                 dispatch(setAccessToken(token))
+                dispatch(setCurrentUserData(data))
                 AsyncStorage.setItem('token', token)
                 console.log('success login', Threads, '<<<<<<<')
                 dispatch(setOneUser(data))
                 dispatch(setUserThreads(Threads))
             }).catch((err) => {
-               console.log(err, 'error') 
+                console.log(err, 'error')
             });
     }
 }
@@ -36,7 +38,7 @@ export const loginUser = (user) => {
 export const setUserThreads = (threads) => {
     return {
         type: SET_USER_THREADS,
-        payload:threads
+        payload: threads
     }
 }
 
@@ -44,6 +46,13 @@ export const setAccessToken = (access_token) => {
     return {
         type: SET_ACCESS_TOKEN,
         payload: access_token
+    }
+}
+
+export const setCurrentUserData = (payload) => {
+    return {
+        type: SET_CURRENT_USER_DATA,
+        payload: payload
     }
 }
 
@@ -113,7 +122,7 @@ export const fetchOneThread = (id) => {
     return (dispatch) => {
         axios
             .get(`${baseURL}/threads/${id}`)
-            .then(({data}) => {
+            .then(({ data }) => {
                 const thread = data.data
                 dispatch(setOneThread(thread))
                 console.log(data, 'thread')
@@ -126,7 +135,7 @@ export const fetchOneThread = (id) => {
 
 export const setOneThread = (thread) => {
     return {
-        type : SET_ONE_THREAD,
+        type: SET_ONE_THREAD,
         payload: thread
     }
 }
@@ -142,7 +151,7 @@ export const createThread = (thread, token) => {
             },
             data: thread
 
-        }) .then(({data}) => {
+        }).then(({ data }) => {
             dispatch(fetchThreads())
         }).catch((err) => {
             console.log(err)
@@ -163,7 +172,7 @@ export const createComment = (comment, token) => {
                 message: comment.message
             }
 
-        }) .then(({data}) => {
+        }).then(({ data }) => {
             dispatch(fetchOneThread(comment.ThreadId))
         }).catch((err) => {
             console.log(err)
@@ -178,13 +187,20 @@ export const setPets = (pets) => {
     }
 }
 
-export const fetchPets = () => {
+export const fetchPets = (token) => {
     return (dispatch) => {
-        axios
-            .get(`${baseURL}/pet`)
+        console.log(token, '< < < token');
+        axios({
+            method: 'GET',
+            url: `${baseURL}/pet`,
+            headers: {
+                token
+            }
+        })
             .then(({ data }) => {
-                dispatch(setPets(data))
-            }).catch((err) => {
+                dispatch(setPets(data.data))
+            })
+            .catch((err) => {
                 console.log(err)
             });
     }
@@ -197,10 +213,16 @@ export const setOnePet = (pet) => {
     }
 }
 
-export const fetchOnePet = (petId) => {
+export const fetchOnePet = (petId, token) => {
     return (dispatch) => {
-        axios
-            .get(`${baseURL}/pet/${petId}`)
+        console.log('sinih');
+        axios({
+            method: 'GET',
+            url: `${baseURL}/pet/${petId}`,
+            headers: {
+                token
+            }
+        })
             .then(({ data }) => {
                 dispatch(setOnePet(data))
             })
@@ -219,35 +241,36 @@ export const setOneUser = (user) => {
 
 export const fetchOneUser = (userId) => {
     return (dispatch) => {
+        console.log('USER ID FETCH ONE USER => ', userId);
+        console.log('halo????');
         axios
             .get(`${baseURL}/users/${userId}`)
             .then(({ data }) => {
+                console.log('AAAAAAAA ****');
                 dispatch(setOneUser(data))
             })
             .catch(err => {
+                console.log('ERRRRROORRRR - - - - - - -');
                 console.log(err)
             })
     }
 }
 
-export const addPet = (newPet) => {
-    console.log(newPet, '<<<<<');
-    
+export const addPet = (newPet, token) => {
     return (dispatch) => {
         axios({
             method: 'POST',
             url: `${baseURL}/pet`,
-            headers:{
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json'
-            }
+            headers: {
+                token
+            },
+            data: newPet
         })
             .then(({ data }) => {
-                console.log('YESSSS');
-                console.log(data);
+                console.log('fetched', data);
+                dispatch(fetchPets(token));
             })
             .catch(err => {
-                console.log('NOOOOOOOOO >>>>');
                 console.log(err);
             })
     }
@@ -255,7 +278,7 @@ export const addPet = (newPet) => {
 
 export const deletePet = (petId) => {
     console.log('>>>>>???', petId);
-    
+
     return (dispatch) => {
         axios
             .delete(`${baseURL}/pet/${petId}`)
@@ -268,6 +291,28 @@ export const deletePet = (petId) => {
     }
 }
 
+export const updateRequest = (petId, token) => {
+    return (dispatch) => {
+        console.log('PET ID = ', petId);
+        console.log('PET TOKEN = ', token);
+        console.log('= = = = = UPDATE REQ = = = = = =');
+
+        axios({
+            method: 'PATCH',
+            url: `${baseURL}/pet/${petId}`,
+            headers: {
+                token
+            }
+        })
+            .then(({ data }) => {
+                dispatch(fetchPets(token));
+            })
+            .catch(err => {
+                console.log('ERROR DI UPDATE REQ');
+                console.log(err);
+            })
+    }
+}
 
 export const reqStatusUp = (threadId) => {
     return (dispatch) => {
