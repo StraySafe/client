@@ -69,9 +69,13 @@ function CustomDrawer({ navigation }, currentUserData) {
 
         </View>
 
-        <TouchableOpacity style={{ padding: 15, paddingBottom: 20 }}>
-          <Text style={{ color: lib.white }}>Logout</Text>
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity style={{ padding: 15, paddingBottom: 20 }}>
+            <Text style={{ color: lib.white }}>Logout</Text>
+          </TouchableOpacity>
+
+          <Image source={require('./assets/smalllogo.png')} style={{ resizeMode: 'cover', height: 80, width: 220, marginLeft: 20 }} />
+        </View>
 
       </ScrollView>
     </SafeAreaView>
