@@ -5,15 +5,16 @@ import {
     Button,
 } from '@ui-kitten/components'
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, Image, PermissionsAndroid, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Image, PermissionsAndroid, View, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, StatusBar } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useDispatch, useSelector } from 'react-redux'
 import { createThread } from '../store/actions'
 import lib from './ColorLib';
 import CustomMapStyle from './MapStyle';
+import AppHeader from './AppHeader';
 
-export default function CreateThread () {
+export default function CreateThread({ navigation }) {
 
     const [ location, setLocation ] = useState(null);
     const [ currentRegLatitude, setCurrentRegLatitude ] = useState(-5.001)
@@ -29,11 +30,11 @@ export default function CreateThread () {
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestPermissionsAsync();
-            if(status !== 'granted') {
+            if (status !== 'granted') {
                 setErrorMsg('Permission to access location denied')
             }
 
-            let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true})
+            let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true })
             const { latitude, longitude } = location.coords
             setCurrentRegLatitude(latitude)
             setCurrentRegLongitude(longitude)
@@ -41,7 +42,7 @@ export default function CreateThread () {
             console.log(token, 'access')
         })();
     }, []);
-    
+
     const handleOnDrag = (e) => {
         const { latitude, longitude } = e.nativeEvent.coordinate
         setCurrentRegLatitude(latitude)
@@ -51,7 +52,7 @@ export default function CreateThread () {
     const handleOnPress = (e) => {
         const { latitude, longitude } = e.nativeEvent.coordinate
         console.log(latitude, longitude, 'on pressed')
-        Location.reverseGeocodeAsync({latitude, longitude})
+        Location.reverseGeocodeAsync({ latitude, longitude })
             .then((result) => {
                 const { street, region, postalCode } = result[0]
                 const addressConv = `${street}, ${region}, ${postalCode}`
@@ -59,7 +60,7 @@ export default function CreateThread () {
             }).catch((err) => {
                 console.log(err, 'error nich')
             });
-        
+
     }
 
     const handleOnSubmit = () => {
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
         padding: 10,
         elevation: 5
     },
-    createThreadFormStyle:{
+    createThreadFormStyle: {
         backgroundColor: lib.light,
         width: 350,
         padding: 15,

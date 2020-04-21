@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Input, Text, Datepicker, Layout } from '@ui-kitten/components';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, Image, Alert, SafeAreaView, View } from 'react-native';
+import { StyleSheet, Image, Alert, SafeAreaView, View, StatusBar } from 'react-native';
 import Button from './Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPet, fetchPets } from '../store/actions';
 import { useNavigation } from '@react-navigation/native';
 import lib from './ColorLib';
+import AppHeader from './AppHeader';
 
 export default function AddPet() {
   const [name, setName] = useState('');
@@ -53,6 +54,12 @@ export default function AddPet() {
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
       <SafeAreaView style={{ backgroundColor: lib.white }}>
+        <StatusBar
+          backgroundColor={lib.primary}
+          barStyle='light-content'
+        />
+
+        <AppHeader title='Add Pet' navigation={navigation} />
         <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: lib.white }}>
           <Text style={{ marginBottom: 5 }}>Name</Text>
           <Input
