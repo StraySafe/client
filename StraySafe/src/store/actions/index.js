@@ -10,8 +10,9 @@ export const SET_ONEUSER = 'SET_ONEUSER'
 export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN'
 export const SET_REGISTER_STATUS = 'SET_REGISTER_STATUS'
 
-// const baseURL = 'http://192.168.2.159:3000'
-const baseURL = 'http://192.168.43.5:3000'
+// const baseURL = 'http://192.168.2.159:3000' 
+// const baseURL = 'http://192.168.43.5:3000'
+const baseURL = 'http://172.20.10.2:3000'
 
 export const loginUser = (user) => {
     return (dispatch) => {
