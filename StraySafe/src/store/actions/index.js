@@ -13,8 +13,11 @@ export const SET_CURRENT_USER_DATA = 'SET_CURRENT_USER_DATA'
 export const SET_USER_THREADS = 'SET_USER_THREAD'
 export const SET_LOADING = 'SET_LOADING'
 
-const baseURL = 'http://192.168.2.159:3000'
+// const baseURL = 'http://192.168.2.159:3000'
 // const baseURL = 'http://192.168.43.5:3000'
+// const baseURL = 'http://192.168.2.159:3000' 
+// const baseURL = 'http://192.168.43.5:3000'
+const baseURL = 'http://192.168.1.14:3000'
 
 export const setLoading = (loadStatus) => {
     return {
@@ -264,6 +267,7 @@ export const fetchOneUser = (userId) => {
 }
 
 export const addPet = (newPet, token) => {
+    console.log(newPet)
     return (dispatch) => {
         axios({
             method: 'POST',

@@ -1,10 +1,10 @@
-import React, { Profiler } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 import Home from './src/components/Home'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Provider, useSelector } from 'react-redux'
+import { Provider, useSelector, useDispatch } from 'react-redux'
 import { store, persistor } from './src/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import * as eva from '@eva-design/eva'
@@ -18,7 +18,7 @@ import PetDetail from './src/components/PetDetail';
 import OwnerContact from './src/components/OwnerContact';
 import AddPet from './src/components/AddPet';
 import RegisterForm from './src/components/RegisterForm'
-
+import { Entypo } from '@expo/vector-icons';
 import Profile from './src/components/Profile';
 import lib from './src/components/ColorLib';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -28,34 +28,55 @@ const Drawer = createDrawerNavigator();
 const StackAdopt = createStackNavigator();
 const Stack = createStackNavigator()
 
-function CustomDrawer({ navigation }) {
+function CustomDrawer({ navigation }, currentUserData) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: lib.primary }}>
-      <ScrollView style={{ marginTop: 15 }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <View style={{ padding: 15, flexDirection: 'row' }}>
-            <Image source={require('./assets/userplaceholder.jpg')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
-            <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
-              <Text style={{ fontSize: 20, color: lib.white, fontWeight: '500' }}>My Profile</Text>
-              <Text style={{ fontSize: 14, color: lib.accent }}>City</Text>
+      <ScrollView style={{ marginTop: 15 }} contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
+
+        <View>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <View style={{ padding: 15, flexDirection: 'row' }}>
+              <Image source={{ uri: currentUserData.img_url }} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
+              <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
+                <Text style={{ fontSize: 20, color: lib.white, fontWeight: '500' }}>{currentUserData.first_name}</Text>
+                <Text style={{ fontSize: 14, color: lib.accent }}>{currentUserData.city}</Text>
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('My Cats')}>
-          <Text style={{ color: lib.white }}>My Cats</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('Thread List')}>
-          <Text style={{ color: lib.white }}>Threads</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('Adopt')}>
-          <Text style={{ color: lib.white }}>Adopt</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('Create Thread')}>
-          <Text style={{ color: lib.white }}>Create Thread</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ padding: 15 }} onPress={() => navigation.navigate('Add Pet')}>
-          <Text style={{ color: lib.white }}>Add Pet</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ padding: 15 }}>
+            <Text style={{ color: lib.white }}>StraySafe</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40 }} onPress={() => navigation.navigate('Thread List')}>
+            <Text style={{ color: lib.white }}>Threads</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40 }} onPress={() => navigation.navigate('Create Thread')}>
+            <Text style={{ color: lib.white }}>Create Thread</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ padding: 15 }}>
+            <Text style={{ color: lib.white }}>StrayAdopt</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40 }} onPress={() => navigation.navigate('Adopt')}>
+            <Text style={{ color: lib.white }}>Adopt</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40 }} onPress={() => navigation.navigate('My Cats')}>
+            <Text style={{ color: lib.white }}>Adopt Requests</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40 }} onPress={() => navigation.navigate('Add Pet')}>
+            <Text style={{ color: lib.white }}>Add Pet</Text>
+          </TouchableOpacity>
+
+        </View>
+
+        <View>
+          <TouchableOpacity style={{ padding: 15, paddingBottom: 20 }}>
+            <Text style={{ color: lib.white }}>Logout</Text>
+          </TouchableOpacity>
+
+          <Image source={require('./assets/smalllogo.png')} style={{ resizeMode: 'cover', height: 80, width: 220, marginLeft: 20 }} />
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   )
@@ -123,12 +144,13 @@ export function ThreadStack() {
 
 
 export function DrawerNavigators() {
+  const currentUserData = useSelector(state => state.currentUserData);
   return (
     <Drawer.Navigator
       initialRouteName="Thread List"
       drawerStyle={{ backgroundColor: '#0A2239' }}
       drawerContentOptions={{ inactiveTintColor: '#FFFFFF', activeTintColor: lib.primary, activeBackgroundColor: '#1D84B5' }}
-      drawerContent={props => CustomDrawer(props)}
+      drawerContent={(props) => CustomDrawer(props, currentUserData)}
     >
       <Drawer.Screen name="Profile" component={MyProfile} />
       <Drawer.Screen name="Thread List" component={ThreadStack} options={{ drawerLabel: 'Thread List' }} />

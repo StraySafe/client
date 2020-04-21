@@ -22,6 +22,7 @@ export default function CreateThread({ navigation }) {
     const [ errorMsg, setErrorMsg] = useState(null);
     const [ title, setTitle ] = useState('')
     const [ description, setDescription ] = useState('')
+    const [ imgUrl, setImgUrl ] = useState('')
     const [ address, setAddress ] = useState('')
     const token = useSelector(state => state.access_token)
 
@@ -68,6 +69,7 @@ export default function CreateThread({ navigation }) {
             description: description,
             lat: currentRegLatitude.toString(),
             long: currentRegLongitude.toString(),
+            img_url: imgUrl
         }
         // console.log(payload, 'data to submit')
         dispatch(createThread(payload, token))
@@ -92,6 +94,7 @@ export default function CreateThread({ navigation }) {
                         barStyle='light-content'
                     />
                     <AppHeader title='Create New Thread' navigation={navigation} />
+                    <ScrollView>
                     <View elevation={5} style={styles.createThreadFormStyle}>
                         <View>
                             <Input
@@ -112,6 +115,15 @@ export default function CreateThread({ navigation }) {
                                 textAlignVertical="top"
                                 placeholder="thread description..."
                                 onChangeText={text => setDescription(text)}
+                            />
+                        </View>
+                        <View>
+                            <Input
+                                style={styles.titleStyle} 
+                                value={imgUrl} 
+                                label='Image Url'
+                                onChangeText={text => setImgUrl(text)}
+                                placeholder="Condition's Image Url"
                             />
                         </View>
                             <View>
@@ -169,6 +181,7 @@ export default function CreateThread({ navigation }) {
 
                         > Submit </Button>
                     </View>
+                    </ScrollView>
                 </SafeAreaView>
             </>
     );
