@@ -10,7 +10,7 @@ export default function Profile({ navigation }) {
   const dispatch = useDispatch();
   const oneUser = useSelector((state) => state.oneUser);
   const userThreads = useSelector(state => state.user_threads)
-
+console.log(oneUser, '- - - - - - - - - -')
 
   useEffect(() => {
   }, [])
@@ -31,11 +31,11 @@ export default function Profile({ navigation }) {
             barStyle='light-content'
           />
           <View style={{ padding: 15, height: 100, flexDirection: 'row' }}>
-            <Image source={require('../../assets/userplaceholder.jpg')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
-            <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
+            <Image source={{ uri: oneUser.img_url }} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
+            <View style={{ justifyContent: 'center', paddingHorizontal: 15, flex: 1, height: 80 }}>
               <Text style={{ fontSize: 16, fontWeight: '500' }}>{`${oneUser.first_name}`}</Text>
-              <Text style={{ fontSize: 12, color: lib.accent }}>{oneUser.email}</Text>
-              <Text style={{ fontSize: 12, color: lib.accent }}>{oneUser.kota}</Text>
+              <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 3 }}>{oneUser.email}</Text>
+              <Text style={{ fontSize: 12, color: '#000000' }}>{oneUser.city}</Text>
             </View>
           </View>
 
