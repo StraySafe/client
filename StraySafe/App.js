@@ -37,7 +37,7 @@ function CustomDrawer({ navigation }, currentUserData) {
 
           <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <View style={{ padding: 15, flexDirection: 'row' }}>
-              <Image source={{ uri: currentUserData.img_url }} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
+              <Image source={ currentUserData.img_url ? { uri: currentUserData.img_url } : require('./assets/userplaceholder.png') } style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
               <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
                 <Text style={{ fontSize: 20, color: lib.white, fontWeight: '500' }}>{currentUserData.first_name}</Text>
                 <Text style={{ fontSize: 14, color: lib.accent }}>{currentUserData.city}</Text>
@@ -166,7 +166,7 @@ function App() {
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-              <Stack.Screen name='Register Form' component={RegisterForm} />
+              <Stack.Screen name='Register Form' component={RegisterForm} options={{ headerShown: false }} />
               <Stack.Screen name='Content' component={DrawerNavigators} options={{ headerShown: false }} />
             </Stack.Navigator>
           </NavigationContainer>
