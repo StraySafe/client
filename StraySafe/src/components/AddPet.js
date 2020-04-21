@@ -40,56 +40,61 @@ export default function AddPet() {
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
-      <SafeAreaView style={{ backgroundColor: lib.white }}>
+      <SafeAreaView style={{ backgroundColor: lib.white, flex: 1, alignItems: "center" }}>
         <StatusBar
           backgroundColor={lib.primary}
           barStyle='light-content'
         />
 
         <AppHeader title='Add Pet' navigation={navigation} />
-        <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: lib.white }}>
-          <Text style={{ marginBottom: 5 }}>Name</Text>
+        <View style={{
+              padding: 15,
+              backgroundColor: lib.primary,
+              borderRadius: 15,
+              width: 350,
+              marginTop: 35
+            }}>
           <Input
             placeholder="Your pet's name"
+            label='Name'
             value={name}
             onChangeText={nextValue => setName(nextValue)}
             style={{ marginBottom: 10 }}
           />
-          <Text style={{ marginBottom: 5 }}>Age</Text>
           {ageMonth > 12 ? <Text style={{ marginBottom: 10, color: 'maroon' }}>oops, invalid month value</Text> : null}
-          <Layout style={{ marginBottom: 10, flexDirection: 'row' }} level='1'>
+          <Layout style={{ marginBottom: 10, flexDirection: 'row', backgroundColor: lib.primary }} level='1'>
 
             <Input
               style={{ marginRight: 10, width: 100, flex: 2 }}
+              label="Year"
               value={ageYear}
               keyboardType='number-pad'
               maxLength={2}
               placeholder='0'
               onChangeText={nextValue => setAgeYear(nextValue)}
             />
-            <Text style={{ textAlignVertical: 'center', flex: 1 }}>Year</Text>
 
             <Input
               style={{ marginHorizontal: 10, width: 100, flex: 2 }}
+              label="Month"
               value={ageMonth}
               keyboardType='number-pad'
               maxLength={2}
               placeholder='8'
               onChangeText={nextValue => setAgeMonth(nextValue)}
             />
-            <Text style={{ textAlignVertical: 'center', flex: 1 }}>Month</Text>
 
           </Layout>
-          <Text style={{ marginBottom: 5 }}>Species</Text>
           <Input
             placeholder="Your pet's species"
+            label="species"
             value={species}
             onChangeText={nextValue => setSpecies(nextValue)}
             style={{ marginBottom: 10 }}
           />
-          <Text style={{ marginBottom: 5 }}>Description</Text>
           <Input
             placeholder="Tell something about your cat and why others should adopt it."
+            label="Description"
             multiline={true}
             value={description}
             onChangeText={nextValue => setDescription(nextValue)}
@@ -102,7 +107,7 @@ export default function AddPet() {
             rounded
             customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
           />
-        </ScrollView>
+        </View>
       </SafeAreaView>
     </>
   )

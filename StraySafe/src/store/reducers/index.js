@@ -1,5 +1,5 @@
 import {
-    SET_USERS,
+    SET_USER,
     SET_THREADS,
     SET_PETS,
     SET_ONEPET,
@@ -7,12 +7,13 @@ import {
     SET_ACCESS_TOKEN,
     SET_REGISTER_STATUS,
     SET_ONE_THREAD,
-    SET_CURRENT_USER_DATA
+    SET_CURRENT_USER_DATA,
+    SET_USER_THREADS,
 } from '../actions'
 
 
 const initialState = {
-    users: [],
+    user:{},
     threads: [],
     pets: [],
     onePet: {},
@@ -20,16 +21,17 @@ const initialState = {
     thread: {},
     access_token: '',
     register_status: '',
-    currentUserData: {}
+    currentUserData: {},
+    user_threads: []
 }
 
 export const reducers = (state = initialState, action) => {
     const { type, payload } = action
     switch (type) {
-        case SET_USERS:
+        case SET_USER:
             return {
                 ...state,
-                users: payload
+                user: payload
             }
         case SET_THREADS:
             return {
@@ -70,6 +72,11 @@ export const reducers = (state = initialState, action) => {
             return {
                 ...state,
                 currentUserData: payload
+            }
+        case SET_USER_THREADS:
+            return {
+                ...state,
+                user_threads: payload
             }
         default:
             return state;

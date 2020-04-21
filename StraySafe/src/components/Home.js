@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Text, Button, Input } from '@ui-kitten/components'
-import { View, StyleSheet, SafeAreaView, KeyboardAvoidingView } from 'react-native'
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import { View, StyleSheet, SafeAreaView, KeyboardAvoidingView, AsyncStorage } from 'react-native'
+import { TextInput, TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, registerUser } from '../store/actions'
 import lib from './ColorLib'
@@ -25,8 +25,8 @@ export default function Home ({ navigation }) {
     }
     
     return (
-        <KeyboardAvoidingView style={styles.homeStyle} behavior="height">
-            <View elevation={5} style={styles.loginFormStyle}>
+        <ScrollView contentContainerStyle={styles.homeStyle}>
+            <View elevation={9} style={styles.loginFormStyle}>
                 <Text category='h4' style={styles.titleStyle}>STRAYSAFE</Text>
                 <Input
                     value={email}
@@ -51,7 +51,7 @@ export default function Home ({ navigation }) {
                     Login
                 </Button>
                 <View style={styles.buttonLoginForm}>
-                    <Text>Don't have an account? </Text>
+                    <Text style={{color: lib.white}}>Don't have an account? </Text>
                     <TouchableOpacity
                         style={styles.submitButtonStyle}
                         onPress={() => navToRegisterForm(navigation)}
@@ -62,7 +62,7 @@ export default function Home ({ navigation }) {
                     
                 </View>
             </View>
-        </KeyboardAvoidingView>
+        </ScrollView>
     );
 }
 
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: lib.white
         
     },
     emailStyle:{
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
         marginVertical: 20
     },
     loginFormStyle: {
-        backgroundColor: lib.light,
+        backgroundColor: lib.primary,
         width: 300,
         alignItems: "center",
         borderRadius: 15
@@ -107,7 +108,8 @@ const styles = StyleSheet.create({
         color: lib.accent
     },
     titleStyle: {
-        marginBottom: 50,
-        marginTop: 25
+        marginBottom: 45,
+        marginTop: 25,
+        color: lib.white
     }
 })

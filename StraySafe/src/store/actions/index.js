@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { AsyncStorage } from 'react-native';
 
-export const SET_USERS = 'SET_USERS'
+export const SET_USER = 'SET_USER'
 export const SET_THREADS = 'SET_THREADS'
 export const SET_ONE_THREAD = 'SET_ONE_THREAD'
 export const SET_PETS = 'SET_PETS'
@@ -10,9 +10,10 @@ export const SET_ONEUSER = 'SET_ONEUSER'
 export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN'
 export const SET_REGISTER_STATUS = 'SET_REGISTER_STATUS'
 export const SET_CURRENT_USER_DATA = 'SET_CURRENT_USER_DATA'
+export const SET_USER_THREADS = 'SET_USER_THREAD'
 
-// const baseURL = 'http://192.168.2.159:3000'
-const baseURL = 'http://192.168.43.5:3000'
+const baseURL = 'http://192.168.2.159:3000'
+// const baseURL = 'http://192.168.43.5:3000'
 
 export const loginUser = (user) => {
     return (dispatch) => {
@@ -20,14 +21,23 @@ export const loginUser = (user) => {
         axios
             .post(`${baseURL}/login`, user)
             .then(({ data }) => {
-                const { token, first_name, email, img_url } = data
+                const { token, first_name, email, img_url, id, Threads } = data
                 dispatch(setAccessToken(token))
                 dispatch(setCurrentUserData(data))
                 AsyncStorage.setItem('token', token)
-                console.log('success login', data)
+                console.log('success login', Threads, '<<<<<<<')
+                dispatch(setOneUser(data))
+                dispatch(setUserThreads(Threads))
             }).catch((err) => {
                 console.log(err, 'error')
             });
+    }
+}
+
+export const setUserThreads = (threads) => {
+    return {
+        type: SET_USER_THREADS,
+        payload: threads
     }
 }
 
@@ -67,23 +77,23 @@ export const setRegister = (status) => {
 }
 
 
-export const fetchUsers = () => {
+export const fetchUser = (id) => {
     return (dispatch) => {
         axios
-            .get(`${baseURL}/users`)
+            .get(`${baseURL}/users/${id}`)
             .then(({ data }) => {
                 console.log(data)
-                dispatch(setUsers(data))
+                dispatch(setUser(data))
             }).catch((err) => {
                 console.log(err)
             });
     }
 }
 
-export const setUsers = (users) => {
+export const setUser = (user) => {
     return {
-        type: SET_USERS,
-        payload: users
+        type: SET_USER,
+        payload: user
     }
 }
 
@@ -114,6 +124,7 @@ export const fetchOneThread = (id) => {
             .then(({ data }) => {
                 const thread = data.data
                 dispatch(setOneThread(thread))
+                console.log(data, 'thread')
             }).catch((err) => {
                 console.log(err)
             });
@@ -284,7 +295,7 @@ export const updateRequest = (petId, token) => {
         console.log('PET ID = ', petId);
         console.log('PET TOKEN = ', token);
         console.log('= = = = = UPDATE REQ = = = = = =');
-        
+
         axios({
             method: 'PATCH',
             url: `${baseURL}/pet/${petId}`,
@@ -299,5 +310,18 @@ export const updateRequest = (petId, token) => {
                 console.log('ERROR DI UPDATE REQ');
                 console.log(err);
             })
+    }
+}
+
+export const reqStatusUp = (threadId) => {
+    return (dispatch) => {
+        axios
+            .put(`${baseURL}/threads/statusRequested/${threadId}`)
+            .then(({ data }) => {
+                console.log('status requested')
+                dispatch(fetchThreads())
+            }).catch((err) => {
+                console.log(err)
+            });
     }
 }
