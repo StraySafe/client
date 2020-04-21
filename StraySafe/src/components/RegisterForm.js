@@ -97,13 +97,6 @@ export default function RegisterForm({ navigation }) {
                 />
                 <Input 
                     style={styles.inputStyle}
-                    label="Email Address" 
-                    placeholder="email address (e.g. john@mail.com)"
-                    value={emailAddress}
-                    onChangeText={(text) => setEmailAddress(text)}
-                />
-                <Input 
-                    style={styles.inputStyle}
                     label="Image Url" 
                     placeholder="Your image URL"
                     value={imgUrl}
