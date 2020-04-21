@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, Button, Input } from '@ui-kitten/components'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, SafeAreaView, KeyboardAvoidingView } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, registerUser } from '../store/actions'
@@ -12,20 +12,20 @@ export default function Home ({ navigation }) {
     const [ password, setPassword ] = useState('')
     
     const dispatch = useDispatch()
-    
+    const token = useSelector(state => state.access_token)
+
     const navToContent = (navigation) => {
-        console.log(email, password)
+        dispatch(loginUser({email, password}))
         navigation.push('Content')
-        // dispatch(loginUser({email, password}))
+        
     }
 
     const navToRegisterForm = (navigation) => {
-        console.log('pindah ke register form')
         navigation.push('Register Form')
     }
     
     return (
-        <View style={styles.homeStyle}>
+        <KeyboardAvoidingView style={styles.homeStyle} behavior="height">
             <View elevation={5} style={styles.loginFormStyle}>
                 <Text category='h4' style={styles.titleStyle}>STRAYSAFE</Text>
                 <Input
@@ -62,7 +62,7 @@ export default function Home ({ navigation }) {
                     
                 </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 

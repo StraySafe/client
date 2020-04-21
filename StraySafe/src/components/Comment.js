@@ -11,7 +11,7 @@ export default function Comment ({ comment }) {
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 10}}>
-                    <Text>{comment.User.username}</Text>
+                    <Text>{comment.UserId}</Text> 
                     <Text>{comment.message}</Text> 
                 </View>
             </View>

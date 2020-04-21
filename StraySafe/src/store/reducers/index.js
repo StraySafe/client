@@ -5,7 +5,8 @@ import {
     SET_ONEPET,
     SET_ONEUSER,
     SET_ACCESS_TOKEN,
-    SET_REGISTER_STATUS
+    SET_REGISTER_STATUS,
+    SET_ONE_THREAD
 } from '../actions'
 
 
@@ -15,6 +16,7 @@ const initialState = {
     pets: [],
     onePet: {},
     oneUser: {},
+    thread: {},
     access_token: '',
     register_status: '',
 }
@@ -56,6 +58,11 @@ export const reducers = (state = initialState, action) => {
             return {
                 ...state,
                 register_status: payload
+            }
+        case SET_ONE_THREAD:
+            return {
+                ...state,
+                thread: payload
             }
         default:
             return state;

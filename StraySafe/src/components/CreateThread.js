@@ -8,7 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, Image, PermissionsAndroid, View, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, StatusBar } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createThread } from '../store/actions'
 import lib from './ColorLib';
 import CustomMapStyle from './MapStyle';
@@ -16,14 +16,14 @@ import AppHeader from './AppHeader';
 
 export default function CreateThread({ navigation }) {
 
-    const [location, setLocation] = useState(null);
-    const [currentRegLatitude, setCurrentRegLatitude] = useState(-5.001)
-    const [currentRegLongitude, setCurrentRegLongitude] = useState(107.215)
-    const [errorMsg, setErrorMsg] = useState(null);
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [address, setAddress] = useState('')
-    const [popupText, setPopupText] = useState('')
+    const [ location, setLocation ] = useState(null);
+    const [ currentRegLatitude, setCurrentRegLatitude ] = useState(-5.001)
+    const [ currentRegLongitude, setCurrentRegLongitude ] = useState(107.215)
+    const [ errorMsg, setErrorMsg] = useState(null);
+    const [ title, setTitle ] = useState('')
+    const [ description, setDescription ] = useState('')
+    const [ address, setAddress ] = useState('')
+    const token = useSelector(state => state.access_token)
 
     const dispatch = useDispatch()
 
@@ -39,6 +39,7 @@ export default function CreateThread({ navigation }) {
             setCurrentRegLatitude(latitude)
             setCurrentRegLongitude(longitude)
             setLocation(location)
+            console.log(token, 'access')
         })();
     }, []);
 
@@ -64,37 +65,13 @@ export default function CreateThread({ navigation }) {
 
     const handleOnSubmit = () => {
         const payload = {
-            id: '4' + Math.floor(Math.random() * 20),
-            User: {
-                id: 1,
-                username: 'testing'
-            }, //JANGAN LUPA HAPUS!
-            comments: [                                    //INI JUGA!!
-                {
-                    id: '1' + Math.floor(Math.random() * 20),
-                    User: {
-                        id: '1',
-                        username: 'Alucard'
-                    },
-                    message: 'comment lagi'
-                },
-                {
-                    id: '13' + Math.floor(Math.random() * 20),
-                    User: {
-                        id: '1',
-                        username: 'Valir'
-                    },
-                    message: 'comment lagi 3'
-                }
-            ],
             title: title,
             description: description,
-            lat: currentRegLatitude,
-            long: currentRegLongitude,
-            status: 'unresolved'
+            lat: currentRegLatitude.toString(),
+            long: currentRegLongitude.toString(),
         }
         console.log(payload, 'data to submit')
-        dispatch(createThread(payload))
+        dispatch(createThread(payload, token))
         setTitle('')
         setDescription('')
     }
@@ -107,28 +84,19 @@ export default function CreateThread({ navigation }) {
     }
 
     return (
-        <>
-        <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
-        <SafeAreaView style={{ backgroundColor: lib.white }}>
-            <StatusBar
-                backgroundColor={lib.primary}
-                barStyle='light-content'
-            />
-
-            <AppHeader title='Create Thread' navigation={navigation} />
-            <KeyboardAvoidingView contentContainerStyle={styles.scrollView}>
+            <View style={styles.scrollView}>
                 <View elevation={5} style={styles.createThreadFormStyle}>
                     <View>
                         <Input
-                            style={styles.titleStyle}
-                            value={title}
+                            style={styles.titleStyle} 
+                            value={title} 
                             label='Thread Title'
                             onChangeText={text => setTitle(text)}
                             placeholder="thread title..."
                         />
                     </View>
                     <View>
-                        <Input
+                        <Input 
                             style={[styles.descriptionStyle]}
                             multiline={true}
                             numberOfLines={5}
@@ -139,64 +107,62 @@ export default function CreateThread({ navigation }) {
                             onChangeText={text => setDescription(text)}
                         />
                     </View>
-                    <View>
-                        <MapView
-                            onMapReady={() => {
-                                PermissionsAndroid.request(
+                        <View>
+                            <MapView
+                                onMapReady={() => {
+                                    PermissionsAndroid.request(
                                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-                                ).then(granted => {
-                                });
-                            }}
-                            onRegionChange={(region) => {
-                                // initialRegion={region}
-                            }}
-                            ref={(mapView) => { _mapView = mapView; }}
-                            style={styles.mapStyle}
-                            initialRegion={{
+                                    ).then(granted => {
+                                    });
+                                }}
+                                onRegionChange={(region) => {
+                                    // initialRegion={region}
+                                }}
+                                ref = {(mapView) => { _mapView = mapView; }}
+                                style={styles.mapStyle} 
+                                initialRegion={{
+                                    latitude:currentRegLatitude,
+                                    longitude:currentRegLongitude,
+                                    latitudeDelta: 0.0922,
+                                    longitudeDelta: 0.0421,
+                                }}
+                                loadingEnabled
+                                loadingIndicatorColor="#666666"
+                                loadingBackgroundColor="#eeeeee"
+                                showsUserLocation={true}
+                                followsUserLocation={true}
+                                customMapStyle={CustomMapStyle}
+                            >
+                                <Marker 
+                                    coordinate={{latitude: currentRegLatitude, longitude: currentRegLongitude}} 
+                                    draggable
+                                    title='Tap marker to use this location'
+                                    description={address}
+                                    onDragEnd={(e) => handleOnDrag(e)}
+                                    onPress={(e) => handleOnPress(e)}
+                                >
+                            </Marker>
+                            </MapView>
+                        </View>
+                        <TouchableOpacity 
+                            style={styles.locationUpdate}
+                            onPress = {() => _mapView.animateToRegion({
                                 latitude: currentRegLatitude,
                                 longitude: currentRegLongitude,
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421,
-                            }}
-                            loadingEnabled
-                            loadingIndicatorColor="#666666"
-                            loadingBackgroundColor="#eeeeee"
-                            showsUserLocation={true}
-                            followsUserLocation={true}
-                            customMapStyle={CustomMapStyle}
-                        >
-                            <Marker
-                                coordinate={{ latitude: currentRegLatitude, longitude: currentRegLongitude }}
-                                draggable
-                                title='Tap marker to use this location'
-                                description={address}
-                                onDragEnd={(e) => handleOnDrag(e)}
-                                onPress={(e) => handleOnPress(e)}
-                            >
-                            </Marker>
-                        </MapView>
-                    </View>
-                    <TouchableOpacity
-                        style={styles.locationUpdate}
-                        onPress={() => _mapView.animateToRegion({
-                            latitude: currentRegLatitude,
-                            longitude: currentRegLongitude,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
-                        }, 2000)}>
-
-                        <Text>Target</Text>
-                    </TouchableOpacity>
-                    <Button
-                        title="Submit"
+                            }, 2000)}>
+                            
+                            <Text>Target</Text>
+                        </TouchableOpacity>
+                    <Button 
+                        title="Submit" 
                         style={styles.submitButtonStyle}
                         onPress={() => handleOnSubmit()}
 
                     > Submit </Button>
                 </View>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
-        </>
+            </View>
     );
 }
 
@@ -228,7 +194,7 @@ const styles = StyleSheet.create({
         paddingVertical: 30,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: lib.accent,
+        backgroundColor: lib.white,
         flex: 1
     },
     descriptionStyle: {
