@@ -26,7 +26,7 @@ export const loginUser = (user) => {
                 AsyncStorage.setItem('token', token)
                 console.log('success login', data)
             }).catch((err) => {
-               console.log(err, 'error') 
+                console.log(err, 'error')
             });
     }
 }
@@ -111,7 +111,7 @@ export const fetchOneThread = (id) => {
     return (dispatch) => {
         axios
             .get(`${baseURL}/threads/${id}`)
-            .then(({data}) => {
+            .then(({ data }) => {
                 const thread = data.data
                 dispatch(setOneThread(thread))
             }).catch((err) => {
@@ -123,7 +123,7 @@ export const fetchOneThread = (id) => {
 
 export const setOneThread = (thread) => {
     return {
-        type : SET_ONE_THREAD,
+        type: SET_ONE_THREAD,
         payload: thread
     }
 }
@@ -139,7 +139,7 @@ export const createThread = (thread, token) => {
             },
             data: thread
 
-        }) .then(({data}) => {
+        }).then(({ data }) => {
             dispatch(fetchThreads())
         }).catch((err) => {
             console.log(err)
@@ -160,7 +160,7 @@ export const createComment = (comment, token) => {
                 message: comment.message
             }
 
-        }) .then(({data}) => {
+        }).then(({ data }) => {
             dispatch(fetchOneThread(comment.ThreadId))
         }).catch((err) => {
             console.log(err)
@@ -185,12 +185,12 @@ export const fetchPets = (token) => {
                 token
             }
         })
-        .then(({ data }) => {
-            dispatch(setPets(data.data))
-        })
-        .catch((err) => {
-            console.log(err)
-        });
+            .then(({ data }) => {
+                dispatch(setPets(data.data))
+            })
+            .catch((err) => {
+                console.log(err)
+            });
     }
 }
 
@@ -211,12 +211,12 @@ export const fetchOnePet = (petId, token) => {
                 token
             }
         })
-        .then(({ data }) => {
-            dispatch(setOnePet(data))
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .then(({ data }) => {
+                dispatch(setOnePet(data))
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 }
 
@@ -229,12 +229,16 @@ export const setOneUser = (user) => {
 
 export const fetchOneUser = (userId) => {
     return (dispatch) => {
+        console.log('USER ID FETCH ONE USER => ', userId);
+        console.log('halo????');
         axios
-            .get(`${baseURL}/user/${userId}`)
+            .get(`${baseURL}/users/${userId}`)
             .then(({ data }) => {
+                console.log('AAAAAAAA ****');
                 dispatch(setOneUser(data))
             })
             .catch(err => {
+                console.log('ERRRRROORRRR - - - - - - -');
                 console.log(err)
             })
     }
@@ -245,13 +249,14 @@ export const addPet = (newPet, token) => {
         axios({
             method: 'POST',
             url: `${baseURL}/pet`,
-            headers:{
+            headers: {
                 token
             },
             data: newPet
         })
             .then(({ data }) => {
-                console.log(data);
+                console.log('fetched', data);
+                dispatch(fetchPets(token));
             })
             .catch(err => {
                 console.log(err);
@@ -261,7 +266,7 @@ export const addPet = (newPet, token) => {
 
 export const deletePet = (petId) => {
     console.log('>>>>>???', petId);
-    
+
     return (dispatch) => {
         axios
             .delete(`${baseURL}/pet/${petId}`)
@@ -269,6 +274,29 @@ export const deletePet = (petId) => {
                 console.log('deleted successfully', data);
             })
             .catch(err => {
+                console.log(err);
+            })
+    }
+}
+
+export const updateRequest = (petId, token) => {
+    return (dispatch) => {
+        console.log('PET ID = ', petId);
+        console.log('PET TOKEN = ', token);
+        console.log('= = = = = UPDATE REQ = = = = = =');
+        
+        axios({
+            method: 'PATCH',
+            url: `${baseURL}/pet/${petId}`,
+            headers: {
+                token
+            }
+        })
+            .then(({ data }) => {
+                dispatch(fetchPets(token));
+            })
+            .catch(err => {
+                console.log('ERROR DI UPDATE REQ');
                 console.log(err);
             })
     }

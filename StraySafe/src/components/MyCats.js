@@ -17,7 +17,7 @@ export default function MyCats() {
     const token = useSelector(state => state.access_token)
 
     const myCatsOnly = pets.filter(cat => cat.UserId == currentUserData.id);
-    const myAdoptRequests = pets.filter(request => request.requestUserId == currentUserData.id)
+    const myAdoptRequests = pets.filter(request => request.request_user_id == currentUserData.id)
     console.log('mycats => > > >', myCatsOnly);
     
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function MyCats() {
                         <Text style={{ color: '#000000' }}>Your cats</Text>
                     </View>
                     {myCatsOnly.map(pet =>
-                        <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Pet Detail', { petId: pet.id, origin: 'fromMyCats' })}>
+                        <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Pet Detail', { petId: pet.id, origin: 'fromMyCats', pet })}>
                             <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
                             {console.log(pet, '< < < < < <')}
                             <View style={{ justifyContent: 'center', paddingLeft: 15, paddingRight: 50 }}>
@@ -53,12 +53,12 @@ export default function MyCats() {
                     </View>
                     <View>
                         {myAdoptRequests.map(pet =>
-                            <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Owner Contact', { userId: pet.Owner.Id })}>
+                            <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Owner Contact', { userId: pet.UserId })}>
                                 <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
                                 {console.log(pet, '< < < < < <')}
                                 <View style={{ justifyContent: 'center', paddingLeft: 15, paddingRight: 50 }}>
                                     <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5 }}>{pet.name}</Text>
-                                    <Text style={{ fontSize: 12, marginBottom: 5 }}>{pet.Owner.first_name}</Text>
+                                    <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`by ${pet.User.first_name}`}</Text>
                                 </View>
                             </TouchableOpacity>
                         )}

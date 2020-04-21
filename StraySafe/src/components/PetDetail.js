@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, Alert, SafeAreaView, Image, StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchOnePet, deletePet, fetchPets } from '../store/actions';
+import { fetchOnePet, deletePet, fetchPets, updateRequest } from '../store/actions';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
@@ -18,10 +18,17 @@ export default function PetDetail({ route }) {
   const token = useSelector(state => state.access_token)
   const currentUserData = useSelector(state => state.currentUserData)
 
+  console.log('OWNER ID (FROM DETAIL) = = = = = ', pet.UserId);
+  
   function handleDelete() {
     dispatch(deletePet(petId));
     dispatch(fetchPets(token));
     navigation.goBack();
+  }
+
+  function handleAdopt() {
+    dispatch(updateRequest(petId, token));
+    navigation.navigate('Owner Contact', { userId: pet.UserId })
   }
 
   return (
@@ -78,7 +85,7 @@ export default function PetDetail({ route }) {
                   [
                     {
                       text: "Yes",
-                      onPress: () => navigation.navigate('Owner Contact', { userId: pet.User.id })
+                      onPress: handleAdopt
                     },
                     {
                       text: "Cancel",

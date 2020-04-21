@@ -33,7 +33,7 @@ export default function AddPet() {
     setDescription('');
     setAgeYear('');
     setAgeMonth('');
-    dispatch(fetchPets());
+    dispatch(fetchPets(token));
     navigation.navigate('Adopt');
   }
 
