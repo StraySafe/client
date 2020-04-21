@@ -12,8 +12,8 @@ export const SET_REGISTER_STATUS = 'SET_REGISTER_STATUS'
 export const SET_CURRENT_USER_DATA = 'SET_CURRENT_USER_DATA'
 export const SET_USER_THREADS = 'SET_USER_THREAD'
 
-const baseURL = 'http://192.168.2.159:3000'
-// const baseURL = 'http://192.168.43.5:3000'
+// const baseURL = 'http://192.168.2.159:3000'
+const baseURL = 'http://192.168.43.5:3000'
 
 export const loginUser = (user) => {
     return (dispatch) => {
