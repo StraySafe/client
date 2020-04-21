@@ -20,7 +20,7 @@ export default function ThreadList({ navigation }) {
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
-            <SafeAreaView style={{ backgroundColor: lib.white }}>
+            <SafeAreaView style={{ backgroundColor: lib.white, flex: 1 }}>
                 <AppHeader title='Thread List' navigation={navigation} />
                 <StatusBar
                     backgroundColor={lib.primary}

@@ -6,7 +6,6 @@ import {
 import { View, StyleSheet, PermissionsAndroid, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import ThreadDetail from './ThreadDetail'
 import * as Location from 'expo-location';
 import { getPreciseDistance } from 'geolib';
 import lib from './ColorLib'
@@ -61,7 +60,7 @@ export default function Thread ({ navigation, thread}) {
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
-                    <Text category='h6'>{thread.title}</Text>
+                    <Text category='p1'>{thread.title.toUpperCase()}</Text>
                     <Text category='s2'>{thread.createdAt} by {thread.User.first_name}</Text>
                     <Text category='s2'>{(distance / 1000)} km away</Text>
                 </View>
@@ -69,11 +68,27 @@ export default function Thread ({ navigation, thread}) {
         </TouchableOpacity>
     )
 
-    // const Footer = (props) => (
-    //     <View style={{marginHorizontal: 25}}>
-    //         <Text category='s2'>location : {(distance / 1000)} km away</Text>
-    //     </View>
-    // )
+    const Footer = (props) => (
+        <View {...props} style={{
+                            flexDirection: "row", 
+                            alignItems: "flex-end", 
+                            justifyContent: "space-between",
+                            marginHorizontal: 25,
+                            padding: 5,
+                        }}
+        >
+            <Text
+                style={{textTransform: "uppercase"}}
+                category='s2' 
+                status={thread.status == '1' ? 'warning' : 'success'}
+            >
+            {
+                thread.status == '1' ? 'unresolved' :
+                thread.status == '2' ? 'requested' : 'solved'
+            } </Text>
+            <Text category='s2'>{thread.Comments.length} Comments</Text>
+        </View>
+    )
 
 
     return (
@@ -81,7 +96,8 @@ export default function Thread ({ navigation, thread}) {
             <Card 
                 style={styles.card}
                 header={Header}
-                status={thread.status == 'unresolved' ? 'primary':'success'}
+                footer={Footer}
+                status='primary'
             >
                 <MapView 
                     onMapReady={() => {
@@ -129,7 +145,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       borderColor: lib.accent,
       backgroundColor: lib.white,
-      elevation: 15
+      elevation: 9
     },
     footerContainer: {
       flexDirection: 'row',
