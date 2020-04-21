@@ -10,14 +10,18 @@ import * as Location from 'expo-location';
 import { getPreciseDistance } from 'geolib';
 import lib from './ColorLib'
 import CustomMapStyle from './MapStyle';
- 
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchOneThread } from '../store/actions' 
+
 export default function Thread ({ navigation, thread}) {
     const { lat, long } = thread
+
+    const dispatch = useDispatch()
 
     const date = new Date(thread.createdAt)
 
     const [location, setLocation] = useState(null);
-    // const [ convLocation, setConvLocation ] = useState(null)
+    const isLoading = useSelector(state => state.isLoading)
     const [errorMsg, setErrorMsg] = useState(null);
     const [ locButton, setLocButton ] = useState(false)
 
@@ -43,15 +47,28 @@ export default function Thread ({ navigation, thread}) {
     if (errorMsg) {
         text = errorMsg;
     } else if (location) {
-        console.log(distance/1000, 'km away')
-        console.log(thread)
+        // console.log(distance/1000, 'km away')
+        // console.log(thread)
     }
 
+    function wait(timeout) {
+        return new Promise(resolve => {
+          setTimeout(resolve, timeout);
+        });
+      }
+
     const navToDetail = (thread, navigation) => {
-        navigation.navigate('Thread Detail', {
-            thread
-        })
+        dispatch(fetchOneThread(thread.id))
+            navigation.navigate('Thread Detail', {
+                thread
+            })
+        // wait(2000).then(() => {
+        //     navigation.navigate('Thread Detail', {
+        //         thread
+        //     })
+        // });
     }
+
 
     const Header = (props) => (
         <TouchableOpacity {...props} onPress={() => navToDetail(thread, navigation)}>

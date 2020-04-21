@@ -1,8 +1,9 @@
-import React from 'react'
-import { Text, Card } from '@ui-kitten/components'
-import { StyleSheet, View } from 'react-native'
+import React, { useEffect } from 'react';
+import { Text, Card } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
 
 export default function Comment ({ comment }) {
+
     return (
         <Card style={styles.commentStyle}>
             <View style={{flex:1, flexDirection: 'row'}}>
