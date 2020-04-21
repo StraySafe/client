@@ -127,9 +127,9 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     registerFormStyle:{
-        backgroundColor: lib.light,
+        backgroundColor: lib.primary,
         width: 350,
-        padding: 20,
+        padding: 25,
         borderRadius: 10
     }
 })
