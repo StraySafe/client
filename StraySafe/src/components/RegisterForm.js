@@ -17,6 +17,8 @@ export default function RegisterForm({ navigation }) {
     const [ password, setPassword ] = useState('')
     const [ description, setDescription ] = useState('')
     const [ phoneNumber, setPhoneNumber ] = useState('')
+    const [ city, setCity ] = useState('')
+    const [ imgUrl, setImgUrl ] = useState('')
 
     const handleOnSubmit = () => {
         Alert.alert(
@@ -37,8 +39,8 @@ export default function RegisterForm({ navigation }) {
                         password: password,
                         bio: description,
                         phone_number: phoneNumber,
-                        city: 'jakarta',
-                        img_url: ''
+                        city: city,
+                        img_url: imgUrl
                     }))
                     setFirstName('')
                     setLastName('')
@@ -54,6 +56,7 @@ export default function RegisterForm({ navigation }) {
     }
 
     return (
+        <ScrollView>
         <KeyboardAvoidingView style={styles.formStyle} behavior="height">
             <View elevation={5} style={styles.registerFormStyle}>
                 <Input
@@ -93,6 +96,20 @@ export default function RegisterForm({ navigation }) {
                     onChangeText={(text) => setPassword(text)}
                 />
                 <Input 
+                    style={styles.inputStyle}
+                    label="Image Url" 
+                    placeholder="Your image URL"
+                    value={imgUrl}
+                    onChangeText={(text) => setImgUrl(text)}
+                />
+                <Input 
+                    style={styles.inputStyle}
+                    label="City Domain" 
+                    placeholder="City where you live (ex: Jakarta Selatan)"
+                    value={city}
+                    onChangeText={(text) => setCity(text)}
+                />
+                <Input 
                     style={[styles.inputStyle, {height: 120}]}
                     label="Your Description" 
                     placeholder="your description...(e.g. 'i am a cat lover')"
@@ -109,6 +126,7 @@ export default function RegisterForm({ navigation }) {
                 </Button>
             </View>
         </KeyboardAvoidingView>
+        </ScrollView>
     )
 }
 
@@ -116,7 +134,8 @@ const styles = StyleSheet.create({
     formStyle: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingBottom: 50
     },
     inputStyle: {
         marginVertical: 10,

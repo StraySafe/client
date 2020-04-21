@@ -15,6 +15,7 @@ export default function AddPet() {
   const [description, setDescription] = useState('');
   const [ageYear, setAgeYear] = useState('');
   const [ageMonth, setAgeMonth] = useState('');
+  const [imgUrl, setImgUrl] = useState('');
   const pets = useSelector((state) => state.pets);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -26,13 +27,15 @@ export default function AddPet() {
       species,
       description,
       ageYear,
-      ageMonth
+      ageMonth,
+      img_url: imgUrl
     }, token))
     setName('');
     setSpecies('');
     setDescription('');
     setAgeYear('');
     setAgeMonth('');
+    setImgUrl('');
     dispatch(fetchPets(token));
     navigation.navigate('Adopt');
   }
@@ -90,6 +93,13 @@ export default function AddPet() {
             label="species"
             value={species}
             onChangeText={nextValue => setSpecies(nextValue)}
+            style={{ marginBottom: 10 }}
+          />
+          <Input
+            placeholder="Your pet's Image Url"
+            label="Image Url"
+            value={imgUrl}
+            onChangeText={nextValue => setImgUrl(nextValue)}
             style={{ marginBottom: 10 }}
           />
           <Input
