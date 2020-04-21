@@ -4,7 +4,7 @@ import Home from './src/components/Home'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import { store, persistor } from './src/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import * as eva from '@eva-design/eva'
@@ -23,6 +23,7 @@ import Profile from './src/components/Profile';
 import lib from './src/components/ColorLib';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
+
 const Drawer = createDrawerNavigator();
 const StackAdopt = createStackNavigator();
 const Stack = createStackNavigator()
@@ -35,7 +36,7 @@ function CustomDrawer({ navigation }) {
           <View style={{ padding: 15, flexDirection: 'row' }}>
             <Image source={require('./assets/userplaceholder.jpg')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
             <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
-              <Text style={{ fontSize: 20, color: lib.white, fontWeight: '500' }}>First Last</Text>
+              <Text style={{ fontSize: 20, color: lib.white, fontWeight: '500' }}>My Profile</Text>
               <Text style={{ fontSize: 14, color: lib.accent }}>City</Text>
             </View>
           </View>
@@ -114,7 +115,7 @@ const StackHome = createStackNavigator();
 export function ThreadStack() {
   return (
     <StackThread.Navigator>
-      <StackThread.Screen name='Thread list' component={ThreadList} options={{ headerShown: false }} />
+      <StackThread.Screen name='Thread List' component={ThreadList} options={{ headerShown: false }} />
       <StackThread.Screen name='Thread Detail' component={ThreadDetail} options={{ headerShown: false }} />
     </StackThread.Navigator>
   )
