@@ -1,80 +1,86 @@
 import React, { useState, useEffect } from 'react'
 import { Text, Button, Input } from '@ui-kitten/components'
-import { View, StyleSheet, SafeAreaView, KeyboardAvoidingView, AsyncStorage } from 'react-native'
+import { View, StyleSheet, SafeAreaView, KeyboardAvoidingView, AsyncStorage, StatusBar } from 'react-native'
 import { TextInput, TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, registerUser } from '../store/actions'
 import lib from './ColorLib'
 
 
-export default function Home ({ navigation }) {
-    const [ email, setEmail ] = useState('')
-    const [ password, setPassword ] = useState('')
-    
+export default function Home({ navigation }) {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
     const dispatch = useDispatch()
     const token = useSelector(state => state.access_token)
 
     const navToContent = (navigation) => {
-        dispatch(loginUser({email, password}))
+        dispatch(loginUser({ email, password }))
         navigation.push('Content')
-        
+
     }
 
     const navToRegisterForm = (navigation) => {
         navigation.push('Register Form')
     }
-    
+
     return (
-        <ScrollView contentContainerStyle={styles.homeStyle}>
-            <View elevation={9} style={styles.loginFormStyle}>
-                <Text category='h4' style={styles.titleStyle}>STRAYSAFE</Text>
-                <Input
-                    value={email}
-                    label="Email Address"
-                    style={styles.emailStyle} 
-                    placeholder="email"
-                    keyboardType='email-address'
-                    onChangeText={text => setEmail(text)}
-                />
-                <Input
-                    value={password}
-                    label="Password" 
-                    style={styles.passwordStyle}
-                    placeholder="password"
-                    secureTextEntry={true}
-                    onChangeText={text => setPassword(text)}    
-                />
-                <Button
-                    style={styles.submitButtonStyle}
-                    onPress={() => navToContent(navigation)}
-                >
-                    Login
-                </Button>
-                <View style={styles.buttonLoginForm}>
-                    <Text style={{color: lib.white}}>Don't have an account? </Text>
-                    <TouchableOpacity
+        <>
+            <StatusBar
+                backgroundColor={lib.primary}
+                barStyle='light-content'
+            />
+            <ScrollView contentContainerStyle={styles.homeStyle}>
+                <View elevation={9} style={styles.loginFormStyle}>
+                    <Text category='h4' style={styles.titleStyle}>STRAYSAFE</Text>
+                    <Input
+                        value={email}
+                        label="Email Address"
+                        style={styles.emailStyle}
+                        placeholder="email"
+                        keyboardType='email-address'
+                        onChangeText={text => setEmail(text)}
+                    />
+                    <Input
+                        value={password}
+                        label="Password"
+                        style={styles.passwordStyle}
+                        placeholder="password"
+                        secureTextEntry={true}
+                        onChangeText={text => setPassword(text)}
+                    />
+                    <Button
                         style={styles.submitButtonStyle}
-                        onPress={() => navToRegisterForm(navigation)}
+                        onPress={() => navToContent(navigation)}
                     >
-                        <Text style={styles.signUpText}>Sign Up</Text>
-                    </TouchableOpacity>
-                
-                    
+                        Login
+                </Button>
+                    <View style={styles.buttonLoginForm}>
+                        <Text style={{ color: lib.white }}>Don't have an account? </Text>
+                        <TouchableOpacity
+                            style={styles.submitButtonStyle}
+                            onPress={() => navToRegisterForm(navigation)}
+                        >
+                            <Text style={styles.signUpText}>Sign Up</Text>
+                        </TouchableOpacity>
+
+
+                    </View>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
-    homeStyle:{
+    homeStyle: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: lib.white
-        
+
     },
-    emailStyle:{
+    emailStyle: {
         marginVertical: 10,
         padding: 0,
         height: 50,
@@ -82,7 +88,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center"
     },
-    passwordStyle:{
+    passwordStyle: {
         marginVertical: 10,
         padding: 0,
         height: 50,
@@ -90,7 +96,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center"
     },
-    submitButtonStyle:{
+    submitButtonStyle: {
         marginVertical: 20
     },
     loginFormStyle: {

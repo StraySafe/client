@@ -18,7 +18,6 @@ export default function MyCats() {
     const currentUserData = useSelector((state) => state.currentUserData);
     const token = useSelector(state => state.access_token)
 
-    const myCatsOnly = pets.filter(cat => cat.UserId == currentUserData.id);
     const myAdoptRequests = pets.filter(request => request.request_user_id == currentUserData.id)
 
     const sortedRequest = myAdoptRequests.slice(0).sort(compareValues('updatedAt', 'desc'));

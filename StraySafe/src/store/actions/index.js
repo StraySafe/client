@@ -16,8 +16,8 @@ export const SET_LOADING = 'SET_LOADING'
 // const baseURL = 'http://192.168.2.159:3000'
 // const baseURL = 'http://192.168.43.5:3000'
 // const baseURL = 'http://192.168.2.159:3000' 
-// const baseURL = 'http://192.168.43.5:3000'
-const baseURL = 'http://192.168.1.14:3000'
+const baseURL = 'http://192.168.43.5:3000'
+// const baseURL = 'http://192.168.1.14:3000'
 
 export const setLoading = (loadStatus) => {
     return {
@@ -287,12 +287,17 @@ export const addPet = (newPet, token) => {
     }
 }
 
-export const deletePet = (petId) => {
+export const deletePet = (petId, token) => {
     console.log('>>>>>???', petId);
 
     return (dispatch) => {
-        axios
-            .delete(`${baseURL}/pet/${petId}`)
+        axios({
+            method: 'DELETE',
+            url: `${baseURL}/pet/${petId}`,
+            headers: {
+                token
+            }
+        })
             .then(({ data }) => {
                 console.log('deleted successfully', data);
             })
