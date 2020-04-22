@@ -21,7 +21,7 @@ export default function PetDetail({ route }) {
   console.log('OWNER ID (FROM DETAIL) = = = = = ', pet.UserId);
   
   function handleDelete() {
-    dispatch(deletePet(petId));
+    dispatch(deletePet(petId, token));
     dispatch(fetchPets(token));
     navigation.goBack();
   }
@@ -48,7 +48,7 @@ export default function PetDetail({ route }) {
             <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${moment(pet.birth_date).fromNow(true)}`}</Text>
             <Text style={{ fontSize: 12, marginBottom: 5 }}>{pet.description}</Text>
             <Text style={{ fontSize: 12, fontWeight: '600', color: lib.accent, marginBottom: 10 }}><FontAwesome5 name="user-circle" solid /> {`${pet.User.first_name} ${pet.User.last_name}`}</Text>
-            <Image source={require('../../assets/catheadplaceholder.png')} style={{ width: '100%', height: 200, resizeMode: 'cover' }} />
+            <Image source={pet.img_url ? { uri: pet.img_url } : require('../../assets/catheadplaceholder.png')} style={{ width: '100%', height: 200, resizeMode: 'cover' }} />
           </View>
           {pet.UserId == currentUserData.id
             ?
