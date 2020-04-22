@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Text, Button, Input } from '@ui-kitten/components'
-import { View, StyleSheet, SafeAreaView, KeyboardAvoidingView, AsyncStorage, StatusBar } from 'react-native'
+import { View, StyleSheet, SafeAreaView, KeyboardAvoidingView, AsyncStorage, StatusBar, Image } from 'react-native'
 import { TextInput, TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, registerUser } from '../store/actions'
@@ -27,12 +27,13 @@ export default function Home({ navigation }) {
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
-            <SafeAreaView style={{ backgroundColor: lib.white, flex: 1 }}>
+            <SafeAreaView style={{ backgroundColor: lib.white, flex: 1, alignItems: 'center' }}>
                 <StatusBar
                     backgroundColor={lib.primary}
                     barStyle='light-content'
                 />
                 <KeyboardAwareScrollView contentContainerStyle={styles.homeStyle}>
+                    <Image source={require('../../assets/noadoption.png')} style={{ width: 220, height: 80, marginBottom: 20 }} />
                     {/* <ScrollView contentContainerStyle={styles.homeStyle}> */}
                     <View elevation={9} style={styles.loginFormStyle}>
                         <Text category='h4' style={styles.titleStyle}>STRAYSAFE</Text>

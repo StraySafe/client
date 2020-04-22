@@ -179,7 +179,8 @@ export const createThread = (thread, token) => {
 
 export const createComment = (comment, token) => {
     // console.log(comment)
-    return (dispatch) => {
+        return (dispatch) => {
+        dispatch(setLoading(true))
         axios({
             method: 'POST',
             url: `${baseURL}/threads/${comment.ThreadId}`,
@@ -194,7 +195,7 @@ export const createComment = (comment, token) => {
             dispatch(fetchOneThread(comment.ThreadId))
         }).catch((err) => {
             console.log(err)
-        });
+        }).finally(_ => dispatch(setLoading(false)))
     }
 }
 
