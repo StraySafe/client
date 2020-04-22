@@ -71,45 +71,39 @@ function CustomDrawer({ navigation }, currentUserData) {
               </View>
             </View>
           </TouchableOpacity>
-          <View
-            style={{
-              borderBottomColor: lib.accent,
-              borderBottomWidth: 0.5,
-              
-            }}
-          />
+           
           <TouchableOpacity style={{ padding: 15, flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-            <Text style={{ color: lib.white, fontWeight: 'bold', fontSize: 20 }}>StraySafe</Text>
+            <Text style={{ color: lib.white, fontWeight: 'bold', fontSize: 16 }}>StraySafe</Text>
             <Image source={require('./assets/threadlogo.png')} style={{ height: 20, width: 20, marginLeft: 10 }} />
           </TouchableOpacity>
           <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40, flexDirection: 'row' }} onPress={() => navigation.navigate('Thread List')}>
-            <Text style={{ color: lib.accent }}>Threads</Text>
+            <Text style={{ color: lib.white }}>Threads</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40 }} onPress={() => navigation.navigate('Create Thread')}>
-            <Text style={{ color: lib.accent }}>Create Thread</Text>
+            <Text style={{ color: lib.white }}>Create Thread</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ padding: 15, flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
-            <Text style={{ color: lib.white, fontWeight: 'bold', fontSize: 20 }}>StrayAdopt</Text>
+          <TouchableOpacity style={{ padding: 15, flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+            <Text style={{ color: lib.white, fontWeight: 'bold', fontSize: 16 }}>StrayAdopt</Text>
             <Image source={require('./assets/adoptlogo.png')} style={{ height: 20, width: 20, marginLeft: 10 }} />
           </TouchableOpacity>
           <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40 }} onPress={() => navigation.navigate('Adopt')}>
-            <Text style={{ color: lib.accent }}>Adopt</Text>
+            <Text style={{ color: lib.white }}>Adopt</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40 }} onPress={() => navigation.navigate('My Cats')}>
-            <Text style={{ color: lib.accent }}>Adopt Requests</Text>
+            <Text style={{ color: lib.white }}>Adopt Requests</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ padding: 12.5, paddingLeft: 40 }} onPress={() => navigation.navigate('Add Pet')}>
-            <Text style={{ color: lib.accent }}>Add Pet</Text>
+            <Text style={{ color: lib.white }}>Add Pet</Text>
           </TouchableOpacity>
 
         </View>
 
 
-        <View>
+        <View style={{alignItems: 'center'}}>
           <TouchableOpacity style={{alignItems: 'center'}} onPress={() => handleLogout(navigation)}>
-            <Text style={{ color: 'red' }}>Logout</Text>
+            <Text style={{ color: '#c4372d' }}>Logout</Text>
           </TouchableOpacity>
-          <Image source={require('./assets/smalllogo.png')} style={{ resizeMode: 'cover', height: 80, width: 220 }} />
+          <Image source={require('./assets/small-logo-alt.png')} style={{ resizeMode: 'contain', height: 60, width: 150 }} />
         </View>
 
       </ScrollView>
