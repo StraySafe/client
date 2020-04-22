@@ -5,6 +5,7 @@ import { TextInput, TouchableOpacity, ScrollView } from 'react-native-gesture-ha
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, registerUser } from '../store/actions'
 import lib from './ColorLib'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 export default function Home({ navigation }) {
@@ -17,57 +18,61 @@ export default function Home({ navigation }) {
     const navToContent = (navigation) => {
         dispatch(loginUser({ email, password }))
         navigation.push('Content')
-
     }
 
     const navToRegisterForm = (navigation) => {
-        navigation.push('Register Form')
+        navigation.navigate('Register Form')
     }
 
     return (
         <>
-            <StatusBar
-                backgroundColor={lib.primary}
-                barStyle='light-content'
-            />
-            <ScrollView contentContainerStyle={styles.homeStyle}>
-                <View elevation={9} style={styles.loginFormStyle}>
-                    <Text category='h4' style={styles.titleStyle}>STRAYSAFE</Text>
-                    <Input
-                        value={email}
-                        label="Email Address"
-                        style={styles.emailStyle}
-                        placeholder="email"
-                        keyboardType='email-address'
-                        onChangeText={text => setEmail(text)}
-                    />
-                    <Input
-                        value={password}
-                        label="Password"
-                        style={styles.passwordStyle}
-                        placeholder="password"
-                        secureTextEntry={true}
-                        onChangeText={text => setPassword(text)}
-                    />
-                    <Button
-                        style={styles.submitButtonStyle}
-                        onPress={() => navToContent(navigation)}
-                    >
-                        Login
-                </Button>
-                    <View style={styles.buttonLoginForm}>
-                        <Text style={{ color: lib.white }}>Don't have an account? </Text>
-                        <TouchableOpacity
+            <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
+            <SafeAreaView style={{ backgroundColor: lib.white, flex: 1 }}>
+                <StatusBar
+                    backgroundColor={lib.primary}
+                    barStyle='light-content'
+                />
+                <KeyboardAwareScrollView contentContainerStyle={styles.homeStyle}>
+                    {/* <ScrollView contentContainerStyle={styles.homeStyle}> */}
+                    <View elevation={9} style={styles.loginFormStyle}>
+                        <Text category='h4' style={styles.titleStyle}>STRAYSAFE</Text>
+                        <Input
+                            value={email}
+                            label="Email Address"
+                            style={styles.emailStyle}
+                            placeholder="email"
+                            keyboardType='email-address'
+                            onChangeText={text => setEmail(text)}
+                        />
+                        <Input
+                            value={password}
+                            label="Password"
+                            style={styles.passwordStyle}
+                            placeholder="password"
+                            secureTextEntry={true}
+                            onChangeText={text => setPassword(text)}
+                        />
+                        <Button
                             style={styles.submitButtonStyle}
-                            onPress={() => navToRegisterForm(navigation)}
+                            onPress={() => navToContent(navigation)}
                         >
-                            <Text style={styles.signUpText}>Sign Up</Text>
-                        </TouchableOpacity>
+                            Login
+                </Button>
+                        <View style={styles.buttonLoginForm}>
+                            <Text style={{ color: lib.white }}>Don't have an account? </Text>
+                            <TouchableOpacity
+                                style={styles.submitButtonStyle}
+                                onPress={() => navToRegisterForm(navigation)}
+                            >
+                                <Text style={styles.signUpText}>Join us</Text>
+                            </TouchableOpacity>
 
 
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+                    {/* </ScrollView> */}
+                </KeyboardAwareScrollView>
+            </SafeAreaView>
         </>
     );
 }

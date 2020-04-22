@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Alert, AsyncStorage } from 'react-native';
 import Home from './src/components/Home'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -29,6 +29,33 @@ const StackAdopt = createStackNavigator();
 const Stack = createStackNavigator()
 
 function CustomDrawer({ navigation }, currentUserData) {
+  
+  const handleLogout = (navigation) => {
+    Alert.alert(
+      "Confirmation",
+      "Do you really want to logout?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Logout"),
+          style: "cancel"
+        },
+        {
+          text: "Confirm", onPress: () => {
+            console.log(AsyncStorage)
+            AsyncStorage.removeItem('token')
+                .then((result) => {
+                    navigation.navigate('Home')
+                }).catch((err) => {
+                    console.log(err)
+                });
+          }
+          
+        }
+      ]
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: lib.primary }}>
       <ScrollView style={{ marginTop: 15 }} contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
@@ -77,11 +104,11 @@ function CustomDrawer({ navigation }, currentUserData) {
 
         </View>
 
-        <View style={{alignItems: 'center'}}>
-          <TouchableOpacity style={{ padding: 15 }}>
+
+        <View>
+          <TouchableOpacity style={{alignItems: 'center'}} onPress={() => handleLogout(navigation)}>
             <Text style={{ color: 'red' }}>Logout</Text>
           </TouchableOpacity>
-
           <Image source={require('./assets/smalllogo.png')} style={{ resizeMode: 'cover', height: 80, width: 220 }} />
         </View>
 
@@ -135,6 +162,7 @@ export function MyProfile() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+      <Stack.Screen name="Pet Detail" component={PetDetail} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 }
@@ -177,6 +205,7 @@ function App() {
         <ApplicationProvider {...eva} theme={eva.light}>
           <NavigationContainer>
             <Stack.Navigator>
+            
               <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
               <Stack.Screen name='Register Form' component={RegisterForm} options={{ headerShown: false }} />
               <Stack.Screen name='Content' component={DrawerNavigators} options={{ headerShown: false }} />
