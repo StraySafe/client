@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Alert, AsyncStorage } from 'react-native';
 import Home from './src/components/Home'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -29,6 +29,33 @@ const StackAdopt = createStackNavigator();
 const Stack = createStackNavigator()
 
 function CustomDrawer({ navigation }, currentUserData) {
+  
+  const handleLogout = (navigation) => {
+    Alert.alert(
+      "Confirmation",
+      "Do you really want to logout?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Logout"),
+          style: "cancel"
+        },
+        {
+          text: "Confirm", onPress: () => {
+            console.log(AsyncStorage)
+            AsyncStorage.removeItem('token')
+                .then((result) => {
+                    navigation.navigate('Home')
+                }).catch((err) => {
+                    console.log(err)
+                });
+          }
+          
+        }
+      ]
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: lib.primary }}>
       <ScrollView style={{ marginTop: 15 }} contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
@@ -70,7 +97,7 @@ function CustomDrawer({ navigation }, currentUserData) {
         </View>
 
         <View>
-          <TouchableOpacity style={{ padding: 15, paddingBottom: 20 }}>
+          <TouchableOpacity style={{ padding: 15, paddingBottom: 20 }} onPress={() => handleLogout(navigation)}>
             <Text style={{ color: lib.white }}>Logout</Text>
           </TouchableOpacity>
 
@@ -170,6 +197,7 @@ function App() {
         <ApplicationProvider {...eva} theme={eva.light}>
           <NavigationContainer>
             <Stack.Navigator>
+            
               <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
               <Stack.Screen name='Register Form' component={RegisterForm} options={{ headerShown: false }} />
               <Stack.Screen name='Content' component={DrawerNavigators} options={{ headerShown: false }} />

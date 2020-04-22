@@ -59,6 +59,7 @@ export default function RegisterForm({ navigation }) {
 
     }
 
+
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
@@ -135,7 +136,7 @@ export default function RegisterForm({ navigation }) {
                                 onPress={() => handleOnSubmit(navigation)}
                             >
                                 Register
-                </Button>
+                            </Button>
                         </View>
                     </KeyboardAwareScrollView>
                 </ScrollView>

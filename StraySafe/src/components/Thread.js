@@ -62,11 +62,6 @@ export default function Thread ({ navigation, thread}) {
             navigation.navigate('Thread Detail', {
                 thread
             })
-        // wait(2000).then(() => {
-        //     navigation.navigate('Thread Detail', {
-        //         thread
-        //     })
-        // });
     }
 
 
@@ -75,6 +70,7 @@ export default function Thread ({ navigation, thread}) {
             <View style={{flex:1, flexDirection: 'row'}}>
                 <View style={styles.userPhotoContainer}>
                     <View style={styles.userPhoto}>
+                        <Image source={{ uri: thread.User.img_url }} style={{ resizeMode: 'cover', width: 70, height: 70, borderRadius: 70 / 2 }} />
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
@@ -98,7 +94,7 @@ export default function Thread ({ navigation, thread}) {
             <Text
                 style={{textTransform: "uppercase"}}
                 category='s2' 
-                status={thread.status == '1' ? 'warning' : 'success'}
+                status={thread.status == '1' ? 'danger' : 'success'}
             >
             {
                 thread.status == '1' ? 'unresolved' :
@@ -115,7 +111,6 @@ export default function Thread ({ navigation, thread}) {
                 style={styles.card}
                 header={Header}
                 footer={Footer}
-                status='primary'
             >
                 <MapView 
                     onMapReady={() => {
@@ -161,7 +156,6 @@ const styles = StyleSheet.create({
       flex: 1,
       margin: 5,
       borderRadius: 10,
-      borderColor: lib.accent,
       backgroundColor: lib.white,
       elevation: 9
     },

@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import lib from './ColorLib';
 import AppHeader from './AppHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import * as ImagePicker from 'expo-image-picker'
 
 export default function AddPet() {
   const [name, setName] = useState('');
@@ -17,6 +18,7 @@ export default function AddPet() {
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
   const [imgUrl, setImgUrl] = useState('');
+  const [image_Url, setImageUrl] = useState('')
   const pets = useSelector((state) => state.pets);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -41,6 +43,37 @@ export default function AddPet() {
     navigation.navigate('Adopt');
   }
 
+  const chooseImageOnPress = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      base64: true
+    })
+
+    if (!result.cancelled) {
+
+      let base64Img = `data:image/jpg;base64,${result.base64}`
+
+      let apiUrl = 'https://api.cloudinary.com/v1_1/straysafe/image/upload';
+      let data = {
+        "file": base64Img,
+        "upload_preset": "bareeeg8"
+      }
+
+      fetch(apiUrl, {
+        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json'
+        },
+        method: 'POST',
+      }).then(async r => {
+        let data = await r.json()
+        console.log(data.secure_url)
+        setImageUrl(data.secure_url)
+        return data.secure_url
+      }).catch(err => console.log(err))
+    }
+  }
+
+
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
@@ -57,8 +90,8 @@ export default function AddPet() {
               padding: 15,
               backgroundColor: lib.primary,
               borderRadius: 15,
-              width: 350,
-              marginTop: 35
+              width: 375,
+              marginTop: 15
             }}>
               <Input
                 placeholder="Your pet's name"
@@ -93,7 +126,7 @@ export default function AddPet() {
               </Layout>
               <Input
                 placeholder="Your pet's species"
-                label="Species"
+                label="species"
                 value={species}
                 onChangeText={nextValue => setSpecies(nextValue)}
                 style={{ marginBottom: 10 }}
@@ -112,6 +145,14 @@ export default function AddPet() {
                 value={description}
                 onChangeText={nextValue => setDescription(nextValue)}
                 style={{ marginBottom: 10 }}
+              />
+              <Button
+                title="Snapshot"
+                onPress={() => handleOnSubmit(navigation)}
+                rounded
+                children={<Text style={{ color: '#FFF' }}>Take Snapshot!</Text>}
+                customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
+                onPress={() => chooseImageOnPress()}
               />
               <Button
                 style={{ alignItems: 'center' }}
