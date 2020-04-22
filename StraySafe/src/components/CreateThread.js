@@ -2,10 +2,17 @@ import React, { useState, useEffect } from 'react'
 import {
     Input,
     Text,
-    Button,
 } from '@ui-kitten/components'
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, PermissionsAndroid, View, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native'
+import { 
+    Alert, 
+    StyleSheet, 
+    PermissionsAndroid, 
+    View, 
+    TouchableOpacity, 
+    SafeAreaView, 
+    StatusBar, 
+    AsyncStorage } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,6 +20,8 @@ import { createThread } from '../store/actions'
 import lib from './ColorLib';
 import CustomMapStyle from './MapStyle';
 import AppHeader from './AppHeader';
+import Button from './Button'
+import * as ImagePicker from 'expo-image-picker'
 
 export default function CreateThread({ navigation }) {
 
@@ -24,6 +33,7 @@ export default function CreateThread({ navigation }) {
     const [ description, setDescription ] = useState('')
     const [ imgUrl, setImgUrl ] = useState('')
     const [ address, setAddress ] = useState('')
+    const [ image_Url, setImageUrl ] = useState('')
     const token = useSelector(state => state.access_token)
 
     const dispatch = useDispatch()
@@ -40,7 +50,9 @@ export default function CreateThread({ navigation }) {
             setCurrentRegLatitude(latitude)
             setCurrentRegLongitude(longitude)
             setLocation(location)
+            let access_token = await AsyncStorage.getItem('token')
             console.log(token, 'access')
+            console.log(access_token, 'dari asyncstorage')
         })();
     }, []);
 
@@ -69,7 +81,7 @@ export default function CreateThread({ navigation }) {
             description: description,
             lat: currentRegLatitude.toString(),
             long: currentRegLongitude.toString(),
-            img_url: imgUrl
+            img_url: image_Url
         }
         // console.log(payload, 'data to submit')
         dispatch(createThread(payload, token))
@@ -84,6 +96,37 @@ export default function CreateThread({ navigation }) {
     } else if (location) {
         // console.log(location)
     }
+
+    const chooseImageOnPress = async () => {
+        let result = await ImagePicker.launchCameraAsync({
+            base64: true
+        })
+
+        if(!result.cancelled){
+      
+            let base64Img = `data:image/jpg;base64,${result.base64}`
+      
+            let apiUrl = 'https://api.cloudinary.com/v1_1/straysafe/image/upload';
+            let data = {
+                "file": base64Img,
+                "upload_preset": "bareeeg8"
+            }
+
+            fetch(apiUrl, {
+                body: JSON.stringify(data),
+                headers: {
+                'content-type': 'application/json'
+                },
+                method: 'POST',
+            }).then(async r => {
+                let data = await r.json()
+                console.log(data.secure_url)
+                setImageUrl(data.secure_url)
+                return data.secure_url
+            }).catch(err=>console.log(err))
+        }
+    }
+
 
     return (
         <>
@@ -102,7 +145,7 @@ export default function CreateThread({ navigation }) {
                                 value={title} 
                                 label='Thread Title'
                                 onChangeText={text => setTitle(text)}
-                                placeholder="thread title..."
+                                placeholder="Thread title..."
                             />
                         </View>
                         <View>
@@ -113,7 +156,7 @@ export default function CreateThread({ navigation }) {
                                 value={description}
                                 label='Thread Description'
                                 textAlignVertical="top"
-                                placeholder="thread description..."
+                                placeholder="Thread description..."
                                 onChangeText={text => setDescription(text)}
                             />
                         </View>
@@ -174,12 +217,25 @@ export default function CreateThread({ navigation }) {
                                 
                                 <Text>Target</Text>
                             </TouchableOpacity>
+
+                        <Button
+                        title="Snapshot" 
+                        style={styles.submitButtonStyle}
+                        onPress={() => handleOnSubmit(navigation)}
+                        rounded
+                        children={<Text style={{ color: '#FFF' }}>Take Snapshot!</Text>}
+                        customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
+                        onPress={() => chooseImageOnPress()}/>
+
                         <Button 
                             title="Submit" 
                             style={styles.submitButtonStyle}
                             onPress={() => handleOnSubmit(navigation)}
+                            rounded
+                            children={<Text style={{ color: '#FFF' }}>Submit New Thread</Text>}
+                            customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
 
-                        > Submit </Button>
+                        />
                     </View>
                     </ScrollView>
                 </SafeAreaView>
@@ -190,21 +246,19 @@ export default function CreateThread({ navigation }) {
 const styles = StyleSheet.create({
 
     mapStyle: {
-        width: window.innerWidth,
         justifyContent: 'center',
         height: 300,
         marginBottom: 15,
-        borderColor: lib.primary,
     },
     locationUpdate: {
         position: 'absolute',
         padding: 10,
-        marginLeft: 240,
+        marginLeft: 280,
         marginRight: 10,
         zIndex: 1,
         borderRadius: 10,
         elevation: 2,
-        bottom: 100,
+        bottom: 180,
         backgroundColor: lib.light
     },
     titleStyle: {
@@ -220,7 +274,7 @@ const styles = StyleSheet.create({
     },
     descriptionStyle: {
         padding: 5,
-        elevation: 5
+        elevation: 5,
     },
     addressStyle: {
         marginBottom: 10,
@@ -228,14 +282,12 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     submitButtonStyle: {
-        padding: 10,
-        elevation: 5
     },
     createThreadFormStyle: {
         backgroundColor: lib.primary,
-        width: 350,
+        width: 385,
         padding: 15,
         borderRadius: 15,
-        marginTop: 35
+        marginTop: 15
     }
 })

@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Comment from './Comment';
 import { createComment, fetchOneThread, reqStatusUp } from '../store/actions'
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, PermissionsAndroid, SafeAreaView, StatusBar, ActivityIndicator, ProgressBarAndroid } from 'react-native';
+import { StyleSheet, View, PermissionsAndroid, SafeAreaView, StatusBar, Image, ProgressBarAndroid, AsyncStorage } from 'react-native';
 import AppHeader from './AppHeader';
 import MapView, { Marker } from 'react-native-maps';
 import CustomMapStyle from './MapStyle';
@@ -22,18 +22,26 @@ export default function ThreadDetail (props) {
 
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     dispatch(fetchOneThread(thread.id))
-    //     setThreadDetail({...threadDetail, threadFetched})
-    // }, [])
-    console.log('data fetched dengan include', threadFetched, 'Data fetched')
+    // console.log('data fetched dengan include', threadFetched, 'Data fetched')
 
     const handleOnPress = (e, thread) => {
-        // onRefresh()
+        (_retrieveData = async () => {
+            try {
+              const value = await AsyncStorage.getItem('token');
+              if (value !== null) {
+                // We have data!!
+                console.log(value, 'tokennyaaaa nihhhhh');
+              }
+            } catch (error) {
+              // Error retrieving data
+            }
+          })()
+        
         const payload = {
             message: comment,
             ThreadId: thread.id,
         }
+
         dispatch(createComment(payload, token))
         // dispatch(fetchOneThread(thread.id))
         if(checked) {
@@ -43,17 +51,20 @@ export default function ThreadDetail (props) {
         setComment('')
     }
 
+    const dateFormat = new Date(threadFetched.createdAt).toLocaleDateString()
+
     const Header = (props) => (
         <View {...props}>
             <View style={{flex:1, flexDirection: 'row'}}>
                 <View style={styles.userPhotoContainer}>
                     <View style={styles.userPhoto}>
+                        <Image source={{ uri: thread.User.img_url }} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} />
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
                     <Text category='h6'>{threadFetched.title.toUpperCase()}</Text>
-                    <Text category='s2'>{threadFetched.createdAt} by {threadFetched.User.first_name}</Text>
-                    <Text category='c1' status={threadFetched.status == '1' ? 'warning' : 'success'}>
+                    <Text category='s2'>{dateFormat} by {threadFetched.User.first_name}</Text>
+                    <Text category='c1' status={threadFetched.status == '1' ? 'danger' : 'success'}>
                     {
                         threadFetched.status == '1' ? 'unresolved' :
                         threadFetched.status == '2' ? 'requested' : 'solved'
@@ -96,7 +107,6 @@ export default function ThreadDetail (props) {
                     style={styles.card} 
                     header={Header} 
                     footer={Footer}
-                    status={threadFetched.status == 'unresolved' ? 'danger':'success'}
                 
                 >  
                         <MapView 
@@ -168,7 +178,6 @@ const styles = StyleSheet.create({
     card: {
       flex: 1,
       margin: 2,
-      borderRadius: 10
     },
     checkbox: {
       margin: 2,
