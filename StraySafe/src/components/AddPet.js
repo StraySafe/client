@@ -52,76 +52,76 @@ export default function AddPet() {
 
         <AppHeader title='Add Pet' navigation={navigation} />
         <ScrollView>
-        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
-          <View style={{
-            padding: 15,
-            backgroundColor: lib.primary,
-            borderRadius: 15,
-            width: 350,
-            marginTop: 35
-          }}>
-            <Input
-              placeholder="Your pet's name"
-              label='Name'
-              value={name}
-              onChangeText={nextValue => setName(nextValue)}
-              style={{ marginBottom: 10 }}
-            />
-            {ageMonth > 12 ? <Text style={{ marginBottom: 10, color: 'maroon' }}>oops, invalid month value</Text> : null}
-            <Layout style={{ marginBottom: 10, flexDirection: 'row', backgroundColor: lib.primary }} level='1'>
-
+          <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+            <View style={{
+              padding: 15,
+              backgroundColor: lib.primary,
+              borderRadius: 15,
+              width: 350,
+              marginTop: 35
+            }}>
               <Input
-                style={{ marginRight: 10, width: 100, flex: 2 }}
-                label="Year"
-                value={ageYear}
-                keyboardType='number-pad'
-                maxLength={2}
-                placeholder='0'
-                onChangeText={nextValue => setAgeYear(nextValue)}
+                placeholder="Your pet's name"
+                label='Name'
+                value={name}
+                onChangeText={nextValue => setName(nextValue)}
+                style={{ marginBottom: 10 }}
               />
+              {ageMonth > 12 ? <Text style={{ marginBottom: 10, color: 'red' }}>oops, invalid month value</Text> : null}
+              <Layout style={{ marginBottom: 10, flexDirection: 'row', backgroundColor: lib.primary }} level='1'>
 
+                <Input
+                  style={{ marginRight: 10, width: 100, flex: 2 }}
+                  label="Birth Month"
+                  value={ageMonth}
+                  keyboardType='number-pad'
+                  maxLength={2}
+                  placeholder='8'
+                  onChangeText={nextValue => setAgeMonth(nextValue)}
+                />
+
+                <Input
+                  style={{ marginHorizontal: 10, width: 100, flex: 2 }}
+                  label="Birth Year"
+                  value={ageYear}
+                  keyboardType='number-pad'
+                  maxLength={4}
+                  placeholder='0'
+                  onChangeText={nextValue => setAgeYear(nextValue)}
+                />
+
+              </Layout>
               <Input
-                style={{ marginHorizontal: 10, width: 100, flex: 2 }}
-                label="Month"
-                value={ageMonth}
-                keyboardType='number-pad'
-                maxLength={2}
-                placeholder='8'
-                onChangeText={nextValue => setAgeMonth(nextValue)}
+                placeholder="Your pet's species"
+                label="Species"
+                value={species}
+                onChangeText={nextValue => setSpecies(nextValue)}
+                style={{ marginBottom: 10 }}
               />
-
-            </Layout>
-            <Input
-              placeholder="Your pet's species"
-              label="species"
-              value={species}
-              onChangeText={nextValue => setSpecies(nextValue)}
-              style={{ marginBottom: 10 }}
-            />
-            <Input
-              placeholder="Your pet's Image Url"
-              label="Image Url"
-              value={imgUrl}
-              onChangeText={nextValue => setImgUrl(nextValue)}
-              style={{ marginBottom: 10 }}
-            />
-            <Input
-              placeholder="Tell something about your cat and why others should adopt it."
-              label="Description"
-              multiline={true}
-              value={description}
-              onChangeText={nextValue => setDescription(nextValue)}
-              style={{ marginBottom: 10 }}
-            />
-            <Button
-              style={{ alignItems: 'center' }}
-              onPress={handleOnPress}
-              children={<Text style={{ color: '#FFF' }}>Add New Pet</Text>}
-              rounded
-              customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
-            />
-          </View>
-        </KeyboardAwareScrollView>
+              <Input
+                placeholder="Your pet's Image Url"
+                label="Image Url"
+                value={imgUrl}
+                onChangeText={nextValue => setImgUrl(nextValue)}
+                style={{ marginBottom: 10 }}
+              />
+              <Input
+                placeholder="Tell something about your cat and why others should adopt it."
+                label="Description"
+                multiline={true}
+                value={description}
+                onChangeText={nextValue => setDescription(nextValue)}
+                style={{ marginBottom: 10 }}
+              />
+              <Button
+                style={{ alignItems: 'center' }}
+                onPress={handleOnPress}
+                children={<Text style={{ color: '#FFF' }}>Add New Pet</Text>}
+                rounded
+                customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
+              />
+            </View>
+          </KeyboardAwareScrollView>
         </ScrollView>
       </SafeAreaView>
     </>
