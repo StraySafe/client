@@ -154,6 +154,7 @@ export function MyProfile() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+      <Stack.Screen name="Pet Detail" component={PetDetail} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 }
