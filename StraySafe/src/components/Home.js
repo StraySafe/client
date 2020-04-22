@@ -17,6 +17,7 @@ export default function Home({ navigation }) {
 
     const navToContent = (navigation) => {
         dispatch(loginUser({ email, password }))
+        setPassword('')
         navigation.push('Content')
     }
 
