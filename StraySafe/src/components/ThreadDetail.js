@@ -153,7 +153,7 @@ export default function ThreadDetail (props) {
                     <Text category='h4' style={{paddingBottom:20}}>{threadFetched.title.toUpperCase()}</Text>
                     <View style={{flexDirection: 'row'}}>
                         {/* <Image source={{ uri: threadFetched.img_url}} style={{ resizeMode: 'cover', width: 150, height: 150, flex: 1}} /> */}
-                        <Image source={require('../../assets/marker.png')} style={{ resizeMode: 'cover', width: 150, height: 150, flex: 1}} />
+                        <Image source={{ uri: threadFetched.img_url}} style={{ resizeMode: 'cover', width: 150, height: 150, flex: 1, marginRight: 5}} />
                         <Text style={{flex: 1}}>{threadFetched.description}</Text>
                     </View>
 

@@ -124,6 +124,17 @@ export default function CreateThread({ navigation }) {
                 let data = await r.json()
                 console.log(data.secure_url)
                 setImageUrl(data.secure_url)
+                Alert.alert(
+                    "Upload Information",
+                    "Snapshot has been added successfully!",
+                    [
+                      {
+                        text: "Ok",
+                        onPress: () => console.log("Confirm Info"),
+                        style: "cancel"
+                      }
+                    ]
+                  );
                 return data.secure_url
             }).catch(err=>console.log(err))
         }
