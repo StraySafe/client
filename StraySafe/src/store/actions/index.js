@@ -12,12 +12,13 @@ export const SET_REGISTER_STATUS = 'SET_REGISTER_STATUS'
 export const SET_CURRENT_USER_DATA = 'SET_CURRENT_USER_DATA'
 export const SET_USER_THREADS = 'SET_USER_THREAD'
 export const SET_LOADING = 'SET_LOADING'
+export const SET_OWNER = 'SET_OWNER'
 
 // const baseURL = 'http://192.168.2.159:3000'
 // const baseURL = 'http://192.168.43.5:3000'
 // const baseURL = 'http://192.168.2.159:3000' 
-const baseURL = 'http://192.168.43.5:3000'
-// const baseURL = 'http://192.168.1.14:3000'
+// const baseURL = 'http://192.168.43.5:3000'
+const baseURL = 'http://192.168.1.14:3000'
 
 export const setLoading = (loadStatus) => {
     return {
@@ -246,6 +247,30 @@ export const setOneUser = (user) => {
     return {
         type: SET_ONEUSER,
         payload: user
+    }
+}
+
+export const setOwner = (user) => {
+    return {
+        type: SET_OWNER,
+        payload: user
+    }
+}
+
+export const fetchOwner = (userId) => {
+    return (dispatch) => {
+        // console.log('USER ID FETCH ONE USER => ', userId);
+        // console.log('halo????');
+        axios
+            .get(`${baseURL}/users/${userId}`)
+            .then(({ data }) => {
+                // console.log('AAAAAAAA ****');
+                dispatch(setOwner(data))
+            })
+            .catch(err => {
+                console.log('ERRRRROORRRR - - - - - - -');
+                console.log(err)
+            })
     }
 }
 
