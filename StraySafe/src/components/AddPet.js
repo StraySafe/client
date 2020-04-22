@@ -67,7 +67,7 @@ export default function AddPet() {
       }).then(async r => {
         let data = await r.json()
         console.log(data.secure_url)
-        setImageUrl(data.secure_url)
+        setImgUrl(data.secure_url)
         return data.secure_url
       }).catch(err => console.log(err))
     }
@@ -148,7 +148,6 @@ export default function AddPet() {
               />
               <Button
                 title="Snapshot"
-                onPress={() => handleOnSubmit(navigation)}
                 rounded
                 children={<Text style={{ color: '#FFF' }}>Take Snapshot!</Text>}
                 customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}

@@ -75,7 +75,7 @@ export default function Thread ({ navigation, thread}) {
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
                     <Text category='p1'>{thread.title.toUpperCase()}</Text>
-                    <Text category='s2'>{date.toLocaleDateString()} by {thread.User.first_name}</Text>
+                    <Text category='s2' style={{fontWeight: "bold"}}>{date.toLocaleDateString()} by {thread.User.first_name}</Text>
                     <Text category='s2'>{(distance / 1000).toFixed(2)} km away</Text>
                 </View>
             </View>
@@ -84,23 +84,23 @@ export default function Thread ({ navigation, thread}) {
 
     const Footer = (props) => (
         <View {...props} style={{
-                            flexDirection: "row", 
-                            alignItems: "flex-end", 
-                            justifyContent: "space-between",
-                            marginHorizontal: 25,
-                            padding: 5,
-                        }}
+                flexDirection: "row", 
+                alignItems: "flex-end", 
+                justifyContent: "space-between",
+                marginHorizontal: 25,
+                padding: 5,
+            }}
         >
             <Text
                 style={{textTransform: "uppercase"}}
-                category='s2' 
+                category='c2' 
                 status={thread.status == '1' ? 'danger' : 'success'}
             >
             {
                 thread.status == '1' ? 'unresolved' :
                 thread.status == '2' ? 'requested' : 'solved'
             } </Text>
-            <Text category='s2'>{thread.Comments.length} Comments</Text>
+            <Text category='c2'>{thread.Comments.length} Comments</Text>
         </View>
     )
 
