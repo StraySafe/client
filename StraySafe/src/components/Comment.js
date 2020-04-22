@@ -9,19 +9,19 @@ export default function Comment ({ comment }) {
 
     return (
         <Card style={styles.commentStyle}>
-            <View style={{flex:1, flexDirection: 'row'}}>
-                <View style={styles.userPhotoContainer}>
-                    <View style={styles.userPhoto}>
+            <View style={{flex:1}}>
+                <View style={{...styles.userPhotoContainer, flexDirection: 'row'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Image source={{ uri: comment.User.img_url }} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
+                        <View style={{marginLeft: 10}}>
+                            <Text category="p2" style={{fontWeight: "bold", fontSize: 14}}>{comment.User.first_name}</Text>
+                            <Text category='c2' style={{color: 'gray'}}>commented {moment(comment.createdAt).fromNow(true)} ago</Text>
+                        </View>
                     </View>
                 </View>
-                <View style={{flex:1, flexDirection: 'column', alignItems: "flex-start", marginLeft: 10, justifyContent: "space-between"}}>
-                    <View style={{borderBottomWidth: 0.4, marginBottom: 15}}>
-                        <Text category="p2" style={{fontWeight: "bold"}}>{comment.User.first_name}</Text>
-                        <Text category='c2'>commented {moment(comment.createdAt).fromNow(true)} ago</Text>
-                    </View>
-                    <ScrollView style={{backgroundColor: lib.light, borderRadius: 2}}>
-                        <Text category="p1" style={{fontStyle: "normal"}}>"{comment.message}"</Text> 
+                <View style={{flex:1, flexDirection: 'column', alignItems: "flex-start", marginLeft: 20, marginTop: 20, justifyContent: "space-between"}}>
+                    <ScrollView style={{borderRadius: 2}}>
+                        <Text category="p1" style={{fontStyle: "normal"}}>{comment.message}</Text> 
                     </ScrollView>
                 </View>
             </View>

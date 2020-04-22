@@ -116,6 +116,7 @@ export const setUser = (user) => {
 
 export const fetchThreads = () => {
     return (dispatch) => {
+        dispatch(setLoading(true))
         axios
             .get(`${baseURL}/threads`)
             .then(({ data }) => {
@@ -123,7 +124,7 @@ export const fetchThreads = () => {
                 dispatch(setThreads(threads))
             }).catch((err) => {
                 console.log(err)
-            });
+            }).finally(_ => dispatch(setLoading(false)))
     }
 }
 
@@ -178,7 +179,8 @@ export const createThread = (thread, token) => {
 
 export const createComment = (comment, token) => {
     // console.log(comment)
-    return (dispatch) => {
+        return (dispatch) => {
+        dispatch(setLoading(true))
         axios({
             method: 'POST',
             url: `${baseURL}/threads/${comment.ThreadId}`,
@@ -193,7 +195,7 @@ export const createComment = (comment, token) => {
             dispatch(fetchOneThread(comment.ThreadId))
         }).catch((err) => {
             console.log(err)
-        });
+        }).finally(_ => dispatch(setLoading(false)))
     }
 }
 
@@ -207,6 +209,7 @@ export const setPets = (pets) => {
 export const fetchPets = (token) => {
     return (dispatch) => {
         // console.log(token, '< < < token');
+        dispatch(setLoading(true))
         axios({
             method: 'GET',
             url: `${baseURL}/pet`,
@@ -219,7 +222,7 @@ export const fetchPets = (token) => {
             })
             .catch((err) => {
                 console.log(err)
-            });
+            }).finally(_ => dispatch(setLoading(false)))
     }
 }
 
