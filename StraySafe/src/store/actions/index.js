@@ -373,3 +373,15 @@ export const reqStatusUp = (threadId) => {
             });
     }
 }
+
+export const resolveStatusUp = (threadId) => {
+    return (dispatch) => {
+        axios
+            .put(`${baseURL}/threads/statusResolved/${threadId}`)
+            .then(({ data }) => {
+                dispatch(fetchThreads())
+            }).catch((err) => {
+                console.log(err) 
+            });
+    }
+}
