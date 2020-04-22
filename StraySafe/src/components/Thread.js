@@ -62,11 +62,6 @@ export default function Thread ({ navigation, thread}) {
             navigation.navigate('Thread Detail', {
                 thread
             })
-        // wait(2000).then(() => {
-        //     navigation.navigate('Thread Detail', {
-        //         thread
-        //     })
-        // });
     }
 
 

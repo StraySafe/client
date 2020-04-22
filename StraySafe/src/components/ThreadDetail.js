@@ -107,7 +107,6 @@ export default function ThreadDetail (props) {
                     style={styles.card} 
                     header={Header} 
                     footer={Footer}
-                    status={threadFetched.status == 'unresolved' ? 'danger':'success'}
                 
                 >  
                         <MapView 
@@ -179,7 +178,6 @@ const styles = StyleSheet.create({
     card: {
       flex: 1,
       margin: 2,
-      borderRadius: 10
     },
     checkbox: {
       margin: 2,
