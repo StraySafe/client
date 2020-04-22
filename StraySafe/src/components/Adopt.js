@@ -17,8 +17,9 @@ export default function Adopt() {
   const pets = useSelector((state) => state.pets);
   const token = useSelector(state => state.access_token);
   const isLoading = useSelector(state => state.isLoading)
+  const currentUserData = useSelector(state => state.currentUserData);
 
-  const adoptablePets = pets.filter(cat => cat.request_user_id == null);
+  const adoptablePets = pets.filter(cat => cat.request_user_id == null && cat.UserId !== currentUserData.id);
   const sortedPets = adoptablePets.slice(0).sort(compareValues('updatedAt', 'desc'));
 
   useEffect(() => {
