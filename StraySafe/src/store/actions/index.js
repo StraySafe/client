@@ -16,9 +16,9 @@ export const SET_OWNER = 'SET_OWNER'
 
 // const baseURL = 'http://192.168.2.159:3000'
 // const baseURL = 'http://192.168.43.5:3000'
-// const baseURL = 'http://192.168.2.159:3000' 
+const baseURL = 'http://192.168.2.159:3000' 
 // const baseURL = 'http://192.168.43.5:3000'
-const baseURL = 'http://192.168.1.14:3000'
+// const baseURL = 'http://192.168.1.14:3000'
 
 export const setLoading = (loadStatus) => {
     return {
@@ -373,6 +373,18 @@ export const reqStatusUp = (threadId) => {
                 dispatch(fetchThreads())
             }).catch((err) => {
                 console.log(err)
+            });
+    }
+}
+
+export const resolveStatusUp = (threadId) => {
+    return (dispatch) => {
+        axios
+            .put(`${baseURL}/threads/statusResolved/${threadId}`)
+            .then(({ data }) => {
+                dispatch(fetchThreads())
+            }).catch((err) => {
+                console.log(err) 
             });
     }
 }

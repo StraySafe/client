@@ -166,9 +166,8 @@ export default function CreateThread({ navigation }) {
                             <View>
                                 <Input
                                     style={styles.titleStyle}
-                                    value={imgUrl}
+                                    value={image_Url}
                                     label='Image Url'
-                                    onChangeText={text => setImgUrl(text)}
                                     placeholder="Condition's Image Url"
                                 />
                             </View>
@@ -223,8 +222,6 @@ export default function CreateThread({ navigation }) {
 
                         <Button
                         title="Snapshot" 
-                        style={styles.submitButtonStyle}
-                        onPress={() => handleOnSubmit(navigation)}
                         rounded
                         children={<Text style={{ color: '#FFF' }}>Take Snapshot!</Text>}
                         customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Text, Input, Button, List, Card, Toggle } from '@ui-kitten/components';
 import { ScrollView } from 'react-native-gesture-handler';
 import Comment from './Comment';
-import { createComment, fetchOneThread, reqStatusUp } from '../store/actions'
+import { createComment, fetchOneThread, reqStatusUp, resolveStatusUp } from '../store/actions'
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View, PermissionsAndroid, SafeAreaView, StatusBar, Image, ProgressBarAndroid, AsyncStorage } from 'react-native';
 import AppHeader from './AppHeader';
@@ -19,10 +19,10 @@ export default function ThreadDetail (props) {
     const threadFetched = useSelector(state => state.thread)
     const isLoading = useSelector(state => state.isLoading)
     const currentUser = useSelector(state => state.currentUserData)
+    const [ resolveThread, setResolveThread ] = useState(false)
 
     const dispatch = useDispatch()
 
-    // console.log('data fetched dengan include', threadFetched, 'Data fetched')
 
     const handleOnPress = (e, thread) => {
         (_retrieveData = async () => {
@@ -64,12 +64,22 @@ export default function ThreadDetail (props) {
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
                     <Text category='h6'>{threadFetched.title.toUpperCase()}</Text>
                     <Text category='s2'>{dateFormat} by {threadFetched.User.first_name}</Text>
-                    <Text category='c1' status={threadFetched.status == '1' ? 'danger' : 'success'}>
-                    {
-                        threadFetched.status == '1' ? 'unresolved' :
-                        threadFetched.status == '2' ? 'requested' : 'solved'
-                    }
-                    </Text>
+                    <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-start"}}>
+                        {
+                            thread.User.id === currentUser.id ? 
+                            <Toggle checked={threadFetched.status == 3 ? true : resolveThread} onChange={() => onResolveChange(threadFetched.id)}>
+                                <Text category="h6">{ threadFetched.status == 3 ? `Solved` : `Resolve`}</Text>
+                            </Toggle>
+                            : 
+                            <Text category='c1' status={threadFetched.status == '1' ? 'danger' : 'success'}>
+                            {
+                                threadFetched.status == '1' ? 'unresolved' :
+                                threadFetched.status == '2' ? 'requested' : 'solved'
+                            }
+                            </Text>
+                        }
+                    </View>
+                    
                 </View>
             </View>
         </View>
@@ -84,6 +94,11 @@ export default function ThreadDetail (props) {
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
     };
+
+    const onResolveChange = (threadId) => {
+        setResolveThread(true)
+        dispatch(resolveStatusUp(threadId))
+    }
 
 
 
