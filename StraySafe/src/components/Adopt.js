@@ -9,12 +9,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import AppHeader from './AppHeader';
 import moment from 'moment';
 import compareValues from './sort';
+import LoadingScreen from './LoadingScreen'
 
 export default function Adopt() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const pets = useSelector((state) => state.pets);
   const token = useSelector(state => state.access_token);
+  const isLoading = useSelector(state => state.isLoading)
 
   const adoptablePets = pets.filter(cat => cat.request_user_id == null);
   const sortedPets = adoptablePets.slice(0).sort(compareValues('updatedAt', 'desc'));
@@ -22,6 +24,23 @@ export default function Adopt() {
   useEffect(() => {
     dispatch(fetchPets(token));
   }, [])
+  
+  if(isLoading) return (
+    <>
+      <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
+      <SafeAreaView style={{ backgroundColor: lib.white }}>
+        <StatusBar
+          backgroundColor={lib.primary}
+          barStyle='light-content'
+        />
+        <AppHeader title='Adopt' navigation={navigation} />
+        <ScrollView>
+          <LoadingScreen/>
+        </ScrollView>
+      </SafeAreaView>
+    </>
+  )
+
   return (
     <>
       <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />

@@ -8,15 +8,18 @@ import { Button } from '@ui-kitten/components'
 import lib from './ColorLib';
 import AppHeader from './AppHeader';
 import compareValues from './sort'
+import LoadingScreen from './LoadingScreen'
 
 export default function ThreadList({ navigation }) {
 
     const dispatch = useDispatch()
     const threads = useSelector(state => state.threads)
+    const isLoading = useSelector(state => state.isLoading)
     
     useEffect(() => {
         dispatch(fetchThreads())
     }, [])
+
     
     const sortedActivities = threads.slice(0).sort(compareValues('createdAt', 'desc'))
     return (
@@ -28,11 +31,17 @@ export default function ThreadList({ navigation }) {
                     backgroundColor={lib.primary}
                     barStyle='light-content'
                 />
-                <ScrollView>
+                { isLoading ? 
+                    ( <ScrollView>
+                        <LoadingScreen/>
+                      </ScrollView> ) : 
+                    ( <ScrollView>
                     {sortedActivities.map((thread) => (
                         <Thread navigation={navigation} thread={thread} key={thread.id} />
                     ))}
-                </ScrollView>
+                    </ScrollView> )
+                }
+                
             </SafeAreaView>
         </>
     );
