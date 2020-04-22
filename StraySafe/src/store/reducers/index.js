@@ -9,7 +9,8 @@ import {
     SET_ONE_THREAD,
     SET_CURRENT_USER_DATA,
     SET_USER_THREADS,
-    SET_LOADING
+    SET_LOADING,
+    SET_OWNER
 } from '../actions'
 
 
@@ -24,7 +25,8 @@ const initialState = {
     register_status: '',
     currentUserData: {},
     user_threads: [],
-    isLoading: false
+    isLoading: false,
+    owner: {}
 }
 
 export const reducers = (state = initialState, action) => {
@@ -54,6 +56,11 @@ export const reducers = (state = initialState, action) => {
             return {
                 ...state,
                 oneUser: payload
+            }
+        case SET_OWNER:
+            return {
+                ...state,
+                owner: payload
             }
         case SET_ACCESS_TOKEN:
             return {

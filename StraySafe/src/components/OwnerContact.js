@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet, Dimensions, SafeAreaView, StatusBar, Image } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOneUser } from '../store/actions';
+import { fetchOwner } from '../store/actions';
 import lib from './ColorLib';
 import AppHeader from './AppHeader';
 
 export default function OwnerContact({ route, navigation }) {
   const dispatch = useDispatch();
   const { userId } = route.params;
-  const oneUser = useSelector((state) => state.oneUser);
+  const oneUser = useSelector((state) => state.owner);
 
   useEffect(() => {
-    dispatch(fetchOneUser(userId))
+    dispatch(fetchOwner(userId))
   }, [])
 
   return (
