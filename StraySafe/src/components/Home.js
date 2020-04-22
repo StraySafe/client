@@ -16,12 +16,12 @@ export default function Home ({ navigation }) {
 
     const navToContent = (navigation) => {
         dispatch(loginUser({email, password}))
-        navigation.push('Content')
+        navigation.navigate('Content')
         
     }
 
     const navToRegisterForm = (navigation) => {
-        navigation.push('Register Form')
+        navigation.navigate('Register Form')
     }
     
     return (

@@ -48,7 +48,7 @@ console.log(oneUser, '- - - - - - - - - -')
                 <Image source={require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
                 <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
                   <Text style={{ fontSize: 16, fontWeight: '500' }}>{thread.title}</Text>
-                  <Text style={{ fontSize: 12, color: lib.accent }}>{thread.createdAt} by You</Text>
+                  <Text style={{ fontSize: 12, color: lib.accent }}>{(new Date(thread.createdAt)).toLocaleDateString()} by You</Text>
                 </View>
               </TouchableOpacity>
             ))

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Text, Card } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Comment ({ comment }) {
 
@@ -9,11 +10,14 @@ export default function Comment ({ comment }) {
             <View style={{flex:1, flexDirection: 'row'}}>
                 <View style={styles.userPhotoContainer}>
                     <View style={styles.userPhoto}>
+                        <Image source={{ uri: comment.User.img_url }} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 10}}>
-                    <Text>{comment.UserId}</Text> 
-                    <Text>{comment.message}</Text> 
+                    <Text category="p1">{comment.User.first_name}</Text>
+                    <ScrollView>
+                        <Text category="p2">{comment.message}</Text> 
+                    </ScrollView>
                 </View>
             </View>
         </Card>

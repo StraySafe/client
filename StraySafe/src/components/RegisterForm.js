@@ -55,6 +55,7 @@ export default function RegisterForm({ navigation }) {
        
     }
 
+
     return (
         <ScrollView>
         <KeyboardAvoidingView style={styles.formStyle} behavior="height">
@@ -119,6 +120,8 @@ export default function RegisterForm({ navigation }) {
                     numberOfLines={4}
                     textAlignVertical='top'    
                 />
+
+
                 <Button
                     onPress={() => handleOnSubmit(navigation)}
                 >
