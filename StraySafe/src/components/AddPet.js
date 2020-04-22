@@ -14,8 +14,8 @@ export default function AddPet() {
   const [name, setName] = useState('');
   const [species, setSpecies] = useState('');
   const [description, setDescription] = useState('');
-  const [ageYear, setAgeYear] = useState('');
-  const [ageMonth, setAgeMonth] = useState('');
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const pets = useSelector((state) => state.pets);
   const dispatch = useDispatch();
@@ -27,15 +27,15 @@ export default function AddPet() {
       name,
       species,
       description,
-      ageYear,
-      ageMonth,
+      year,
+      month,
       img_url: imgUrl
     }, token))
     setName('');
     setSpecies('');
     setDescription('');
-    setAgeYear('');
-    setAgeMonth('');
+    setYear('');
+    setMonth('');
     setImgUrl('');
     dispatch(fetchPets(token));
     navigation.navigate('Adopt');
@@ -67,27 +67,27 @@ export default function AddPet() {
                 onChangeText={nextValue => setName(nextValue)}
                 style={{ marginBottom: 10 }}
               />
-              {ageMonth > 12 ? <Text style={{ marginBottom: 10, color: 'red' }}>oops, invalid month value</Text> : null}
+              {month > 12 ? <Text style={{ marginBottom: 10, color: 'red' }}>oops, invalid month value</Text> : null}
               <Layout style={{ marginBottom: 10, flexDirection: 'row', backgroundColor: lib.primary }} level='1'>
 
                 <Input
                   style={{ marginRight: 10, width: 100, flex: 2 }}
                   label="Birth Month"
-                  value={ageMonth}
+                  value={month}
                   keyboardType='number-pad'
                   maxLength={2}
                   placeholder='8'
-                  onChangeText={nextValue => setAgeMonth(nextValue)}
+                  onChangeText={nextValue => setMonth(nextValue)}
                 />
 
                 <Input
                   style={{ marginHorizontal: 10, width: 100, flex: 2 }}
                   label="Birth Year"
-                  value={ageYear}
+                  value={year}
                   keyboardType='number-pad'
                   maxLength={4}
                   placeholder='0'
-                  onChangeText={nextValue => setAgeYear(nextValue)}
+                  onChangeText={nextValue => setYear(nextValue)}
                 />
 
               </Layout>
