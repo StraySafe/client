@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet, Dimensions, SafeAreaView, StatusBar, Image } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOneUser } from '../store/actions';
+import { fetchOwner } from '../store/actions';
 import lib from './ColorLib';
 import AppHeader from './AppHeader';
 
 export default function OwnerContact({ route, navigation }) {
   const dispatch = useDispatch();
   const { userId } = route.params;
-  const oneUser = useSelector((state) => state.oneUser);
+  const oneUser = useSelector((state) => state.owner);
 
   useEffect(() => {
-    dispatch(fetchOneUser(userId))
+    dispatch(fetchOwner(userId))
   }, [])
 
   return (
@@ -29,7 +29,7 @@ export default function OwnerContact({ route, navigation }) {
         <View style={styles.defaultPage}>
           <Text category='h5' style={{ marginBottom: 15 }}>Your request is sent!</Text>
           <Text category='h6' style={{ marginBottom: 25, width: Dimensions.get('window').width * 0.75, textAlign: 'center' }}>Please reach the owner by email/phone number</Text>
-          <Image source={require('../../assets/userplaceholder.jpg')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2, marginBottom: 25 }} />
+          <Image source={oneUser.img_url ? { uri: oneUser.img_url } : require('../../assets/userplaceholder.png')} style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2, marginBottom: 25 }} />
           <Text style={{ marginBottom: 15 }}>{`${oneUser.first_name} ${oneUser.last_name}`}</Text>
           <Text>{`${oneUser.email}`}</Text>
           <Text>{`${oneUser.phone_number}`}</Text>
