@@ -9,6 +9,7 @@ import AppHeader from './AppHeader';
 import MapView, { Marker } from 'react-native-maps';
 import CustomMapStyle from './MapStyle';
 import lib from './ColorLib';
+import moment from 'moment';
 
 export default function ThreadDetail (props) {
     const [ comment, setComment ] = useState('')
@@ -51,7 +52,7 @@ export default function ThreadDetail (props) {
         setComment('')
     }
 
-    const dateFormat = new Date(threadFetched.createdAt).toLocaleDateString()
+    const dateFormat = moment(thread.createdAt).format("ddd, hA")
 
     const Header = (props) => (
         <View {...props}>
@@ -62,13 +63,13 @@ export default function ThreadDetail (props) {
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
-                    <Text category='h6'>{threadFetched.title.toUpperCase()}</Text>
-                    <Text category='s2'>{dateFormat} by {threadFetched.User.first_name}</Text>
+                    <Text category='h6'>{threadFetched.User.first_name}</Text>
+                    <Text category='s2'>on {dateFormat}</Text>
                     <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-start"}}>
                         {
                             thread.User.id === currentUser.id ? 
                             <Toggle checked={threadFetched.status == 3 ? true : resolveThread} onChange={() => onResolveChange(threadFetched.id)}>
-                                <Text category="h6">{ threadFetched.status == 3 ? `Solved` : `Resolve`}</Text>
+                                <Text category="h6">{ resolveThread == true ? `Solved` : `Resolve` }</Text>
                             </Toggle>
                             : 
                             <Text category='c1' status={threadFetched.status == '1' ? 'danger' : 'success'}>
@@ -87,7 +88,33 @@ export default function ThreadDetail (props) {
 
     const Footer = (props) => (
         <View {...props}>
-            <Text>{threadFetched.description}</Text>
+           <MapView 
+                onMapReady={() => {
+                    PermissionsAndroid.request(
+                        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+                    ).then(granted => {
+                    //   alert(granted) // just to ensure that permissions were granted
+                    });
+                }}
+                style={styles.mapStyle}
+                initialRegion={{
+                    latitude: Number(threadFetched.lat),
+                    longitude: Number(threadFetched.long),
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+                loadingEnabled
+                loadingIndicatorColor="#666666"
+                loadingBackgroundColor="#eeeeee"
+                showsUserLocation={true}
+                followsUserLocation={true}
+                showsMyLocationButton={true}
+                customMapStyle={CustomMapStyle}
+            >
+                <Marker 
+                    coordinate={{latitude: Number(threadFetched.lat), longitude: Number(threadFetched.long)}}
+                />
+            </MapView>
         </View>
     )
 
@@ -122,35 +149,14 @@ export default function ThreadDetail (props) {
                     style={styles.card} 
                     header={Header} 
                     footer={Footer}
-                
                 >  
-                        <MapView 
-                            onMapReady={() => {
-                                PermissionsAndroid.request(
-                                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-                                ).then(granted => {
-                                //   alert(granted) // just to ensure that permissions were granted
-                                });
-                            }}
-                            style={styles.mapStyle}
-                            initialRegion={{
-                                latitude: Number(threadFetched.lat),
-                                longitude: Number(threadFetched.long),
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421,
-                            }}
-                            loadingEnabled
-                            loadingIndicatorColor="#666666"
-                            loadingBackgroundColor="#eeeeee"
-                            showsUserLocation={true}
-                            followsUserLocation={true}
-                            showsMyLocationButton={true}
-                            customMapStyle={CustomMapStyle}
-                        >
-                            <Marker 
-                                coordinate={{latitude: Number(threadFetched.lat), longitude: Number(threadFetched.long)}}
-                            />
-                        </MapView>
+                    <Text category='h4' style={{paddingBottom:20}}>{threadFetched.title.toUpperCase()}</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        {/* <Image source={{ uri: threadFetched.img_url}} style={{ resizeMode: 'cover', width: 150, height: 150, flex: 1}} /> */}
+                        <Image source={require('../../assets/marker.png')} style={{ resizeMode: 'cover', width: 150, height: 150, flex: 1}} />
+                        <Text style={{flex: 1}}>{threadFetched.description}</Text>
+                    </View>
+
                 </Card>
                 {
                     threadFetched.Comments.map((comment) => (
@@ -199,7 +205,7 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         width: window.innerWidth,
-        height: 200,
+        height: 100,
         justifyContent: 'center',
         flex: 1
     },

@@ -164,14 +164,6 @@ export default function CreateThread({ navigation }) {
                                 />
                             </View>
                             <View>
-                                <Input
-                                    style={styles.titleStyle}
-                                    value={image_Url}
-                                    label='Image Url'
-                                    placeholder="Condition's Image Url"
-                                />
-                            </View>
-                            <View>
                                 <MapView
                                     onMapReady={() => {
                                         PermissionsAndroid.request(

@@ -8,7 +8,7 @@ export default function LoadingScreen() {
     <React.Fragment>
         <View  style={styles.defaultPage}>
             <Image source={require('../../assets/loading.gif')}/>
-            <Text>Pleas wait :3 ...</Text>
+            <Text>Please wait :3 ...</Text>
             {/* style={{ resizeMode: 'cover', width: 80, height: 80, borderRadius: 80 / 2 }} */}
         </View>
     </React.Fragment>

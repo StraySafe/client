@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Thread from './Thread'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchThreads } from '../store/actions'
-import { View, Text, StyleSheet, SafeAreaView, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, StatusBar, Image } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { Button } from '@ui-kitten/components'
 import lib from './ColorLib';
@@ -34,12 +34,18 @@ export default function ThreadList({ navigation }) {
                 { isLoading ? 
                     ( <ScrollView>
                         <LoadingScreen/>
-                      </ScrollView> ) : 
+                      </ScrollView> ) : (
+                    threads[0] ? 
                     ( <ScrollView>
                     {sortedActivities.map((thread) => (
                         <Thread navigation={navigation} thread={thread} key={thread.id} />
                     ))}
-                    </ScrollView> )
+                    </ScrollView> ) : 
+                    <View style={{ justifyContent: 'center', padding: 15, alignItems: 'center' }}>
+                        <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 5, textAlign: "center" }}>Yeay, the cats are saved!</Text>
+                        <Image source={require('../../assets/noadoption.png')} style={{ resizeMode: 'contain', width: '60%' }} />
+                    </View>
+                    )
                 }
                 
             </SafeAreaView>

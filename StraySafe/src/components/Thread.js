@@ -12,13 +12,14 @@ import lib from './ColorLib'
 import CustomMapStyle from './MapStyle';
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOneThread } from '../store/actions' 
+import moment from 'moment';
 
 export default function Thread ({ navigation, thread}) {
     const { lat, long } = thread
 
     const dispatch = useDispatch()
 
-    const date = new Date(thread.createdAt)
+    const date = moment(thread.createdAt).format("ddd, hA")
 
     const [location, setLocation] = useState(null);
     const isLoading = useSelector(state => state.isLoading)
@@ -70,12 +71,12 @@ export default function Thread ({ navigation, thread}) {
             <View style={{flex:1, flexDirection: 'row'}}>
                 <View style={styles.userPhotoContainer}>
                     <View style={styles.userPhoto}>
-                        <Image source={{ uri: thread.User.img_url }} style={{ resizeMode: 'cover', width: 70, height: 70, borderRadius: 70 / 2 }} />
+                        <Image source={thread.User.img_url ? { uri: thread.User.img_url } : require('../../assets/userplaceholder.png')} style={{ resizeMode: 'cover', width: 70, height: 70, borderRadius: 70 / 2 }} />
                     </View>
                 </View>
                 <View style={{flex:1, flexDirection: 'column', marginLeft: 5}}>
                     <Text category='p1'>{thread.title.toUpperCase()}</Text>
-                    <Text category='s2' style={{fontWeight: "bold"}}>{date.toLocaleDateString()} by {thread.User.first_name}</Text>
+                    <Text category='s2' style={{fontWeight: "bold"}}>{date} by {thread.User.first_name}</Text>
                     <Text category='s2'>{(distance / 1000).toFixed(2)} km away</Text>
                 </View>
             </View>

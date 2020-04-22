@@ -132,13 +132,6 @@ export default function AddPet() {
                 style={{ marginBottom: 10 }}
               />
               <Input
-                placeholder="Your pet's Image Url"
-                label="Image Url"
-                value={imgUrl}
-                onChangeText={nextValue => setImgUrl(nextValue)}
-                style={{ marginBottom: 10 }}
-              />
-              <Input
                 placeholder="Tell something about your cat and why others should adopt it."
                 label="Description"
                 multiline={true}
