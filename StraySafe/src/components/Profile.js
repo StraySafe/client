@@ -12,12 +12,13 @@ export default function Profile({ navigation }) {
   const dispatch = useDispatch();
   const pets = useSelector((state) => state.pets);
   const oneUser = useSelector((state) => state.oneUser);
-  const userThreads = useSelector(state => state.user_threads)
+  const threads = useSelector(state => state.threads)
   const currentUserData = useSelector(state => state.currentUserData);
   const myPets = pets.filter(cat => cat.UserId == currentUserData.id);
+  const myThreads = threads.filter(thread => thread.UserId == currentUserData.id) 
 
   const sortedPets = myPets.slice(0).sort(compareValues('updatedAt', 'desc'));
-  const sortedThreads = userThreads.slice(0).sort(compareValues('updatedAt', 'desc'));
+  const sortedThreads = myThreads.slice(0).sort(compareValues('updatedAt', 'desc'));
 
   useEffect(() => {
     dispatch(fetchOneUser(currentUserData.id))
@@ -76,8 +77,8 @@ export default function Profile({ navigation }) {
           {sortedPets.length !== 0
             ?
             sortedPets.map(pet =>
-              <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }}>
-                <Image source={pet.img_url ? { uri: pet.img_url } : require('../../assets/userplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
+              <TouchableOpacity key={pet.id} style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: lib.white, borderBottomWidth: .25, borderColor: 'lightgrey', flexDirection: 'row' }} onPress={() => navigation.navigate('Pet Detail', { petId: pet.id, origin: 'fromProfile', pet })}>
+                <Image source={pet.img_url ? { uri: pet.img_url } : require('../../assets/catheadplaceholder.png')} style={{ resizeMode: 'cover', width: 50, height: 50, borderRadius: 50 / 2 }} />
                 <View style={{ justifyContent: 'center', paddingHorizontal: 15 }}>
                   <Text style={{ fontSize: 16, fontWeight: '500' }}>{pet.name}</Text>
                   <Text style={{ fontSize: 12, color: lib.accent, marginBottom: 5 }}>{`${pet.species} | ${moment(pet.birth_date).fromNow(true)}`}</Text>

@@ -90,7 +90,7 @@ export default function ThreadDetail (props) {
                             backgroundColor={lib.primary}
                             barStyle='light-content'
                         />
-                        <AppHeader title='Create New Thread' navigation={navigation} />
+                        <AppHeader title='Thread Detail' navigation={navigation} />
             <ScrollView >
                 <Card 
                     style={styles.card} 

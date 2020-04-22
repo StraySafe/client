@@ -13,17 +13,18 @@ import { createThread } from '../store/actions'
 import lib from './ColorLib';
 import CustomMapStyle from './MapStyle';
 import AppHeader from './AppHeader';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function CreateThread({ navigation }) {
 
-    const [ location, setLocation ] = useState(null);
-    const [ currentRegLatitude, setCurrentRegLatitude ] = useState(-5.001)
-    const [ currentRegLongitude, setCurrentRegLongitude ] = useState(107.215)
-    const [ errorMsg, setErrorMsg] = useState(null);
-    const [ title, setTitle ] = useState('')
-    const [ description, setDescription ] = useState('')
-    const [ imgUrl, setImgUrl ] = useState('')
-    const [ address, setAddress ] = useState('')
+    const [location, setLocation] = useState(null);
+    const [currentRegLatitude, setCurrentRegLatitude] = useState(-5.001)
+    const [currentRegLongitude, setCurrentRegLongitude] = useState(107.215)
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [imgUrl, setImgUrl] = useState('')
+    const [address, setAddress] = useState('')
     const token = useSelector(state => state.access_token)
 
     const dispatch = useDispatch()
@@ -88,60 +89,61 @@ export default function CreateThread({ navigation }) {
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
-                <SafeAreaView style={{ backgroundColor: lib.white , flex: 1, alignItems: "center"}}>
-                    <StatusBar
-                        backgroundColor={lib.primary}
-                        barStyle='light-content'
-                    />
-                    <AppHeader title='Create New Thread' navigation={navigation} />
-                    <ScrollView>
-                    <View elevation={5} style={styles.createThreadFormStyle}>
-                        <View>
-                            <Input
-                                style={styles.titleStyle} 
-                                value={title} 
-                                label='Thread Title'
-                                onChangeText={text => setTitle(text)}
-                                placeholder="thread title..."
-                            />
-                        </View>
-                        <View>
-                            <Input 
-                                style={[styles.descriptionStyle]}
-                                multiline={true}
-                                numberOfLines={5}
-                                value={description}
-                                label='Thread Description'
-                                textAlignVertical="top"
-                                placeholder="thread description..."
-                                onChangeText={text => setDescription(text)}
-                            />
-                        </View>
-                        <View>
-                            <Input
-                                style={styles.titleStyle} 
-                                value={imgUrl} 
-                                label='Image Url'
-                                onChangeText={text => setImgUrl(text)}
-                                placeholder="Condition's Image Url"
-                            />
-                        </View>
+            <SafeAreaView style={{ backgroundColor: lib.white, flex: 1, alignItems: "center" }}>
+                <StatusBar
+                    backgroundColor={lib.primary}
+                    barStyle='light-content'
+                />
+                <AppHeader title='Create New Thread' navigation={navigation} />
+                <ScrollView>
+                    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+                        <View elevation={5} style={styles.createThreadFormStyle}>
+                            <View>
+                                <Input
+                                    style={styles.titleStyle}
+                                    value={title}
+                                    label='Thread Title'
+                                    onChangeText={text => setTitle(text)}
+                                    placeholder="thread title..."
+                                />
+                            </View>
+                            <View>
+                                <Input
+                                    style={[styles.descriptionStyle]}
+                                    multiline={true}
+                                    numberOfLines={5}
+                                    value={description}
+                                    label='Thread Description'
+                                    textAlignVertical="top"
+                                    placeholder="thread description..."
+                                    onChangeText={text => setDescription(text)}
+                                />
+                            </View>
+                            <View>
+                                <Input
+                                    style={styles.titleStyle}
+                                    value={imgUrl}
+                                    label='Image Url'
+                                    onChangeText={text => setImgUrl(text)}
+                                    placeholder="Condition's Image Url"
+                                />
+                            </View>
                             <View>
                                 <MapView
                                     onMapReady={() => {
                                         PermissionsAndroid.request(
-                                        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+                                            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
                                         ).then(granted => {
                                         });
                                     }}
                                     onRegionChange={(region) => {
                                         // initialRegion={region}
                                     }}
-                                    ref = {(mapView) => { _mapView = mapView; }}
-                                    style={styles.mapStyle} 
+                                    ref={(mapView) => { _mapView = mapView; }}
+                                    style={styles.mapStyle}
                                     initialRegion={{
-                                        latitude:currentRegLatitude,
-                                        longitude:currentRegLongitude,
+                                        latitude: currentRegLatitude,
+                                        longitude: currentRegLongitude,
                                         latitudeDelta: 0.0922,
                                         longitudeDelta: 0.0421,
                                     }}
@@ -152,38 +154,39 @@ export default function CreateThread({ navigation }) {
                                     followsUserLocation={true}
                                     customMapStyle={CustomMapStyle}
                                 >
-                                    <Marker 
-                                        coordinate={{latitude: currentRegLatitude, longitude: currentRegLongitude}} 
+                                    <Marker
+                                        coordinate={{ latitude: currentRegLatitude, longitude: currentRegLongitude }}
                                         draggable
                                         title='Tap marker to use this location'
                                         description={address}
                                         onDragEnd={(e) => handleOnDrag(e)}
                                         onPress={(e) => handleOnPress(e)}
                                     >
-                                </Marker>
+                                    </Marker>
                                 </MapView>
                             </View>
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 style={styles.locationUpdate}
-                                onPress = {() => _mapView.animateToRegion({
+                                onPress={() => _mapView.animateToRegion({
                                     latitude: currentRegLatitude,
                                     longitude: currentRegLongitude,
                                     latitudeDelta: 0.0922,
                                     longitudeDelta: 0.0421,
                                 }, 2000)}>
-                                
+
                                 <Text>Target</Text>
                             </TouchableOpacity>
-                        <Button 
-                            title="Submit" 
-                            style={styles.submitButtonStyle}
-                            onPress={() => handleOnSubmit(navigation)}
+                            <Button
+                                title="Submit"
+                                style={styles.submitButtonStyle}
+                                onPress={() => handleOnSubmit(navigation)}
 
-                        > Submit </Button>
-                    </View>
-                    </ScrollView>
-                </SafeAreaView>
-            </>
+                            > Submit </Button>
+                        </View>
+                    </KeyboardAwareScrollView>
+                </ScrollView>
+            </SafeAreaView>
+        </>
     );
 }
 
@@ -236,6 +239,7 @@ const styles = StyleSheet.create({
         width: 350,
         padding: 15,
         borderRadius: 15,
-        marginTop: 35
+        marginTop: 10,
+        marginBottom: 35
     }
 })
