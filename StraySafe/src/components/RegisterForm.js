@@ -50,6 +50,8 @@ export default function RegisterForm({ navigation }) {
                         setPassword('')
                         setDescription('')
                         setPhoneNumber('')
+                        setCity('')
+                        setImgUrl('')
                     }
                 }
             ]

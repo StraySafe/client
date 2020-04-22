@@ -51,6 +51,8 @@ export default function Adopt() {
               <Image source={require('../../assets/noadoption.png')} style={{ resizeMode: 'contain', width: '60%' }} />
             </View>
           }
+          <View style={{ paddingHorizontal: 15, height: 80, paddingVertical: 10, backgroundColor: '#EFF2EF' }}>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </>

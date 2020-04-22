@@ -20,6 +20,8 @@ import { createThread } from '../store/actions'
 import lib from './ColorLib';
 import CustomMapStyle from './MapStyle';
 import AppHeader from './AppHeader';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import Button from './Button'
 import * as ImagePicker from 'expo-image-picker'
 
@@ -131,60 +133,61 @@ export default function CreateThread({ navigation }) {
     return (
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: lib.primary }} />
-                <SafeAreaView style={{ backgroundColor: lib.white , flex: 1, alignItems: "center"}}>
-                    <StatusBar
-                        backgroundColor={lib.primary}
-                        barStyle='light-content'
-                    />
-                    <AppHeader title='Create New Thread' navigation={navigation} />
-                    <ScrollView>
-                    <View elevation={5} style={styles.createThreadFormStyle}>
-                        <View>
-                            <Input
-                                style={styles.titleStyle} 
-                                value={title} 
-                                label='Thread Title'
-                                onChangeText={text => setTitle(text)}
-                                placeholder="Thread title..."
-                            />
-                        </View>
-                        <View>
-                            <Input 
-                                style={[styles.descriptionStyle]}
-                                multiline={true}
-                                numberOfLines={5}
-                                value={description}
-                                label='Thread Description'
-                                textAlignVertical="top"
-                                placeholder="Thread description..."
-                                onChangeText={text => setDescription(text)}
-                            />
-                        </View>
-                        <View>
-                            <Input
-                                style={styles.titleStyle} 
-                                value={imgUrl} 
-                                label='Image Url'
-                                onChangeText={text => setImgUrl(text)}
-                                placeholder="Condition's Image Url"
-                            />
-                        </View>
+            <SafeAreaView style={{ backgroundColor: lib.white, flex: 1, alignItems: "center" }}>
+                <StatusBar
+                    backgroundColor={lib.primary}
+                    barStyle='light-content'
+                />
+                <AppHeader title='Create New Thread' navigation={navigation} />
+                <ScrollView>
+                    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+                        <View elevation={5} style={styles.createThreadFormStyle}>
+                            <View>
+                                <Input
+                                    style={styles.titleStyle}
+                                    value={title}
+                                    label='Thread Title'
+                                    onChangeText={text => setTitle(text)}
+                                    placeholder="thread title..."
+                                />
+                            </View>
+                            <View>
+                                <Input
+                                    style={[styles.descriptionStyle]}
+                                    multiline={true}
+                                    numberOfLines={5}
+                                    value={description}
+                                    label='Thread Description'
+                                    textAlignVertical="top"
+                                    placeholder="thread description..."
+                                    onChangeText={text => setDescription(text)}
+                                />
+                            </View>
+                            <View>
+                                <Input
+                                    style={styles.titleStyle}
+                                    value={imgUrl}
+                                    label='Image Url'
+                                    onChangeText={text => setImgUrl(text)}
+                                    placeholder="Condition's Image Url"
+                                />
+                            </View>
                             <View>
                                 <MapView
                                     onMapReady={() => {
                                         PermissionsAndroid.request(
-                                        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+                                            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
                                         ).then(granted => {
                                         });
                                     }}
                                     onRegionChange={(region) => {
                                         // initialRegion={region}
                                     }}
-                                    ref = {(mapView) => { _mapView = mapView; }}
-                                    style={styles.mapStyle} 
+                                    ref={(mapView) => { _mapView = mapView; }}
+                                    style={styles.mapStyle}
                                     initialRegion={{
-                                        latitude:currentRegLatitude,
-                                        longitude:currentRegLongitude,
+                                        latitude: currentRegLatitude,
+                                        longitude: currentRegLongitude,
                                         latitudeDelta: 0.0922,
                                         longitudeDelta: 0.0421,
                                     }}
@@ -195,26 +198,26 @@ export default function CreateThread({ navigation }) {
                                     followsUserLocation={true}
                                     customMapStyle={CustomMapStyle}
                                 >
-                                    <Marker 
-                                        coordinate={{latitude: currentRegLatitude, longitude: currentRegLongitude}} 
+                                    <Marker
+                                        coordinate={{ latitude: currentRegLatitude, longitude: currentRegLongitude }}
                                         draggable
                                         title='Tap marker to use this location'
                                         description={address}
                                         onDragEnd={(e) => handleOnDrag(e)}
                                         onPress={(e) => handleOnPress(e)}
                                     >
-                                </Marker>
+                                    </Marker>
                                 </MapView>
                             </View>
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 style={styles.locationUpdate}
-                                onPress = {() => _mapView.animateToRegion({
+                                onPress={() => _mapView.animateToRegion({
                                     latitude: currentRegLatitude,
                                     longitude: currentRegLongitude,
                                     latitudeDelta: 0.0922,
                                     longitudeDelta: 0.0421,
                                 }, 2000)}>
-                                
+
                                 <Text>Target</Text>
                             </TouchableOpacity>
 
@@ -236,7 +239,8 @@ export default function CreateThread({ navigation }) {
                             customStyle={{ backgroundColor: '#1D84B5', alignItems: 'center' }}
 
                         />
-                    </View>
+                        </View>
+                        </KeyboardAwareScrollView>
                     </ScrollView>
                 </SafeAreaView>
             </>
