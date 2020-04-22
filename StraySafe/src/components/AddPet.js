@@ -40,7 +40,7 @@ export default function AddPet() {
     setMonth('');
     setImgUrl('');
     dispatch(fetchPets(token));
-    navigation.navigate('Adopt');
+    navigation.navigate('Profile');
   }
 
   const chooseImageOnPress = async () => {
