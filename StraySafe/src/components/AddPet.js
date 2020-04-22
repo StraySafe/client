@@ -68,6 +68,17 @@ export default function AddPet() {
         let data = await r.json()
         console.log(data.secure_url)
         setImgUrl(data.secure_url)
+        Alert.alert(
+          "Upload Information",
+          "Snapshot has been added successfully!",
+          [
+            {
+              text: "Ok",
+              onPress: () => console.log("Confirm Info"),
+              style: "cancel"
+            }
+          ]
+        );
         return data.secure_url
       }).catch(err => console.log(err))
     }
