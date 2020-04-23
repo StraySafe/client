@@ -2,14 +2,15 @@ import React, {useState, useEffect} from 'react';
 import { Text, Input, Button, List, Card, Toggle } from '@ui-kitten/components';
 import { ScrollView } from 'react-native-gesture-handler';
 import Comment from './Comment';
-import { createComment, fetchOneThread, reqStatusUp, resolveStatusUp } from '../store/actions'
+import { createComment, fetchOneThread, reqStatusUp, resolveStatusUp, fetchThreads } from '../store/actions'
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, PermissionsAndroid, SafeAreaView, StatusBar, Image, ProgressBarAndroid, AsyncStorage } from 'react-native';
+import { StyleSheet, View, PermissionsAndroid, SafeAreaView, StatusBar, Image, YellowBox, AsyncStorage } from 'react-native';
 import AppHeader from './AppHeader';
 import MapView, { Marker } from 'react-native-maps';
 import CustomMapStyle from './MapStyle';
 import lib from './ColorLib';
 import moment from 'moment';
+import LoadingScreen from './LoadingScreen'
 
 export default function ThreadDetail (props) {
     const [ comment, setComment ] = useState('')
@@ -24,32 +25,35 @@ export default function ThreadDetail (props) {
 
     const dispatch = useDispatch()
 
-
+    useEffect(() => {
+    }, [])
+    
     const handleOnPress = (e, thread) => {
         (_retrieveData = async () => {
             try {
-              const value = await AsyncStorage.getItem('token');
-              if (value !== null) {
-                // We have data!!
-                console.log(value, 'tokennyaaaa nihhhhh');
-              }
+                const value = await AsyncStorage.getItem('token');
+                if (value !== null) {
+                    // We have data!!
+                    console.log(value, 'tokennyaaaa nihhhhh');
+                }
             } catch (error) {
-              // Error retrieving data
+                // Error retrieving data
             }
-          })()
+        })()
         
         const payload = {
             message: comment,
             ThreadId: thread.id,
         }
-
+        
         dispatch(createComment(payload, token))
-        // dispatch(fetchOneThread(thread.id))
+        dispatch(fetchThreads())
         if(checked) {
             dispatch(reqStatusUp(thread.id))
             setChecked(false)
         }
         setComment('')
+        YellowBox.ignoreWarnings(['Warning: ...']);
     }
 
     const dateFormat = moment(thread.createdAt).format("ddd, hA")
@@ -130,9 +134,9 @@ export default function ThreadDetail (props) {
 
 
     if(isLoading) return (
-        <View style={{flex: 1, justifyContent: "center", padding: 10}}>
-            <ProgressBarAndroid styleAttr="Horizontal" indeterminate={true} progress={0.5}/>
-        </View>
+        <ScrollView>
+            <LoadingScreen />
+        </ScrollView>
     )
 
     return (

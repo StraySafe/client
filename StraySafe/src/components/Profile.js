@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, SafeAreaView, StatusBar, Image } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, Image, YellowBox } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPets, fetchOneUser } from '../store/actions';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -21,6 +21,7 @@ export default function Profile({ navigation }) {
   const sortedThreads = myThreads.slice(0).sort(compareValues('updatedAt', 'desc'));
 
   useEffect(() => {
+    YellowBox.ignoreWarnings(['Warning: ...']);
     dispatch(fetchOneUser(currentUserData.id))
     dispatch(fetchPets(currentUserData.token));
   }, [])
